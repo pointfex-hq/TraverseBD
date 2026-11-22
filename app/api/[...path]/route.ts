@@ -147,10 +147,6 @@ export async function GET(request: NextRequest, context: Context) {
     return json((data ?? []).map(destination));
   }
 
-  if (path[0] === "public" && path[1] === "packages" && path[2] === "departures") {
-    const packageId = path[2];
-    void packageId;
-  }
   if (path[0] === "public" && path[1] === "packages" && path[2] && path[3] === "departures") {
     const { data } = await db.from("departures").select("*").eq("package_id", path[2]).order("departure_date");
     return json((data ?? []).map(departure));
@@ -204,12 +200,17 @@ export async function GET(request: NextRequest, context: Context) {
   if (path[0] === "public" && path[1] === "search") {
     const q = (request.nextUrl.searchParams.get("q") ?? "").trim();
     if (!q) return json({ destinations: [], packages: [] });
-    const [destinationsResult, packagesResult] = await Promise.all([
+    const [destinationNameResult, destinationRegionResult, packagesResult] = await Promise.all([
       db.from("destinations").select("*").eq("status", "PUBLISHED").ilike("name", `%${q}%`),
+      db.from("destinations").select("*").eq("status", "PUBLISHED").ilike("region", `%${q}%`),
       db.from("packages").select("*").eq("status", "PUBLISHED").ilike("title", `%${q}%`)
     ]);
+    const destinationMap = new Map<string, any>();
+    for (const row of [...(destinationNameResult.data ?? []), ...(destinationRegionResult.data ?? [])]) {
+      destinationMap.set(row.id, row);
+    }
     return json({
-      destinations: (destinationsResult.data ?? []).map(destination),
+      destinations: [...destinationMap.values()].map(destination),
       packages: await Promise.all((packagesResult.data ?? []).map(row => packageJson(db, row)))
     });
   }

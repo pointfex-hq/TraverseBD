@@ -9,8 +9,9 @@ alter table testimonials enable row level security;
 alter table travel_services enable row level security;
 alter table faqs enable row level security;
 alter table site_settings enable row level security;
+alter table admin_users enable row level security;
 
--- Direct browser database access is denied. The Spring service-role backend owns writes.
+-- Direct browser database access is denied. The Next.js service-role backend owns writes.
 revoke all on destinations, categories, packages, package_items, departures,
-  gallery_images, blog_posts, testimonials, travel_services, faqs, site_settings
+  gallery_images, blog_posts, testimonials, travel_services, faqs, site_settings, admin_users
   from anon, authenticated;

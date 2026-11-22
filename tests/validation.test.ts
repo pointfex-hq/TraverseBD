@@ -4,6 +4,7 @@ import {
   packageSchema, updateAdminSchema
 } from "../lib/validation";
 import { slugify } from "../lib/slug";
+import { readFileSync } from "node:fs";
 
 describe("TraverseBD validation", () => {
   it("accepts valid login", () => {
@@ -60,5 +61,49 @@ describe("TraverseBD validation", () => {
 
   it("creates URL-safe slugs", () => {
     expect(slugify("Cox's  Bazar")).toBe("cox-s-bazar");
+  });
+});
+
+describe("migrated route surface", () => {
+  const route = readFileSync(
+    new URL("../app/api/[...path]/route.ts", import.meta.url),
+    "utf8"
+  );
+
+  it("preserves authentication endpoints", () => {
+    expect(route).toContain('path[1] === "login"');
+    expect(route).toContain('path[1] === "google"');
+    expect(route).toContain('path[1] === "logout"');
+  });
+
+  it("preserves admin user management", () => {
+    expect(route).toContain('path[1] === "users"');
+  });
+
+  it("preserves all CMS resources", () => {
+    for (const resource of [
+      "destinations", "categories", "packages", "departures",
+      "gallery", "blog", "testimonials", "services", "faqs"
+    ]) {
+      expect(route).toContain(`"${resource}"`);
+    }
+  });
+
+  it("preserves settings, dashboard and search", () => {
+    expect(route).toContain('path[1] === "settings"');
+    expect(route).toContain('path[1] === "dashboard"');
+    expect(route).toContain('path[1] === "search"');
+  });
+
+  it("preserves Supabase media upload and delete", () => {
+    expect(route).toContain("media");
+    expect(route).toContain("storage/v1/object");
+  });
+
+  it("contains all HTTP verbs", () => {
+    expect(route).toContain("export async function GET");
+    expect(route).toContain("export async function POST");
+    expect(route).toContain("export async function PUT");
+    expect(route).toContain("export async function DELETE");
   });
 });
