@@ -1,162 +1,212 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>TraverseBD Backend API Documentation</title>
   <style>
-    body { font-family: Arial, sans-serif; color: #182230; max-width: 1100px; margin: 40px auto; line-height: 1.45; }
-    h1 { color: #0B6E4F; } h2 { color: #0B6E4F; border-bottom: 1px solid #d8e2dc; padding-bottom: 6px; }
-    code, pre { background: #f3f6f4; border-radius: 4px; } code { padding: 2px 5px; } pre { padding: 12px; overflow-wrap: anywhere; }
-    table { width: 100%; border-collapse: collapse; margin: 12px 0 22px; } th, td { border: 1px solid #ccd6d0; padding: 8px; text-align: left; vertical-align: top; }
-    th { background: #eaf3ef; } .get { color: #0B6E4F; font-weight: bold; } .post { color: #1D4ED8; font-weight: bold; }
-    .put { color: #B45309; font-weight: bold; } .delete { color: #B91C1C; font-weight: bold; }
+    @page { size: A4; margin: 8mm 10mm 9mm 10mm; }
+    * { box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #20242a; font-size: 7.4pt; line-height: 1.18; margin: 0; }
+    .page { position: relative; padding: 0 0 7mm 0; }
+    .page + .page { page-break-before: always; }
+    h1 { color: #0b6e4f; font-size: 15pt; margin: 0 0 1.5mm; }
+    h2 { color: #0b6e4f; font-size: 9.5pt; margin: 3mm 0 1mm; border-bottom: 0.35mm solid #dce8e2; padding-bottom: 0.7mm; }
+    p { margin: 1mm 0 2mm; }
+    code, pre { font-family: "DejaVu Sans Mono", monospace; }
+    code { background: #f2f5f3; padding: 0.2mm 0.8mm; }
+    pre { background: #f5f7f6; border-left: 0.8mm solid #0b6e4f; padding: 1.2mm 1.8mm; margin: 1mm 0 1.5mm; white-space: pre-wrap; font-size: 6.7pt; }
+    table { width: 100%; border-collapse: collapse; margin: 1.5mm 0 2.5mm; table-layout: fixed; }
+    th { background: #e8f1ed; color: #244238; }
+    th, td { border: 0.25mm solid #d1dad5; padding: 0.75mm 1mm; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    th:nth-child(1), td:nth-child(1) { width: 19mm; }
+    th:nth-child(2), td:nth-child(2) { width: 78mm; }
+    .meta { margin-bottom: 4mm; }
+    .get { color: #0b6e4f; font-weight: bold; }
+    .post { color: #1d4ed8; font-weight: bold; }
+    .put { color: #b45309; font-weight: bold; }
+    .patch { color: #7c3aed; font-weight: bold; }
+    .delete { color: #b91c1c; font-weight: bold; }
+    .footer { position: absolute; bottom: 0; left: 0; right: 0; border-top: 0.25mm solid #d1dad5; padding-top: 1mm; color: #68736d; }
   </style>
 </head>
 <body>
+<section class="page">
   <h1>TraverseBD Backend API Documentation</h1>
-  <p><strong>Version:</strong> 1.0 &nbsp; <strong>Base URL:</strong> <code>/api</code> &nbsp; <strong>Backend:</strong> Spring Boot 3.5 / Java 21 / Supabase PostgreSQL</p>
-  <p>This document defines the backend interfaces owned by Sifat Mazib for frontend and integration synchronization.</p>
+  <p class="meta"><strong>Spring Boot Backend - Supabase PostgreSQL + Storage</strong><br>
+  Version: 1.0 | Date: 23 November 2026 | Owner: Sifat Mazib</p>
+  <p>This document describes the REST API contract for frontend integration. Protected admin endpoints require a JWT returned by login or Google sign-in.</p>
 
-  <h2>1. Authentication and Headers</h2>
-  <p>Admin endpoints require an HTTP-only <code>ADMIN_SESSION</code> cookie or <code>Authorization: Bearer &lt;JWT&gt;</code>. JWTs expire after 60 minutes by default.</p>
-  <pre>{ "Authorization": "Bearer eyJ..." }</pre>
+  <h2>Base URL and Authentication</h2>
+  <p><strong>Local:</strong> <code>http://localhost:8080</code><br>
+     <strong>Production:</strong> <code>https://&lt;deployed-backend-domain&gt;</code><br>
+     <strong>Protected header:</strong> <code>Authorization: Bearer &lt;JWT&gt;</code></p>
+  <p>The backend also sets an HTTP-only <code>ADMIN_SESSION</code> cookie for browser sessions. Cookie and bearer authentication are both accepted.</p>
 
-  <h2>2. Authentication APIs</h2>
+  <h2>Authentication</h2>
   <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Body / Result</th><th>Access</th></tr>
-    <tr><td class="post">POST</td><td>/api/auth/login</td><td><code>{"email":"...","password":"..."}</code><br>Returns email, role and accessToken</td><td>Public</td></tr>
-    <tr><td class="post">POST</td><td>/api/auth/google</td><td><code>{"idToken":"&lt;Google ID token&gt;"}</code><br>Email must already be provisioned</td><td>Public</td></tr>
-    <tr><td class="post">POST</td><td>/api/auth/logout</td><td>Clears the HTTP-only session cookie</td><td>Public</td></tr>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="post">POST</td><td>/api/auth/login</td><td>Public email/password login; returns JWT and profile.</td></tr>
+    <tr><td class="post">POST</td><td>/api/auth/google</td><td>Public Google sign-in; account must already be provisioned.</td></tr>
+    <tr><td class="post">POST</td><td>/api/auth/logout</td><td>Clear the HTTP-only session cookie.</td></tr>
+  </table>
+  <p><strong>Login request</strong></p>
+  <pre>{"email":"admin@traversebd.local","password":"Admin@123456"}</pre>
+  <p><strong>Google request</strong></p>
+  <pre>{"idToken":"&lt;Google ID token&gt;"}</pre>
+  <p><strong>Authentication response</strong></p>
+  <pre>{"accessToken":"JWT","email":"admin@traversebd.local","role":"SUPER_ADMIN"}</pre>
+  <p>JWTs expire after 60 minutes by default. The seed role is <code>SUPER_ADMIN</code>; normal staff are <code>ADMIN</code>.</p>
+
+  <h2>Admin Users</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/admin/users</td><td>SUPER_ADMIN list all admin users.</td></tr>
+    <tr><td class="post">POST</td><td>/api/admin/users</td><td>SUPER_ADMIN provision an ADMIN or SUPER_ADMIN account.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/users/{id}</td><td>SUPER_ADMIN update role, email or active status.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/users/{id}</td><td>SUPER_ADMIN delete a user; last active Super Admin is protected.</td></tr>
+  </table>
+  <pre>{"email":"staff@example.com","password":"optional","role":"ADMIN"}</pre>
+  <div class="footer">TraverseBD - Backend API Documentation &nbsp;&nbsp;&nbsp; Page 1</div>
+</section>
+
+<section class="page">
+  <h1>TraverseBD Backend API Documentation</h1>
+  <h2>Destinations</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/destinations</td><td>Public published destinations.</td></tr>
+    <tr><td class="get">GET</td><td>/api/public/destinations/{slug}</td><td>Public published destination detail.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/destinations</td><td>Admin list including drafts.</td></tr>
+    <tr><td class="post">POST</td><td>/api/admin/destinations</td><td>Admin create destination.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/destinations/{id}</td><td>Admin update destination.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/destinations/{id}</td><td>Admin delete destination.</td></tr>
+  </table>
+  <pre>{"name":"Cox's Bazar","slug":"optional","region":"Chattogram",
+"shortDescription":"Short text","fullDescription":"Full text",
+"coverImageUrl":"https://...","highlights":"Beach; Seafood",
+"status":"DRAFT|PUBLISHED","featured":true}</pre>
+
+  <h2>Categories</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/categories</td><td>Public published categories, sorted.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/categories</td><td>Admin list including drafts.</td></tr>
+    <tr><td class="post">POST</td><td>/api/admin/categories</td><td>Admin create category.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/categories/{id}</td><td>Admin update category.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/categories/{id}</td><td>Blocked when any package uses the category.</td></tr>
+  </table>
+  <pre>{"name":"Beach","slug":"optional","status":"PUBLISHED","sortOrder":1}</pre>
+
+  <h2>Packages</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/packages</td><td>Published packages; optional destinationId, categoryId, minPrice, maxPrice and durationDays.</td></tr>
+    <tr><td class="get">GET</td><td>/api/public/packages/{slug}</td><td>Published package detail.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/packages</td><td>Admin list including drafts.</td></tr>
+    <tr><td class="post">POST</td><td>/api/admin/packages</td><td>Admin create package.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/packages/{id}</td><td>Admin update package.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/packages/{id}</td><td>Admin delete package.</td></tr>
+  </table>
+  <p><strong>Package contract</strong></p>
+  <pre>{"title":"Sundarbans 3 Day","slug":"optional","destinationId":"uuid","categoryId":"uuid",
+"price":12500,"durationDays":3,"priceMode":"FIXED|STARTING_FROM",
+"shortDescription":"Short","fullDescription":"Full","coverImageUrl":"https://...",
+"status":"DRAFT|PUBLISHED","featured":true,"trending":false,
+"items":[{"type":"included","text":"Transport","sortOrder":1},
+         {"type":"activity","text":"Mangrove boat ride","sortOrder":2}]}</pre>
+  <p><code>price</code> is a whole BDT amount greater than zero. Package item types are not restricted.</p>
+  <div class="footer">TraverseBD - Backend API Documentation &nbsp;&nbsp;&nbsp; Page 2</div>
+</section>
+
+<section class="page">
+  <h1>TraverseBD Backend API Documentation</h1>
+  <h2>Departures</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/packages/{packageId}/departures</td><td>Public package departures.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/departures</td><td>Admin list departures.</td></tr>
+    <tr><td class="post">POST</td><td>/api/admin/departures</td><td>Admin create departure and seat totals.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/departures/{id}</td><td>Admin update departure.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/departures/{id}</td><td>Admin delete departure.</td></tr>
+  </table>
+  <pre>{"packageId":"uuid","departureDate":"2026-12-10","totalSeats":30,
+"bookedSeats":0,"priceOverride":null}</pre>
+  <p>Booked seats must not exceed total seats. Departure management is manual; the API never creates a booking or reservation.</p>
+
+  <h2>Gallery</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/gallery</td><td>Published, sorted gallery images.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/gallery</td><td>Admin list all gallery images.</td></tr>
+    <tr><td class="post">POST</td><td>/api/admin/gallery</td><td>Admin create image record.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/gallery/{id}</td><td>Admin update image record.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/gallery/{id}</td><td>Admin delete image record.</td></tr>
+  </table>
+  <pre>{"imageUrl":"https://...","caption":"Caption","status":"PUBLISHED","sortOrder":1}</pre>
+
+  <h2>Blog</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/blog</td><td>Published posts, newest first.</td></tr>
+    <tr><td class="get">GET</td><td>/api/public/blog/{slug}</td><td>Published post detail.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/blog</td><td>Admin list including drafts.</td></tr>
+    <tr><td class="post">POST</td><td>/api/admin/blog</td><td>Admin create post.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/blog/{id}</td><td>Admin update post.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/blog/{id}</td><td>Admin delete post.</td></tr>
+  </table>
+  <pre>{"title":"Travel Stories","slug":"optional","excerpt":"Summary",
+"content":"Post body","coverImageUrl":"https://...","status":"PUBLISHED"}</pre>
+
+  <h2>Publish Status Contract</h2>
+  <p>Every public content type uses <code>DRAFT</code> or <code>PUBLISHED</code>. Public search, detail and list endpoints exclude drafts. Publishing or unpublishing is effective immediately.</p>
+  <div class="footer">TraverseBD - Backend API Documentation &nbsp;&nbsp;&nbsp; Page 3</div>
+</section>
+
+<section class="page">
+  <h1>TraverseBD Backend API Documentation</h1>
+  <h2>Settings and Dashboard</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/settings</td><td>Public organization and WhatsApp settings.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/settings</td><td>Admin settings list.</td></tr>
+    <tr><td class="put">PUT</td><td>/api/admin/settings</td><td>Admin update settings map.</td></tr>
+    <tr><td class="get">GET</td><td>/api/admin/dashboard</td><td>Admin CMS content and user counts.</td></tr>
+  </table>
+  <pre>{"settings":{"whatsapp_number":"8801700000000",
+"whatsapp_message":"Hello! I would like to inquire about a package.",
+"contact_phone":"8801700000000","contact_email":"hello@traversebd.com"}}</pre>
+
+  <h2>Media Upload</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="post">POST</td><td>/api/admin/media/upload</td><td>Multipart field <code>file</code>; JPG, PNG or WebP; max 5 MB.</td></tr>
+    <tr><td class="delete">DELETE</td><td>/api/admin/media?objectName={name}</td><td>Delete a Supabase Storage object.</td></tr>
+  </table>
+  <pre>{"url":"https://&lt;project-ref&gt;.supabase.co/storage/v1/object/public/tourism-media/&lt;uuid&gt;.jpg",
+"objectName":"&lt;uuid&gt;.jpg"}</pre>
+
+  <h2>Testimonials, Services and FAQ</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/testimonials</td><td>Published testimonials.</td></tr>
+    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/testimonials[/id]</td><td>Admin testimonial CRUD.</td></tr>
+    <tr><td class="get">GET</td><td>/api/public/services</td><td>Published, sorted services.</td></tr>
+    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/services[/id]</td><td>Admin service CRUD.</td></tr>
+    <tr><td class="get">GET</td><td>/api/public/faqs</td><td>Published, sorted FAQ entries.</td></tr>
+    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/faqs[/id]</td><td>Admin FAQ CRUD.</td></tr>
   </table>
 
-  <h2>3. Admin User and Role APIs</h2>
+  <h2>Search</h2>
   <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Body</th><th>Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/admin/users</td><td>List users</td><td>SUPER_ADMIN</td></tr>
-    <tr><td class="post">POST</td><td>/api/admin/users</td><td><code>{"email":"...","password":"optional","role":"ADMIN|SUPER_ADMIN"}</code></td><td>SUPER_ADMIN</td></tr>
-    <tr><td class="put">PUT</td><td>/api/admin/users/{id}</td><td><code>{"email":"...","role":"ADMIN|SUPER_ADMIN","active":true}</code></td><td>SUPER_ADMIN</td></tr>
-    <tr><td class="delete">DELETE</td><td>/api/admin/users/{id}</td><td>No body; prevents deleting the last active Super Admin</td><td>SUPER_ADMIN</td></tr>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td class="get">GET</td><td>/api/public/search?q=Cox</td><td>Search published destinations and packages.</td></tr>
   </table>
+  <pre>{"destinations":[...],"packages":[...]}</pre>
 
-  <h2>4. Destination APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/destinations</td><td>Published destinations</td></tr>
-    <tr><td class="get">GET</td><td>/api/public/destinations/{slug}</td><td>Published destination or 404</td></tr>
-    <tr><td class="get">GET</td><td>/api/admin/destinations</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="post">POST</td><td>/api/admin/destinations</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="put">PUT</td><td>/api/admin/destinations/{id}</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="delete">DELETE</td><td>/api/admin/destinations/{id}</td><td>ADMIN / SUPER_ADMIN</td></tr>
-  </table>
-  <pre>{
-  "name": "Cox's Bazar", "slug": "optional", "region": "Chattogram",
-  "shortDescription": "Short text", "fullDescription": "Full text",
-  "coverImageUrl": "https://...", "highlights": "Beach; Seafood",
-  "status": "DRAFT|PUBLISHED", "featured": true
-}</pre>
-
-  <h2>5. Category APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/categories</td><td>Published categories, sorted</td></tr>
-    <tr><td class="get">GET</td><td>/api/admin/categories</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="post">POST</td><td>/api/admin/categories</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="put">PUT</td><td>/api/admin/categories/{id}</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="delete">DELETE</td><td>/api/admin/categories/{id}</td><td>Blocked if packages use the category</td></tr>
-  </table>
-
-  <h2>6. Package APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/packages</td><td>Published packages; optional destinationId, categoryId, minPrice, maxPrice, durationDays</td></tr>
-    <tr><td class="get">GET</td><td>/api/public/packages/{slug}</td><td>Published package or 404</td></tr>
-    <tr><td class="get">GET</td><td>/api/admin/packages</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="post">POST</td><td>/api/admin/packages</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="put">PUT</td><td>/api/admin/packages/{id}</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="delete">DELETE</td><td>/api/admin/packages/{id}</td><td>ADMIN / SUPER_ADMIN</td></tr>
-  </table>
-  <pre>{
-  "title": "Sundarbans 3 Day", "slug": "optional",
-  "destinationId": "uuid", "categoryId": "uuid",
-  "price": 12500, "durationDays": 3, "priceMode": "FIXED|STARTING_FROM",
-  "shortDescription": "Short", "fullDescription": "Full",
-  "coverImageUrl": "https://...", "status": "DRAFT|PUBLISHED",
-  "featured": true, "trending": false,
-  "items": [
-    {"type":"included","text":"Transport","sortOrder":1},
-    {"type":"activity","text":"Mangrove boat ride","sortOrder":2}
-  ]
-}</pre>
-  <p><code>price</code> is a whole BDT amount and must be greater than zero. Item types are not limited by the backend.</p>
-
-  <h2>7. Departure APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/packages/{packageId}/departures</td><td>Published package departures</td></tr>
-    <tr><td class="get">GET</td><td>/api/admin/departures</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="post">POST</td><td>/api/admin/departures</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="put">PUT</td><td>/api/admin/departures/{id}</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="delete">DELETE</td><td>/api/admin/departures/{id}</td><td>ADMIN / SUPER_ADMIN</td></tr>
-  </table>
-  <pre>{"packageId":"uuid","departureDate":"2026-12-10","totalSeats":30,"bookedSeats":0,"priceOverride":null}</pre>
-
-  <h2>8. Gallery and Blog APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/gallery</td><td>Published, sorted images</td></tr>
-    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/gallery[/id]</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="get">GET</td><td>/api/public/blog</td><td>Published posts, newest first</td></tr>
-    <tr><td class="get">GET</td><td>/api/public/blog/{slug}</td><td>Published post or 404</td></tr>
-    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/blog[/id]</td><td>ADMIN / SUPER_ADMIN</td></tr>
-  </table>
-
-  <h2>9. Settings and Dashboard APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/settings</td><td>Safe public organization and WhatsApp settings</td></tr>
-    <tr><td class="get">GET</td><td>/api/admin/settings</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="put">PUT</td><td>/api/admin/settings</td><td><code>{"settings":{"whatsapp_number":"8801...","whatsapp_message":"..."}}</code></td></tr>
-    <tr><td class="get">GET</td><td>/api/admin/dashboard</td><td>Destination, package, category and admin counts</td></tr>
-  </table>
-
-  <h2>9A. Testimonials, Services and FAQ APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Result / Access</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/testimonials</td><td>Published testimonials</td></tr>
-    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/testimonials[/id]</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="get">GET</td><td>/api/public/services</td><td>Published, sorted services</td></tr>
-    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/services[/id]</td><td>ADMIN / SUPER_ADMIN</td></tr>
-    <tr><td class="get">GET</td><td>/api/public/faqs</td><td>Published, sorted FAQ entries</td></tr>
-    <tr><td class="get">GET / POST / PUT / DELETE</td><td>/api/admin/faqs[/id]</td><td>ADMIN / SUPER_ADMIN</td></tr>
-  </table>
-
-  <h2>10. Media APIs</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Body / Result</th></tr>
-    <tr><td class="post">POST</td><td>/api/admin/media/upload</td><td>Multipart field <code>file</code>; JPG, PNG or WebP; maximum 5 MB</td></tr>
-    <tr><td class="delete">DELETE</td><td>/api/admin/media?objectName={name}</td><td>Deletes a storage object</td></tr>
-  </table>
-
-  <h2>11. Search API</h2>
-  <table>
-    <tr><th>Method</th><th>Endpoint</th><th>Result</th></tr>
-    <tr><td class="get">GET</td><td>/api/public/search?q=Cox</td><td><code>{"destinations":[...],"packages":[...]}</code></td></tr>
-  </table>
-
-  <h2>12. Error Format</h2>
+  <h2>Error Responses</h2>
+  <p>400 validation/bad request, 401 unauthorized, 403 forbidden, 404 missing resource, 409 conflict, 503 upload or integration unavailable.</p>
   <pre>{"error":"VALIDATION_ERROR|CONFLICT|BAD_REQUEST","message":"Human-readable detail"}</pre>
-  <p>Unauthenticated protected requests return 401 or 403. Draft resources are absent from public endpoints and sitemap data should be generated only from published records.</p>
-
-  <h2>13. Environment Variables</h2>
-  <table>
-    <tr><th>Variable</th><th>Purpose</th></tr>
-    <tr><td>SUPABASE_DATABASE_URL</td><td>PostgreSQL JDBC URL</td></tr>
-    <tr><td>SUPABASE_DATABASE_USERNAME/PASSWORD</td><td>Database credentials</td></tr>
-    <tr><td>SUPABASE_URL</td><td>Supabase project URL</td></tr>
-    <tr><td>SUPABASE_SERVICE_ROLE_KEY</td><td>Server-only Storage key</td></tr>
-    <tr><td>SUPABASE_STORAGE_BUCKET</td><td>Public image bucket</td></tr>
-    <tr><td>GOOGLE_CLIENT_ID</td><td>Google OAuth Web Client ID</td></tr>
-    <tr><td>JWT_SECRET</td><td>At least 32 bytes; rotate when needed</td></tr>
-  </table>
+  <div class="footer">TraverseBD - Backend API Documentation &nbsp;&nbsp;&nbsp; Page 4</div>
+</section>
 </body>
 </html>
