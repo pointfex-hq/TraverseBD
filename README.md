@@ -1,41 +1,99 @@
-# TraverseBD Spring Boot Backend
+# TraverseBD Next.js Backend
 
-## Run
+TraverseBD uses Next.js Route Handlers, TypeScript, Supabase PostgreSQL/Auth/Storage and Vercel.
+The API paths and frontend JSON contracts remain unchanged.
+
+## Structure
+
+```text
+backend/
+├── app/api/[...path]/route.ts
+├── lib/
+├── middleware.ts
+├── supabase/
+│   ├── schema.sql
+│   └── seed.sql
+├── tests/
+├── package.json
+└── .env.example
+```
+
+## Setup
 
 ```bash
 cd backend
-set -a
-. ./.env
-set +a
-./mvnw spring-boot:run
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
-Java 21 is required. Copy `.env.example` to `.env`, export the variables, and never commit `.env`.
+Run `supabase/schema.sql` in the Supabase SQL Editor.
+Create the Supabase Storage bucket `tourism-media`.
+Create the seed admin in Supabase Auth and insert the matching row into `admin_users`
+with role `SUPER_ADMIN` and status `Active`.
 
-## Supabase
+## Environment
 
-Set `SUPABASE_DATABASE_URL` to the Supabase PostgreSQL connection URL. The backend can create/update tables while `DDL_AUTO=update` is enabled. For production, change `DDL_AUTO` to `validate`, enable Flyway, and apply versioned migrations.
+| Variable | Purpose |
+|---|---|
+| NEXT_PUBLIC_SUPABASE_URL | Supabase project URL |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY | Browser/public Supabase key |
+| SUPABASE_SERVICE_ROLE_KEY | Server-only key |
+| SUPABASE_STORAGE_BUCKET | Media bucket, default tourism-media |
+| GOOGLE_CLIENT_ID | Google OAuth Web Client ID |
+| COOKIE_SECURE | HTTPS cookie flag |
+| COOKIE_SAME_SITE | Cookie SameSite policy |
 
-Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_STORAGE_BUCKET` for image uploads. The service-role key is server-only and must never be sent to a browser or placed in a Vite/Next.js public environment variable.
+Never expose `SUPABASE_SERVICE_ROLE_KEY` in a browser or public environment variable.
 
-Create the public storage bucket in Supabase Storage before using `/api/admin/media/upload`.
+## Authentication
 
-## Google Sign-In
+```http
+POST /api/auth/login
+Content-Type: application/json
 
-Set `GOOGLE_CLIENT_ID` to the OAuth Web Client ID. The frontend sends the Google ID token to `POST /api/auth/google`. The email must already exist in `admin_users`. The first Google login stores the Google subject in that database row.
+{"email":"admin@traversebd.local","password":"Admin@123456"}
+```
 
-The local seed Super Admin is:
+Protected endpoints accept:
 
-- Email: `admin@traversebd.local`
-- Password: `Admin@123456`
+```http
+Authorization: Bearer <SUPABASE_ACCESS_TOKEN>
+```
 
-Override these values with `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD`. Change or remove the development password before deployment.
+The backend also sets the `ADMIN_SESSION` HTTP-only cookie.
 
-## Security
+## API Groups
 
-- Passwords use BCrypt.
-- Sessions use signed JWTs and HTTP-only cookies.
-- `Authorization: Bearer <token>` is also accepted.
-- `/api/admin/**` requires `ADMIN` or `SUPER_ADMIN`.
-- Admin-user management requires `SUPER_ADMIN`.
-- Public content only exposes `PUBLISHED` rows.
+| Area | Public | Admin |
+|---|---|---|
+| Users | - | `/api/admin/users[/id]` |
+| Destinations | `/api/public/destinations[/slug]` | `/api/admin/destinations[/id]` |
+| Categories | `/api/public/categories` | `/api/admin/categories[/id]` |
+| Packages | `/api/public/packages[/slug]` | `/api/admin/packages[/id]` |
+| Departures | `/api/public/packages/{packageId}/departures` | `/api/admin/departures[/id]` |
+| Gallery | `/api/public/gallery` | `/api/admin/gallery[/id]` |
+| Blog | `/api/public/blog[/slug]` | `/api/admin/blog[/id]` |
+| Testimonials | `/api/public/testimonials` | `/api/admin/testimonials[/id]` |
+| Services | `/api/public/services` | `/api/admin/services[/id]` |
+| FAQ | `/api/public/faqs` | `/api/admin/faqs[/id]` |
+| Settings | `/api/public/settings` | `/api/admin/settings` |
+| Dashboard | - | `/api/admin/dashboard` |
+| Search | `/api/public/search?q=` | - |
+| Media | - | `/api/admin/media/upload` |
+
+## Publish Status
+
+Every public CMS record uses `DRAFT` or `PUBLISHED`.
+Public endpoints show only `PUBLISHED` rows.
+
+## Tests
+
+```bash
+npm test
+npm run build
+```
+
+## Vercel
+
+Deploy the `backend` folder as a Next.js project and configure all environment variables.
