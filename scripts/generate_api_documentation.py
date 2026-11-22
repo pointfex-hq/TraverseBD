@@ -18,7 +18,7 @@ def header_footer(canvas, doc):
     canvas.saveState()
     canvas.setStrokeColor(GRID)
     canvas.line(14 * mm, 12 * mm, 196 * mm, 12 * mm)
-    canvas.setFont("Helvetica", 7)
+    canvas.setFont("Helvetica", 8)
     canvas.setFillColor(colors.HexColor("#68736D"))
     canvas.drawString(14 * mm, 8 * mm, "TraverseBD - Backend API Documentation")
     canvas.drawRightString(196 * mm, 8 * mm, f"Page {doc.page}")
@@ -27,23 +27,23 @@ def header_footer(canvas, doc):
 
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle(name="TitleGreen", parent=styles["Title"], fontName="Helvetica-Bold",
-                          fontSize=15, leading=18, textColor=GREEN, alignment=TA_LEFT,
-                          spaceAfter=3))
+                          fontSize=17, leading=20, textColor=GREEN, alignment=TA_LEFT,
+                          spaceAfter=4))
 styles.add(ParagraphStyle(name="SectionGreen", parent=styles["Heading2"], fontName="Helvetica-Bold",
-                          fontSize=9.5, leading=11, textColor=GREEN,
+                          fontSize=11.5, leading=13.5, textColor=GREEN,
                           borderWidth=0, borderPadding=(0, 0, 1, 0),
-                          borderColor=colors.HexColor("#DCE8E2"), spaceBefore=4, spaceAfter=2))
+                          borderColor=colors.HexColor("#DCE8E2"), spaceBefore=5, spaceAfter=3))
 styles.add(ParagraphStyle(name="BodySmall", parent=styles["BodyText"], fontName="Helvetica",
-                          fontSize=7.2, leading=8.5, textColor=INK, spaceAfter=2))
+                          fontSize=9, leading=11, textColor=INK, spaceAfter=3))
 styles.add(ParagraphStyle(name="CodeSmall", parent=styles["BodyText"], fontName="Courier",
-                          fontSize=6.4, leading=7.2, textColor=INK,
+                          fontSize=8.2, leading=10.5, textColor=INK,
                           backColor=colors.HexColor("#F5F7F6"),
                           borderColor=GREEN, borderWidth=0.7,
-                          borderPadding=(3, 4, 3, 4), spaceBefore=1, spaceAfter=3))
+                          borderPadding=(6, 7, 6, 7), spaceBefore=4, spaceAfter=7))
 styles.add(ParagraphStyle(name="TableHead", parent=styles["BodyText"], fontName="Helvetica-Bold",
-                          fontSize=6.8, leading=7.5, textColor=INK))
+                          fontSize=8.2, leading=9.5, textColor=INK))
 styles.add(ParagraphStyle(name="TableCell", parent=styles["BodyText"], fontName="Helvetica",
-                          fontSize=6.8, leading=7.5, textColor=INK))
+                          fontSize=8.2, leading=9.5, textColor=INK))
 styles.add(ParagraphStyle(name="MethodGet", parent=styles["TableCell"], textColor=colors.HexColor("#0B6E4F"),
                           fontName="Helvetica-Bold"))
 styles.add(ParagraphStyle(name="MethodPost", parent=styles["TableCell"], textColor=colors.HexColor("#1D4ED8"),
@@ -59,7 +59,9 @@ def P(text):
 
 
 def code(text):
-    return Paragraph(text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"), styles["CodeSmall"])
+    box = Paragraph(text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"),
+                    styles["CodeSmall"])
+    return KeepTogether([Spacer(1, 4 * mm), box])
 
 
 def endpoint_table(rows):
@@ -84,8 +86,8 @@ def endpoint_table(rows):
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
         ("LEFTPADDING", (0, 0), (-1, -1), 2),
         ("RIGHTPADDING", (0, 0), (-1, -1), 2),
-        ("TOPPADDING", (0, 0), (-1, -1), 1.5),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
     ]))
     return table
 
