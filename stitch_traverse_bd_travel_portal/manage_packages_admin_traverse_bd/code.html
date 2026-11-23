@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-tertiary-container":"#e1efff","surface-container-high":"#dee8ff","inverse-on-surface":"#ecf1ff","inverse-surface":"#263143","error-container":"#ffdad6","tertiary":"#005886","on-secondary-container":"#32647f","outline":"#6e7a74","on-secondary-fixed-variant":"#144c65","outline-variant":"#bdc9c2","primary-fixed":"#98f4d3","primary-fixed-dim":"#7cd8b8","on-tertiary-fixed":"#001d31","surface-dim":"#cfdaf2","surface-tint":"#006c53","on-primary":"#ffffff","tertiary-container":"#0071ac","primary-container":"#0d7a5f","on-surface-variant":"#3e4944","surface-variant":"#d8e3fb","on-surface":"#111c2d","secondary-container":"#b0e0ff","secondary-fixed":"#c4e7ff","on-primary-fixed-variant":"#00513e","tertiary-fixed-dim":"#93ccff","tertiary-fixed":"#cce5ff","surface-container-highest":"#d8e3fb","surface-container-lowest":"#ffffff","secondary-fixed-dim":"#9ccdeb","secondary":"#32647e","error":"#ba1a1a","on-error-container":"#93000a","on-error":"#ffffff","primary":"#005f49","on-tertiary-fixed-variant":"#004b73","inverse-primary":"#7cd8b8","surface-container":"#e7eeff","on-secondary":"#ffffff","on-primary-fixed":"#002117","surface-container-low":"#f0f3ff","on-primary-container":"#a8ffdf","on-secondary-fixed":"#001e2c","on-tertiary":"#ffffff","on-background":"#111c2d","background":"#f9f9ff","surface-bright":"#f9f9ff","surface":"#f9f9ff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-xs":"0.25rem","gutter-mobile":"1rem","gutter":"1.5rem","margin":"3rem","space-md":"1rem","space-sm":"0.5rem","margin-mobile":"1.25rem","space-lg":"1.5rem","space-xl":"2.5rem"},"fontFamily":{"body-sm":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"display-hero":["Plus Jakarta Sans"],"display-hero-mobile":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-xl-mobile":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-xl":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"]},"fontSize":{"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-sm":["18px",{"lineHeight":"26px","fontWeight":"600"}],"display-hero":["56px",{"lineHeight":"64px","letterSpacing":"-0.03em","fontWeight":"800"}],"display-hero-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.02em","fontWeight":"800"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"headline-xl-mobile":["28px",{"lineHeight":"36px","letterSpacing":"-0.015em","fontWeight":"700"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["13px",{"lineHeight":"18px","letterSpacing":"0.02em","fontWeight":"600"}],"headline-md":["22px",{"lineHeight":"30px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-xl":["40px",{"lineHeight":"48px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"700"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"label-lg":["15px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"700"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col h-full"><div class="h-20 px-space-lg flex items-center gap-space-sm"><img alt="logo.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrCwrp64uznPQIqYPX6ZIlubkaoHWUseCLo8oAEsGFVck6P9ivmE_DSgD78JEBLjWZO47GBJq0-IAhOlu2oEO3cr7AWYjbMrAOT65S3hVZutppHGijk5PcAxbMHro1gbZakRYQEynlHeiVfFzWr-I2xJwVkkFjRQCwo8mwVV0OzC8QkvN5CdwV7JNeL8y9IGu8QDoJ8XIn-Ce_mGQBmOHEd-YAJ2RzrhS7Ry1o6CGa7Unz1qLNB48ZwLPEKO"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Traverse BD</span><span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Admin Portal</span></div></div><div class="px-space-md py-space-sm flex-1 overflow-y-auto"><div class="mb-space-sm px-space-sm"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Main Navigation</span></div><nav class="space-y-1" data-active-classes="bg-primary-container text-on-primary font-label-md rounded-xl"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-md text-label-md" data-path="overview-analytics" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span>Dashboard</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm transition-all bg-primary-container text-on-primary font-label-md rounded-xl" data-path="manage-tour-packages" href="#"><span class="material-symbols-outlined text-[20px]">tour</span><span>Manage Tour Packages</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-md text-label-md" data-path="manage-blog-guides" href="#"><span class="material-symbols-outlined text-[20px]">article</span><span>Manage Blog &amp; Guides</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-md text-label-md" data-path="manage-gallery" href="#"><span class="material-symbols-outlined text-[20px]">photo_library</span><span>Manage Gallery</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-md text-label-md" data-path="bookings-inquiries" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">event_available</span><span>Bookings &amp; Inquiries</span></div><span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">New</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-md text-label-md" data-path="user-management" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">group</span><span>User Management</span></div><span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm">Super Admin</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-label-md text-label-md" data-path="system-settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span>System Settings</span></a></nav></div><div class="p-space-md m-space-md bg-surface-container rounded-xl flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant">Cloud Storage</span><span class="font-label-sm text-label-sm font-bold text-primary">68%</span></div><div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary rounded-full" style="width: 68%"></div></div><span class="font-label-sm text-label-sm text-outline">13.6 GB of 20 GB used</span></div><div class="px-space-md py-space-sm flex items-center justify-between text-on-surface-variant"><a class="flex items-center gap-space-xs font-label-sm text-label-sm hover:text-primary transition-colors" data-path="help-desk" href="#"><span class="material-symbols-outlined text-[18px]">help</span><span>Help Desk</span></a><button class="flex items-center gap-space-xs font-label-sm text-label-sm hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">menu_open</span><span>Collapse</span></button></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40"><div class="h-20 w-full px-space-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm"><img alt="logo.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrCwrp64uznPQIqYPX6ZIlubkaoHWUseCLo8oAEsGFVck6P9ivmE_DSgD78JEBLjWZO47GBJq0-IAhOlu2oEO3cr7AWYjbMrAOT65S3hVZutppHGijk5PcAxbMHro1gbZakRYQEynlHeiVfFzWr-I2xJwVkkFjRQCwo8mwVV0OzC8QkvN5CdwV7JNeL8y9IGu8QDoJ8XIn-Ce_mGQBmOHEd-YAJ2RzrhS7Ry1o6CGa7Unz1qLNB48ZwLPEKO"/><nav class="hidden sm:flex items-center gap-space-xs font-label-sm text-label-sm text-on-surface-variant"><a class="hover:text-primary transition-colors" data-path="overview-analytics" href="#">Traverse BD</a><span class="material-symbols-outlined text-[14px]">chevron_right</span><span class="text-on-surface font-semibold">Console</span></nav></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.02)] w-72"><span class="material-symbols-outlined text-[18px] text-outline">search</span><input class="bg-transparent border-0 outline-none w-full font-body-sm text-body-sm text-on-surface placeholder:text-outline" placeholder="Search packages, bookings..." type="text"/></div><button class="relative p-space-xs rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1 right-1 w-4 h-4 bg-error text-on-error rounded-full font-label-sm text-label-sm flex items-center justify-center text-[10px]">3</span></button><button class="hidden sm:flex items-center gap-space-xs bg-primary text-on-primary px-space-md py-space-xs rounded-full font-label-sm text-label-sm hover:bg-primary-container transition-all shadow-[0_4px_12px_rgba(13,122,95,0.2)]" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Add Package</span></button><div class="flex items-center gap-space-sm pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden lg:flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface font-bold leading-none">Tanvir Ahmed</span><span class="font-label-sm text-label-sm text-primary font-semibold leading-tight">Super Admin</span></div><button class="p-space-xs text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">expand_more</span></button></div></div></div></header><main class="flex-1 w-full pt-20 bg-background"><div class="flex flex-col w-full">
+<div class="w-full px-space-lg py-space-md flex flex-col gap-space-lg max-w-[1440px] mx-auto">
+<!-- Top Action & Statistics Header Shelf -->
+<section class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Expedition CMS v2.4</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-extrabold tracking-tight">Tour Packages Management</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Create, edit, and publish handcrafted expedition packages across Bangladesh and select international corridors.</p>
+<!-- Live Quick Stats Badges -->
+<div class="flex flex-wrap items-center gap-space-xs pt-space-xs">
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-tertiary">inventory_2</span>
+<span>Total Packages: <strong class="text-on-surface">42</strong></span>
+</div>
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+<span>Published: <strong class="text-on-primary-fixed font-bold">38</strong></span>
+</div>
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-outline">edit_note</span>
+<span>Drafts: <strong class="text-on-surface">4</strong></span>
+</div>
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-tertiary">confirmation_number</span>
+<span>Active Bookings: <strong class="text-on-secondary-container font-bold">128</strong></span>
+</div>
+</div>
+</div>
+<!-- Action Utility Buttons -->
+<div class="flex flex-wrap items-center gap-space-sm self-start lg:self-end">
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-full bg-surface-container text-secondary font-label-md text-label-md hover:bg-surface-container-high transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">filter_alt</span>
+<span>Filter by Region</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-sm rounded-full bg-surface-container text-secondary font-label-md text-label-md hover:bg-surface-container-high transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">ios_share</span>
+<span>Bulk Export (CSV)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-md hover:scale-[1.02]" type="button">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Add New Package</span>
+</button>
+</div>
+</section>
+<!-- Main Dual-Grid Section: Interactive Editor (Left 8 cols) & Live Preview / Metadata Card (Right 4 cols) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Primary Editor Form Panel (8 Columns) -->
+<section class="lg:col-span-8 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-lg">
+<!-- Header bar inside editor -->
+<div class="flex items-center justify-between pb-space-sm bg-surface-container-low px-space-md py-space-sm rounded-lg">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">tune</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Package Creation &amp; Edit Studio</span>
+</div>
+<span class="px-space-sm py-0.5 rounded-full bg-surface-container-high text-tertiary font-label-sm text-label-sm font-bold uppercase tracking-wider">Editing #BD-9042</span>
+</div>
+<form class="flex flex-col gap-space-lg" onsubmit="event.preventDefault();">
+<!-- Basic Info Block -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold" for="package-title">
+                Package Title <span class="text-error">*</span>
+</label>
+<input class="w-full bg-surface-container-low px-space-md py-space-sm rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container-high transition-colors" id="package-title" placeholder="e.g. Sundarbans Mangrove Deep Trail" type="text" value="Sajek Valley Cloud Kingdom Escape 3D/2N"/>
+</div>
+<!-- Auto Slug Preview -->
+<div class="flex items-center gap-2 px-space-md py-2 rounded-lg bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">link</span>
+<span>URL Slug Preview:</span>
+<span class="text-primary font-mono select-all">traversebd.com/packages/sajek-valley-escape</span>
+<button class="ml-auto text-secondary hover:text-primary font-label-sm text-label-sm flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[14px]">edit</span> Edit
+              </button>
+</div>
+</div>
+<!-- Region, Category & Duration Inputs -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-space-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Region</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low px-space-md py-space-sm rounded-lg font-body-sm text-body-sm text-on-surface appearance-none focus:outline-none focus:bg-surface-container-high transition-colors">
+<option selected="">Chittagong Hill Tracts</option>
+<option>Sylhet &amp; Haors</option>
+<option>Coastal &amp; Bay of Bengal</option>
+<option>Sundarbans Mangrove</option>
+<option>North Bengal Heritage</option>
+<option>International Escapes</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-2.5 text-outline text-[20px]">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Tour Type</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low px-space-md py-space-sm rounded-lg font-body-sm text-body-sm text-on-surface appearance-none focus:outline-none focus:bg-surface-container-high transition-colors">
+<option selected="">Highlander Expedition</option>
+<option>River &amp; Lake Cruise</option>
+<option>Wildlife Safari</option>
+<option>Cultural Heritage</option>
+<option>Corporate Retreat</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-3 top-2.5 text-outline text-[20px]">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Duration (D / N)</label>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center bg-surface-container-low px-3 py-space-sm rounded-lg">
+<input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface focus:outline-none" type="number" value="3"/>
+<span class="font-label-sm text-label-sm text-outline">Days</span>
+</div>
+<div class="flex items-center bg-surface-container-low px-3 py-space-sm rounded-lg">
+<input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface focus:outline-none" type="number" value="2"/>
+<span class="font-label-sm text-label-sm text-outline">Nights</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pricing Tier Row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md p-space-md rounded-xl bg-surface-container-low">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Regular Price (BDT)</label>
+<div class="flex items-center bg-surface-container-lowest px-space-md py-2 rounded-lg">
+<span class="font-headline-sm text-headline-sm text-on-surface-variant mr-1">৳</span>
+<input class="w-full bg-transparent font-headline-sm text-headline-sm text-on-surface focus:outline-none font-bold" type="text" value="8,500"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-primary font-semibold">Offer / Promo Price (BDT)</label>
+<div class="flex items-center bg-surface-container-lowest px-space-md py-2 rounded-lg">
+<span class="font-headline-sm text-headline-sm text-primary mr-1">৳</span>
+<input class="w-full bg-transparent font-headline-sm text-headline-sm text-primary focus:outline-none font-bold" type="text" value="7,500"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Seat Quota / Batch</label>
+<div class="flex items-center bg-surface-container-lowest px-space-md py-2 rounded-lg">
+<span class="material-symbols-outlined text-[20px] text-outline mr-2">group</span>
+<input class="w-full bg-transparent font-headline-sm text-headline-sm text-on-surface focus:outline-none" type="number" value="16"/>
+<span class="font-label-sm text-label-sm text-outline">Travellers</span>
+</div>
+</div>
+</div>
+<!-- Cover Image Drag & Drop Uploader -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Hero Media &amp; Resolute Gallery</label>
+<span class="font-label-sm text-label-sm text-secondary">Recommended: 1920x1080px (WebP / JPG)</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md p-space-md rounded-xl bg-surface-container-low items-center">
+<!-- Upload drop box -->
+<div class="md:col-span-7 flex flex-col items-center justify-center p-space-lg rounded-xl bg-surface-container-lowest text-center hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container mb-2">
+<span class="material-symbols-outlined text-[28px]">cloud_upload</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Drag &amp; Drop package cover photo</span>
+<span class="font-body-sm text-body-sm text-outline mt-1">or browse computer files (Max 12MB)</span>
+<button class="mt-space-sm px-space-md py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm" type="button">Browse Local Files</button>
+</div>
+<!-- Uploaded Preview -->
+<div class="md:col-span-5 relative group overflow-hidden rounded-xl h-44 shadow-sm bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A cinematic sunrise over Sajek Valley Bangladesh featuring wooden hill resort cottages perched above an ocean of white fluffy morning clouds with lush tropical green ridges in warm soft golden hour ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXHpL10fpmDF0AoClnM8YQbpgife5l2xA3hcLem2bMN6hWy40W2BZH-4vINVHZiQ-MMf57tCSKy0xhOObkM03PCobIOpZ0YW86wm4nOfcptxwdLeuzZ7d5JS3BQgqC32ceIXDxNJ89pxXLCNxNZwMUYS5vuCehA5W3CUpNbAn2Emx710OH4pM7OAiwgifTf-oXqGqqbVHSkJjRToZuPiNIbUrOa56tPEJWs7qzj1sw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent flex items-end p-space-sm justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-primary font-bold">Sajek_Resort_Dawn.webp</span>
+<span class="font-label-sm text-label-sm text-primary-fixed">Active Cover Preview</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest/80 text-error hover:bg-surface-container-lowest flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Inclusions Matrix -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Included Expedition Privileges</label>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-space-xs">
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">4x4 Chander Gari</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Hill Resort Stay</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Buffet Meals</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Licensed Guide</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">All Entry Passes</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Helipad Campfire</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Mineral Water</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">First-Aid Kit</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Photography Gear</span>
+</label>
+<label class="flex items-center gap-2 p-space-sm rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 accent-primary" type="checkbox"/>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Travel Insurance</span>
+</label>
+</div>
+</div>
+<!-- Day-by-Day Itinerary Builder Tabs & Content -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Expedition Itinerary Builder</label>
+<button class="font-label-sm text-label-sm text-primary hover:text-primary-container font-bold flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span> Add Itinerary Day
+              </button>
+</div>
+<!-- Tab Headers -->
+<div class="flex items-center gap-space-xs bg-surface-container-low p-1 rounded-xl">
+<button class="px-space-md py-space-xs rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md font-bold shadow-sm flex items-center gap-1.5" type="button">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                Day 01: Arrival &amp; Helipad Sunset
+              </button>
+<button class="px-space-md py-space-xs rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+                Day 02: Konglak Para Summit
+              </button>
+<button class="px-space-md py-space-xs rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+                Day 03: Alutila Cave Exploration
+              </button>
+</div>
+<!-- Active Day Editor Box -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-md">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Day Headline</span>
+<input class="bg-surface-container-lowest px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none" type="text" value="Khagrachari to Sajek Valley via Army Escort &amp; Helipad Sunset"/>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Target Coordinates / Geolocation</span>
+<input class="bg-surface-container-lowest px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none" type="text" value="Sajek Valley, Rangamati (23.3820° N, 92.2938° E)"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Detailed Activity Breakdown</span>
+<textarea class="bg-surface-container-lowest p-3 rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none resize-none leading-relaxed" rows="3">Early morning rendezvous at Khagrachari town. Board custom open-hood Chander Gari for the thrilling hilly drive through Baghaihat checkpost under Bangladesh Army escort. Check-in to Meghpunji resort by 2:00 PM. High tea followed by sunset stroll at Helipad-2 enjoying indigenous bamboo tea and cultural music.</textarea>
+</div>
+</div>
+</div>
+<!-- Bottom Action Buttons Shelf -->
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-md bg-surface-container-lowest">
+<div class="flex items-center gap-space-xs text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Last auto-saved 2 minutes ago</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-lg py-space-sm rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">
+                Save as Draft
+              </button>
+<button class="px-space-md py-space-sm rounded-full bg-surface-container-high text-tertiary font-label-md text-label-md hover:bg-surface-container-highest transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span>Preview Live</span>
+</button>
+<button class="px-space-xl py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-all shadow-md font-bold flex items-center gap-1.5 hover:scale-[1.02]" type="button">
+<span class="material-symbols-outlined text-[20px]">publish</span>
+<span>Publish Package</span>
+</button>
+</div>
+</div>
+</form>
+</section>
+<!-- Right Column: Live Card Preview & Publishing Pipeline Telemetry (4 Columns) -->
+<aside class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Live Consumer Card Mockup -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Public Card Preview</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">Live Mode</span>
+</div>
+<!-- Simulated Consumer Card -->
+<div class="rounded-xl overflow-hidden bg-surface-container-low shadow-sm flex flex-col group">
+<div class="relative h-48 w-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Panoramic vista of Sajek Valley with wooden cottages on mountain ridges surrounded by fluffy white cloud seas under clear blue sky with green forests below" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI8-BvYI2Qc1CHKPAH3WEDU_4YzyxwkL5r5M7hpZrFM_j8ttBflrU07F1YMIwBTEM4idPvyiq_pyihrvlTCJ3d-Uc4b4jFor9AHiplPc_weeU7dQPJ5tZY7Raegyf29uSQbWxxEq-6ULAWYI2XVlfPKga7UQMQ0eeZvtSoCV7qWxbVz3ab_ewHVGntM_iusm6hY4O9Vk7WsIouobIPPaIuBN_PeSpa4XOgXFS6DR5R"/>
+<div class="absolute top-3 left-3 px-space-sm py-1 rounded-full bg-surface/90 backdrop-blur-md text-primary font-label-sm text-label-sm font-bold shadow-sm">
+                Chittagong Hill Tracts
+              </div>
+<div class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-full bg-inverse-surface/80 text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 3D / 2N
+              </div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-label-sm font-bold">4.9</span>
+<span class="text-outline font-label-sm text-label-sm">(142 reviews)</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Sajek Valley Cloud Kingdom Escape</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Experience wooden hill resort cottages perched over rolling oceans of fluffy clouds, 4x4 Chander Gari adventure, and indigenous culinary treats.</p>
+<div class="pt-space-xs flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline line-through">৳8,500</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-primary font-extrabold">৳7,500</span>
+<span class="font-label-sm text-label-sm text-outline">/ person</span>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Location Telemetry Map Preview -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-bold">Route Map &amp; Coordinates</span>
+<span class="font-label-sm text-label-sm text-tertiary">GPS Active</span>
+</div>
+<div class="w-full h-44 rounded-xl bg-cover bg-center shadow-inner relative flex items-end p-space-xs" data-location="Sajek Valley, Bangladesh" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAyExOvwH_2-vlP1RmSKWW-TG6-Wf1lxeb530RqG9HbGbgEtfgP3L7a_zjvwXo1dq-zNQBVRzcW2u3d7nY3scI-hrJo2dpnn_YStT5RTHYBz9dmx4fS2seS7hOcBlP8ZKG3uw-KlVCmGvG-EVsqNRcD53ZoVnXFx9z_nATY_h1Bmg0Vg3s_xIABk76iJ2lsUrP_L4QB5I3TZ94CG1hksKFUCmPTdrWbANizhqW1W_M9')">
+<div class="p-2 rounded-lg bg-surface/90 backdrop-blur-md font-label-sm text-label-sm text-on-surface flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">pin_drop</span>
+<span>Sajek, Rangamati • Elevation 1,800 ft</span>
+</div>
+</div>
+</div>
+<!-- Quick Package Health Matrix -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold">SEO &amp; Publishing Quality</span>
+<div class="space-y-2">
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">Listing Completeness</span>
+<span class="font-bold text-primary">94%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 94%;"></div>
+</div>
+</div>
+<div class="flex items-center justify-between py-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span> High Res Photos</span>
+<span class="font-semibold text-on-surface">3 Uploaded</span>
+</div>
+<div class="flex items-center justify-between py-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span> Search Meta Tags</span>
+<span class="font-semibold text-primary">Optimized</span>
+</div>
+<div class="flex items-center justify-between py-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">check_circle</span> Itinerary Timeline</span>
+<span class="font-semibold text-on-surface">3 Days Planned</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Active Tour Packages Management Data Table -->
+<section class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<!-- Table Filters and Search Bar Shelf -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Active Expedition Inventory</h2>
+<span class="font-body-sm text-body-sm text-outline">Manage live status, booking streams, and inventory allocations</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs w-full md:w-auto">
+<!-- Search input inside table -->
+<div class="flex items-center gap-2 bg-surface-container-low px-space-md py-1.5 rounded-full w-full sm:w-64">
+<span class="material-symbols-outlined text-[18px] text-outline">search</span>
+<input class="bg-transparent border-0 outline-none w-full font-body-sm text-body-sm text-on-surface placeholder:text-outline" placeholder="Search title or ID..." type="text"/>
+</div>
+<!-- Region Filter Pill Buttons -->
+<button class="px-space-sm py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold" type="button">
+            All Regions
+          </button>
+<button class="px-space-sm py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-colors" type="button">
+            Hill Tracts
+          </button>
+<button class="px-space-sm py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-colors" type="button">
+            Mangrove
+          </button>
+<button class="px-space-sm py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-colors" type="button">
+            Coastal
+          </button>
+</div>
+</div>
+<!-- Modern Sans-Border Table Container -->
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-space-sm px-space-md rounded-l-lg">Package &amp; Route</th>
+<th class="py-space-sm px-space-sm">Region</th>
+<th class="py-space-sm px-space-sm">Duration</th>
+<th class="py-space-sm px-space-sm">Price (BDT)</th>
+<th class="py-space-sm px-space-sm">Status</th>
+<th class="py-space-sm px-space-sm">Confirmed Bookings</th>
+<th class="py-space-sm px-space-md rounded-r-lg text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1: Sajek Valley -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-14 h-11 rounded-lg overflow-hidden shrink-0 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A morning aerial view of Sajek Valley resort surrounded by endless white sea of mist in Rangamati Bangladesh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3CHYaW8FOhMOiL7W4-GZjiiwFgpIeyp0AumQzOZEU577vNfRWFFM-4JWZZcCTfJcmUlcU9o11y0OdS_-D_CSCXlqELF6Zyd2893IPhpzigqXE7wrilOLcu9j0Er2TdDoshxdkxPmi9xsnXWuMjEV8F5S4TU8ozDmURnXn72DAlG8I856FT1ayEKIttX8_RFz2g1qyncdYDO-T6dyBiJ4v-BgYRPkTu8o4riGwRWcB"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Sajek Valley Cloud Kingdom Escape</span>
+<span class="font-label-sm text-label-sm text-outline">ID: #BD-9042 • Updated 2h ago</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="px-2 py-1 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface font-medium">Hill Tracts</span>
+</td>
+<td class="py-space-md px-space-sm text-on-surface font-medium">3D / 2N</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col">
+<span class="font-bold text-primary">৳7,500</span>
+<span class="font-label-sm text-label-sm text-outline line-through">৳8,500</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Live
+                </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-2">
+<span class="font-bold text-on-surface">54 seats</span>
+<span class="text-outline font-label-sm text-label-sm">(92% Cap)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors" title="Edit Package" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-secondary transition-colors" title="Duplicate" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-outline transition-colors" title="Unpublish" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility_off</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Saint Martin Island -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-14 h-11 rounded-lg overflow-hidden shrink-0 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Crystal clear turquoise ocean waves gently lapping against coral rocks and coconut palm trees in Saint Martin Island Bangladesh under vibrant midday sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0vAnY5Vp4TtAA0dVg7Kj1SeBu_aTOV2yg4Z-AJwf00ZXjIJ6IMFnB7wCmt-AUHFJ-CK5IZybViIJVDnLXroonE_894zLYANJCm54xkK9dlLpjiTj5aVbaF3-01crVMjydNY15d0WxuQHzZHNZEaRF-8xwgExm6-uNG7ukj2cRhH6GpVsDjWMVMzv16cNoi9aAgtdoqep2nmSnJnBbUNUqR_oY_x7h51AS0YDyIQGS"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Saint Martin Coral Island Luxury Cruise</span>
+<span class="font-label-sm text-label-sm text-outline">ID: #BD-8819 • Updated 1d ago</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="px-2 py-1 rounded-full bg-secondary-container font-label-sm text-label-sm text-on-secondary-container font-medium">Coastal &amp; Bay</span>
+</td>
+<td class="py-space-md px-space-sm text-on-surface font-medium">4D / 3N</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col">
+<span class="font-bold text-primary">৳12,200</span>
+<span class="font-label-sm text-label-sm text-outline line-through">৳14,000</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Live
+                </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-2">
+<span class="font-bold text-on-surface">38 seats</span>
+<span class="text-outline font-label-sm text-label-sm">(78% Cap)</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors" title="Edit Package" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-secondary transition-colors" title="Duplicate" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-outline transition-colors" title="Unpublish" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility_off</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Sundarbans Deep Safari -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-14 h-11 rounded-lg overflow-hidden shrink-0 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Dense Sundarbans mangrove forest stream with traditional wooden motor vessel navigating calm tidal river at twilight with deer grazing along the mud bank" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPsKydlxO880Rlg0_k4tTm08EemU6hSqPHzzJEeJ8ibg_-QJ0aVBmtsCmtbMqHPtU4eLLzpnehdkvyPMDJcwfXpEA-kTe_0TZO22E5AQlpRx4iFXAQBNpYIxI7SQkbe27lFiIOSojYRfCZR_hltbh6MKrSvZiJS2WnsmRCwc3Wy39ndrgQN5P_iogExHaZBgrJYNiXAvzkTN94tofwOl6Hqop1ZgPWQ6bn6EEdew8t"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Sundarbans Deep Mangrove Safari</span>
+<span class="font-label-sm text-label-sm text-outline">ID: #BD-7740 • Updated 3d ago</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="px-2 py-1 rounded-full bg-surface-container-high font-label-sm text-label-sm text-tertiary font-medium">Sundarbans</span>
+</td>
+<td class="py-space-md px-space-sm text-on-surface font-medium">3D / 2N</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col">
+<span class="font-bold text-primary">৳16,500</span>
+<span class="font-label-sm text-label-sm text-outline">Fixed</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Live
+                </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-2">
+<span class="font-bold text-on-surface">24 seats</span>
+<span class="text-error font-label-sm text-label-sm font-bold">Sold Out</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors" title="Edit Package" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-secondary transition-colors" title="Duplicate" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-outline transition-colors" title="Unpublish" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility_off</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Tanguar Haor Houseboat -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-14 h-11 rounded-lg overflow-hidden shrink-0 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Traditional luxury wooden houseboat floating on the crystal blue wetlands of Tanguar Haor Sunamganj with Meghalaya hill range visible on the misty horizon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdCIaSRjpL1kuXCqGe8370WukyXiDVwoJVuMyXJlwz3bxi6XirqpjKxrMdLAmTjlXyoqh5_qsjowgKS6OOgqHwckZzWTeaxbEWEpkEpkVw6LqWd6oVRDDSETeTyBi_AhOXhQtgeH2mII_6OtsIDyq8IbFt4tn7FaU2dIMbWWzC8cYnwhP1Fm6tBmvB256hvaSo_RSiJmxs2Vi-uuY9X-v5O_wNFcOY1aqZ9cwaDaEi"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Tanguar Haor Luxury Houseboat Cruise</span>
+<span class="font-label-sm text-label-sm text-outline">ID: #BD-6521 • Updated 5h ago</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="px-2 py-1 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface font-medium">Sylhet &amp; Haors</span>
+</td>
+<td class="py-space-md px-space-sm text-on-surface font-medium">2D / 1N</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col">
+<span class="font-bold text-on-surface">৳6,800</span>
+<span class="font-label-sm text-label-sm text-outline">Seasonal</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Draft
+                </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex items-center gap-2">
+<span class="font-bold text-outline">12 waitlist</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors" title="Edit Package" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-secondary transition-colors" title="Duplicate" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-colors" title="Publish" type="button">
+<span class="material-symbols-outlined text-[18px]">publish</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-error-container hover:text-error transition-colors" title="Delete" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm pt-space-xs font-label-sm text-label-sm text-on-surface-variant">
+<span>Showing 1 to 4 of 42 packages</span>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-bold flex items-center justify-center shadow-sm" type="button">1</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container flex items-center justify-center" type="button">2</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container flex items-center justify-center" type="button">3</button>
+<span class="px-1 text-outline">...</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container flex items-center justify-center" type="button">11</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div></main><footer class="w-full bg-surface-container-low py-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="w-full px-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-xs font-label-sm text-label-sm text-on-surface-variant"><span>© 2025 Traverse BD Admin Portal. All rights reserved.</span><span class="text-outline">Developed by Pointfex</span></div></footer></div></body></html>

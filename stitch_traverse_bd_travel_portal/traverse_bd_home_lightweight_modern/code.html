@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<title>Traverse BD - Journeys Across Bangladesh</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-surface": "#111c2d",
+            "tertiary-fixed": "#cce5ff",
+            "secondary-container": "#b0e0ff",
+            "error": "#ba1a1a",
+            "on-primary-fixed-variant": "#00513e",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed-variant": "#004b73",
+            "surface-container-high": "#dee8ff",
+            "surface-tint": "#006c53",
+            "tertiary-container": "#0071ac",
+            "surface": "#f9f9ff",
+            "primary": "#005f49",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#ecf1ff",
+            "background": "#f9f9ff",
+            "surface-container-highest": "#d8e3fb",
+            "secondary": "#32647e",
+            "on-secondary-container": "#32647f",
+            "on-error": "#ffffff",
+            "primary-container": "#0d7a5f",
+            "on-tertiary-fixed": "#001d31",
+            "error-container": "#ffdad6",
+            "surface-container-lowest": "#ffffff",
+            "tertiary": "#005886",
+            "secondary-fixed-dim": "#9ccdeb",
+            "on-error-container": "#93000a",
+            "on-background": "#111c2d",
+            "surface-dim": "#cfdaf2",
+            "outline": "#6e7a74",
+            "on-primary-fixed": "#002117",
+            "on-tertiary-container": "#e1efff",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#a8ffdf",
+            "inverse-primary": "#7cd8b8",
+            "surface-bright": "#f9f9ff",
+            "primary-fixed-dim": "#7cd8b8",
+            "secondary-fixed": "#c4e7ff",
+            "surface-container": "#e7eeff",
+            "tertiary-fixed-dim": "#93ccff",
+            "on-surface-variant": "#3e4944",
+            "surface-container-low": "#f0f3ff",
+            "surface-variant": "#d8e3fb",
+            "on-secondary-fixed": "#001e2c",
+            "outline-variant": "#bdc9c2",
+            "primary-fixed": "#98f4d3",
+            "on-secondary-fixed-variant": "#144c65",
+            "inverse-surface": "#263143"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          fontFamily: {
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "display-hero": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth;
+      }
+    }
+    /* Pure CSS 3D Tilt & Glass Sheen */
+    .css-tilt-card {
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+      transform: perspective(1000px) translateY(0);
+      will-change: transform;
+    }
+    .css-tilt-card:hover {
+      transform: perspective(1000px) translateY(-8px) scale(1.015) rotateX(1.5deg);
+      box-shadow: 0 20px 35px -8px rgba(0, 95, 73, 0.12), 0 10px 16px -6px rgba(50, 100, 126, 0.08);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    /* Simple interactive filter tab styling via CSS classes */
+    .filter-btn.active {
+      background-color: #005f49;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Fixed Header Navbar -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/85 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+<div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-4">
+<a class="flex items-center gap-3 shrink-0 group" href="#">
+<img alt="Traverse BD Logo" class="h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXJry_084FVvaamK2wzFARSx0govYR3D9JvwW4cvnnywmeoQWr_MN_fdOW25FZ9ucz0-zZSsepESRyonG0FsaNv5kagA7IeMNNWgJFZRV-3766QFRhRWRPL1SBZN1aacv_3zVrGgQSUB_Y04t_73bKrRFsZrOg78wq7xGhWAYwqw-aB_FwI1RfsUGCvWUgcgeXSlk1EXvoiUpmD2FOJsGcOy73vsHaIVUNHjojvCy6uI9LkXmC85zKEQ"/>
+<div class="flex flex-col justify-center">
+<span class="font-headline-sm text-[19px] leading-tight text-primary font-bold tracking-tight">Traverse BD</span>
+<span class="text-[10px] text-on-surface-variant font-semibold tracking-widest uppercase">Journeys Across Bangladesh</span>
+</div>
+</a>
+<nav class="hidden xl:flex items-center gap-1.5 bg-surface-container-low/70 px-2 py-1.5 rounded-full border border-surface-container-high/60">
+<a aria-current="page" class="transition-all bg-primary text-on-primary font-semibold text-[14px] rounded-full px-4 py-1.5 shadow-sm" href="#">Home</a>
+<a class="px-4 py-1.5 rounded-full font-medium text-[14px] text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest transition-all" href="#packages-section">Tour Packages</a>
+<a class="px-4 py-1.5 rounded-full font-medium text-[14px] text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest transition-all" href="#services-section">Services</a>
+<a class="px-4 py-1.5 rounded-full font-medium text-[14px] text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest transition-all" href="#why-choose-us">Why Us</a>
+<a class="px-4 py-1.5 rounded-full font-medium text-[14px] text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest transition-all" href="#gallery-section">Gallery</a>
+<a class="px-4 py-1.5 rounded-full font-medium text-[14px] text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest transition-all" href="#booking-inquiry">Contact</a>
+</nav>
+<div class="flex items-center gap-3 shrink-0">
+<a class="hidden md:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-all border border-outline-variant/40" href="tel:01627444330">
+<span class="material-symbols-outlined text-primary text-[17px]">call</span>
+<span class="font-semibold text-[13px] tracking-tight">01627444330</span>
+</a>
+<a class="inline-flex items-center justify-center px-5 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary font-semibold text-[14px] shadow-[0_4px_14px_rgba(0,95,73,0.25)] hover:shadow-[0_6px_20px_rgba(0,95,73,0.35)] transition-all" href="#booking-inquiry">
+          Book Now
+        </a>
+<div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 border border-primary/20">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<main class="w-full pt-20 bg-surface">
+<!-- Announcement Bar -->
+<div class="w-full bg-surface-container-low/90 border-b border-outline-variant/20 px-4 py-2.5">
+<div class="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs md:text-sm">
+<div class="flex items-center gap-2.5 overflow-hidden">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary text-on-primary text-[11px] font-bold tracking-wider uppercase shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary-container animate-pulse"></span>
+            Special Offer
+          </span>
+<p class="font-medium text-on-surface truncate">
+<strong class="text-primary font-bold">Sajek Valley Winter Stargazing</strong> &amp; Luxury Sundarbans Houseboat expeditions are now open!
+          </p>
+</div>
+<div class="hidden sm:flex items-center gap-4 shrink-0 text-xs">
+<a class="flex items-center gap-1 text-primary hover:text-primary-container font-semibold transition-colors" href="tel:01627444330">
+<span class="material-symbols-outlined text-[15px]">call</span>
+<span>01627444330</span>
+</a>
+<a class="inline-flex items-center gap-1 text-secondary hover:text-tertiary font-semibold transition-colors" href="#packages-section">
+<span>Explore Tours</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Hero Section (Lightweight, High-Res Static Background & Glassmorphic Search) -->
+<section class="relative w-full overflow-hidden bg-cover bg-center py-16 md:py-24" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDufpxjs_5zr3Wi7B0GaO36BUsFRbRR5jRrbeEDzG_eBe0EBeZ_z3Dz5n4K8tHaRCKYjspVEbwlnrCOKcXg-PXFEuva_Aieha3JRRIsCC4D-N_-DKShRgAcH8gVyKIRkhsX1kEr3ITw_Ui_aM1-AYYkDI8YQZmmNl3wEnG8nwFXuXhnFUcLWM3VtDBVxLdiYG0mESdmUp2ZZPj1jRe7OfrLcjpLh2HBTj1Sn69cIjHn');">
+<!-- High-performance CSS Gradient Overlays -->
+<div class="absolute inset-0 bg-gradient-to-r from-surface/95 via-surface/85 to-surface/40 pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-surface/20 pointer-events-none"></div>
+<div class="relative max-w-7xl mx-auto px-6 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Hero Text -->
+<div class="lg:col-span-8 flex flex-col gap-5">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel shadow-sm w-fit border border-white/60">
+<span class="material-symbols-outlined text-primary text-[18px]">explore</span>
+<span class="text-xs uppercase tracking-wider text-secondary font-bold">Premier Travel Specialist of Bangladesh</span>
+</div>
+<h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold text-on-surface tracking-tight leading-[1.12]">
+              Discover the Untamed Beauty of <span class="text-primary underline decoration-primary-fixed decoration-wavy decoration-2">Bengal</span> &amp; Beyond
+            </h1>
+<p class="text-base sm:text-lg text-on-surface-variant max-w-2xl font-normal leading-relaxed">
+              Customized corporate tours, student adventures, luxury mangrove houseboats &amp; seamless transit ticketing crafted for lifelong memories across riverways, cloud peaks, and marine horizons.
+            </p>
+<!-- Trust Badges -->
+<div class="flex flex-wrap items-center gap-3 pt-2">
+<div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl glass-panel shadow-sm border border-white/70">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+</div>
+<div>
+<span class="text-base font-bold text-on-surface block leading-tight">15,000+</span>
+<span class="text-xs text-on-surface-variant font-medium">Happy Travelers</span>
+</div>
+</div>
+<div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl glass-panel shadow-sm border border-white/70">
+<div class="w-10 h-10 rounded-xl bg-tertiary/10 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">star</span>
+</div>
+<div>
+<span class="text-base font-bold text-on-surface block leading-tight">4.9 / 5.0</span>
+<span class="text-xs text-on-surface-variant font-medium">Verified Rating</span>
+</div>
+</div>
+<div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl glass-panel shadow-sm border border-white/70">
+<div class="w-10 h-10 rounded-xl bg-primary-container/10 text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div>
+<span class="text-base font-bold text-on-surface block leading-tight">100% Certified</span>
+<span class="text-xs text-on-surface-variant font-medium">Guides &amp; Safety</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Hero Side Featured Highlight Card -->
+<div class="lg:col-span-4 flex justify-center">
+<div class="relative w-full max-w-sm rounded-3xl overflow-hidden glass-panel p-3.5 shadow-xl border border-white/80 group">
+<div class="relative h-60 w-full rounded-2xl overflow-hidden">
+<img alt="Saint Martin Island" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM2x8rjAbfJ96Au-izTIVK4SiGyz8NH-S9t-nMVV2ZgbmW27-mqRquN9Iyk93kThRdiW--zP7zefec7oWjA11JFylFaa5aE-c6sQmNzOzWChSFMgOSmS5uAcHVC6bSb8gFPJ_nBEdZMr9-_jzBbrt42wcnuWksPucCvvJfIVmhvP0R_lLv0GgU2WjKd397-Y0o8YLvo1l33cTBMJn3T2mK9wcdWIvp5Z9oPIVPNHYA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/85 via-inverse-surface/20 to-transparent"></div>
+<div class="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary/80 backdrop-blur-md text-on-primary text-[11px] font-bold uppercase tracking-wider">
+                  Featured Haven
+                </div>
+<div class="absolute bottom-3 left-3 right-3 text-surface-bright flex items-end justify-between">
+<div>
+<h3 class="font-bold text-lg text-white">Saint Martin Coral Bay</h3>
+<p class="text-xs text-primary-fixed-dim">Daily Luxury Ship Departure</p>
+</div>
+<span class="px-3 py-1 rounded-xl bg-surface-container-lowest/95 backdrop-blur-md text-primary font-bold text-sm shadow">
+                    ৳9,200
+                  </span>
+</div>
+</div>
+<div class="flex items-center justify-between px-2 pt-3 pb-1 text-xs text-on-surface-variant font-medium">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[16px]">location_on</span> Dhaka • Cox • Saint Martin
+                </span>
+<span class="text-secondary font-bold uppercase">4D / 3N Tour</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Glassmorphism Multi-Service Search Hub -->
+<div class="w-full glass-panel rounded-3xl shadow-xl p-5 md:p-7 mt-10 border border-white/80">
+<!-- Fast Category Tabs -->
+<div class="flex flex-wrap items-center gap-2 pb-4 mb-4 border-b border-surface-container-highest/60" id="search-tab-bar">
+<button class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-primary text-on-primary shadow-sm flex items-center gap-1.5 transition-all" type="button">
+<span class="material-symbols-outlined text-[17px]">backpack</span>
+<span>Tour Packages</span>
+</button>
+<button class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">directions_boat</span>
+<span>Ship Ticket</span>
+</button>
+<button class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">directions_bus</span>
+<span>Bus Ticket</span>
+</button>
+<button class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">hotel</span>
+<span>Hotel &amp; Resort</span>
+</button>
+<button class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">flight</span>
+<span>Air Ticket</span>
+</button>
+</div>
+<!-- Pure Search Form Grid -->
+<form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center" onsubmit="event.preventDefault(); alert('Finding the best curated travel itineraries for you...');">
+<!-- Destination Field -->
+<div class="flex flex-col gap-1 px-4 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[15px]">location_on</span> Destination
+              </span>
+<select class="bg-transparent font-semibold text-sm text-on-surface outline-none cursor-pointer">
+<option value="sajek">Sajek Valley (সাজেক ভ্যালি)</option>
+<option selected="" value="saintmartin">Saint Martin (সেন্টমার্টিন)</option>
+<option value="sundarbans">Sundarbans Mangrove (সুন্দরবন)</option>
+<option value="cox">Cox's Bazar Beach (কক্সবাজার)</option>
+<option value="sylhet">Sylhet &amp; Tanguar Haor</option>
+<option value="bandarban">Bandarban &amp; Nilgiri</option>
+</select>
+</div>
+<!-- Date Selector -->
+<div class="flex flex-col gap-1 px-4 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[15px]">calendar_today</span> Departure Date
+              </span>
+<input class="bg-transparent font-semibold text-sm text-on-surface outline-none cursor-pointer" type="date" value="2025-11-20"/>
+</div>
+<!-- Travelers -->
+<div class="flex flex-col gap-1 px-4 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-[15px]">group</span> Travelers
+              </span>
+<select class="bg-transparent font-semibold text-sm text-on-surface outline-none cursor-pointer">
+<option>2 Persons (Twin Share)</option>
+<option>Family (4-6 Persons)</option>
+<option>Corporate Group (10+)</option>
+<option>Solo Traveler</option>
+</select>
+</div>
+<!-- Action Button -->
+<div class="h-full flex items-end">
+<button class="w-full h-[58px] rounded-2xl bg-primary hover:bg-primary-container text-on-primary font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,95,73,0.25)] hover:shadow-[0_12px_28px_rgba(0,95,73,0.35)] transition-all transform active:scale-95" type="submit">
+<span class="material-symbols-outlined text-[22px]">search</span>
+<span>Explore Journeys</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</section>
+<!-- Compact 'Our Services' Quick-Bar (আমাদের সেবাসমূহ) -->
+<section class="w-full py-12 px-6 lg:px-12 bg-surface-container-lowest border-y border-outline-variant/20" id="services-section">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<span class="text-xs font-bold text-secondary uppercase tracking-wider block mb-1">Mobility &amp; Hospitality Suite</span>
+<h2 class="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">
+              আমাদের সেবাসমূহ <span class="text-secondary font-medium text-lg sm:text-xl block sm:inline opacity-80">(Our Services)</span>
+</h2>
+</div>
+<p class="text-sm text-on-surface-variant max-w-md">
+            Custom charters, scenic coastal cruisers, luxury sleeper coaches, and hotel reservations backed by 24/7 on-ground assistance.
+          </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4">
+<!-- 1. Corporate Tour -->
+<a class="flex flex-col items-center text-center p-4 rounded-2xl bg-surface-container-low hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all group" href="#booking-inquiry">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-2.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">domain</span>
+</div>
+<span class="font-bold text-sm text-on-surface">Corporate Tour</span>
+<span class="text-xs text-on-surface-variant font-medium">কর্পোরেট ট্যুর</span>
+</a>
+<!-- 2. Customized Tour -->
+<a class="flex flex-col items-center text-center p-4 rounded-2xl bg-surface-container-low hover:bg-secondary/5 border border-transparent hover:border-secondary/20 transition-all group" href="#booking-inquiry">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center mb-2.5 group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">tune</span>
+</div>
+<span class="font-bold text-sm text-on-surface">Customized Tour</span>
+<span class="text-xs text-on-surface-variant font-medium">কাস্টমাইজ ট্যুর</span>
+</a>
+<!-- 3. Student Tour -->
+<a class="flex flex-col items-center text-center p-4 rounded-2xl bg-surface-container-low hover:bg-tertiary/5 border border-transparent hover:border-tertiary/20 transition-all group" href="#booking-inquiry">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 text-tertiary flex items-center justify-center mb-2.5 group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
+<span class="material-symbols-outlined text-[24px]">school</span>
+</div>
+<span class="font-bold text-sm text-on-surface">Student Tour</span>
+<span class="text-xs text-on-surface-variant font-medium">স্টুডেন্ট ট্যুর</span>
+</a>
+<!-- 4. Ship Ticket -->
+<a class="flex flex-col items-center text-center p-4 rounded-2xl bg-surface-container-low hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all group" href="#booking-inquiry">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 text-primary-container flex items-center justify-center mb-2.5 group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">directions_boat</span>
+</div>
+<span class="font-bold text-sm text-on-surface">Ship Ticket</span>
+<span class="text-xs text-on-surface-variant font-medium">শিপ টিকিট</span>
+</a>
+<!-- 5. Bus Ticket -->
+<a class="flex flex-col items-center text-center p-4 rounded-2xl bg-surface-container-low hover:bg-secondary/5 border border-transparent hover:border-secondary/20 transition-all group" href="#booking-inquiry">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed-dim/30 text-secondary flex items-center justify-center mb-2.5 group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-[24px]">directions_bus</span>
+</div>
+<span class="font-bold text-sm text-on-surface">Bus Ticket</span>
+<span class="text-xs text-on-surface-variant font-medium">বাস টিকিট</span>
+</a>
+<!-- 6. Hotel Booking -->
+<a class="flex flex-col items-center text-center p-4 rounded-2xl bg-surface-container-low hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all group" href="#booking-inquiry">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-2.5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">hotel</span>
+</div>
+<span class="font-bold text-sm text-on-surface">Hotel Booking</span>
+<span class="text-xs text-on-surface-variant font-medium">হোটেল বুকিং</span>
+</a>
+<!-- 7. Air Ticket -->
+<a class="flex flex-col items-center text-center p-4 rounded-2xl bg-surface-container-low hover:bg-tertiary/5 border border-transparent hover:border-tertiary/20 transition-all group col-span-2 sm:col-span-1" href="#booking-inquiry">
+<div class="w-12 h-12 rounded-xl bg-tertiary-container/10 text-tertiary-container flex items-center justify-center mb-2.5 group-hover:bg-tertiary-container group-hover:text-on-tertiary transition-colors">
+<span class="material-symbols-outlined text-[24px]">airplane_ticket</span>
+</div>
+<span class="font-bold text-sm text-on-surface">Air Ticket</span>
+<span class="text-xs text-on-surface-variant font-medium">এয়ার টিকিট</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Trending Packages Section (Glassmorphism + Pure CSS 3D Hover Tilt) -->
+<section class="w-full py-16 px-6 lg:px-12 bg-surface" id="packages-section">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+<div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed/50 text-on-primary-fixed text-xs font-bold uppercase tracking-wider mb-2">
+<span class="material-symbols-outlined text-[15px]">stars</span> Handcrafted Escapes
+            </div>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-on-surface tracking-tight">
+              Trending Packages
+            </h2>
+<p class="text-sm sm:text-base text-on-surface-variant mt-1 max-w-xl">
+              Handcrafted signature itineraries loved by thousands across coastal tides, misted hill peaks &amp; pristine rivers.
+            </p>
+</div>
+<!-- Pure CSS Filter Pills -->
+<div class="flex flex-wrap items-center gap-2">
+<button class="filter-btn active px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm">
+              All Journeys
+            </button>
+<button class="filter-btn px-4 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface text-xs font-bold transition-all">
+              Hill Tracts
+            </button>
+<button class="filter-btn px-4 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface text-xs font-bold transition-all">
+              Coastal Beaches
+            </button>
+<button class="filter-btn px-4 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface text-xs font-bold transition-all">
+              Mangroves &amp; Haor
+            </button>
+</div>
+</div>
+<!-- 6 Featured Package Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+<!-- 1. Sajek Valley -->
+<div class="css-tilt-card glass-card rounded-3xl overflow-hidden flex flex-col shadow-sm border border-white/70">
+<div class="relative h-56 w-full overflow-hidden">
+<img alt="Sajek Valley Bangladesh" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDufpxjs_5zr3Wi7B0GaO36BUsFRbRR5jRrbeEDzG_eBe0EBeZ_z3Dz5n4K8tHaRCKYjspVEbwlnrCOKcXg-PXFEuva_Aieha3JRRIsCC4D-N_-DKShRgAcH8gVyKIRkhsX1kEr3ITw_Ui_aM1-AYYkDI8YQZmmNl3wEnG8nwFXuXhnFUcLWM3VtDBVxLdiYG0mESdmUp2ZZPj1jRe7OfrLcjpLh2HBTj1Sn69cIjHn"/>
+<span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-on-primary text-xs font-bold shadow-sm">
+                Bestseller
+              </span>
+<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-xs font-bold shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[14px]">schedule</span> 3D / 2N
+              </span>
+</div>
+<div class="p-6 flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-1 text-tertiary mb-1.5 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="text-on-surface font-bold">4.95</span>
+<span class="text-on-surface-variant font-normal">(142 reviews)</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface">Sajek Valley Cloud Kingdom Escape</h3>
+<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                  Konglak Para summit hike, Chander Gari 4x4 safari, night bonfire &amp; premium eco-cottage stay over the mist.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container-high/60">
+<div>
+<span class="text-[11px] text-on-surface-variant block uppercase font-medium">Starting from</span>
+<span class="text-xl font-extrabold text-primary">৳7,500</span>
+</div>
+<a class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all shadow-sm" href="#booking-inquiry">
+                  Book Now
+                </a>
+</div>
+</div>
+</div>
+<!-- 2. Saint Martin Coral Island -->
+<div class="css-tilt-card glass-card rounded-3xl overflow-hidden flex flex-col shadow-sm border border-white/70">
+<div class="relative h-56 w-full overflow-hidden">
+<img alt="Saint Martin Coral Island Bangladesh" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtPHh2iaz5X9KmvXNLkCUmO933HB1CY580l3wazkJoj3Gvec3OBvEjYhkOJ0q5-vjrguFJSP7vaJacV8a_c4uLCvm4np0xphq7ZA9fPh-OSj2YBTU_DKGEQw_4uCjRAJS8CNiaoGSz8SD0Y5scBH0iZNL6UqtOXHRLXvgFPvMe4J6lymyO3cksqPznEb0oAjYZqKBvU-5_EDkHCJkYSTmuBHPp--4WEkJJSHlevDB2"/>
+<span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-tertiary/90 backdrop-blur-md text-on-tertiary text-xs font-bold shadow-sm">
+                Limited Seats
+              </span>
+<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-xs font-bold shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[14px]">schedule</span> 4D / 3N
+              </span>
+</div>
+<div class="p-6 flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-1 text-tertiary mb-1.5 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="text-on-surface font-bold">4.98</span>
+<span class="text-on-surface-variant font-normal">(210 reviews)</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface">Saint Martin Coral &amp; Ship Cruise</h3>
+<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                  Luxury cruise ship ticket, Chhera Dwip excursion, seaside BBQ, and tranquil beachfront resort accommodation.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container-high/60">
+<div>
+<span class="text-[11px] text-on-surface-variant block uppercase font-medium">Starting from</span>
+<span class="text-xl font-extrabold text-primary">৳9,200</span>
+</div>
+<a class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all shadow-sm" href="#booking-inquiry">
+                  Book Now
+                </a>
+</div>
+</div>
+</div>
+<!-- 3. Sundarbans Deep Mangrove Safari -->
+<div class="css-tilt-card glass-card rounded-3xl overflow-hidden flex flex-col shadow-sm border border-white/70">
+<div class="relative h-56 w-full overflow-hidden">
+<img alt="Sundarbans Deep Houseboat Safari" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjT_pnxFxdfXSa2pzu7OXs0U-bmGNzRudYJMQVCUchgH_o2z9Bha9kiE0ow_JBS_Hs8eX7PNWOgHVGux9BKsyca9RYfUV-tVNFpN9fmQAL8Alcm9akYpkiudmV6HkULyPSSlINOx4BpiA6AuTefsE7CnnreYeQPxcmuVzvZzGIKWsHcNvYgZPUrC6uOFruxEKcKihvkkSNR4m5ChJAPQ29rJChArsCUl0bkaa7ll6x"/>
+<span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary-container/90 backdrop-blur-md text-on-primary-container text-xs font-bold shadow-sm">
+                Wildlife Cruise
+              </span>
+<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-xs font-bold shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[14px]">schedule</span> 3D / 2N
+              </span>
+</div>
+<div class="p-6 flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-1 text-tertiary mb-1.5 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="text-on-surface font-bold">4.89</span>
+<span class="text-on-surface-variant font-normal">(98 reviews)</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface">Sundarbans Deep Mangrove Safari</h3>
+<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                  Kotka, Kochikhali, watch tower spotting, armed forest escorts, and freshly caught seafood meals on river waterways.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container-high/60">
+<div>
+<span class="text-[11px] text-on-surface-variant block uppercase font-medium">Starting from</span>
+<span class="text-xl font-extrabold text-primary">৳14,500</span>
+</div>
+<a class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all shadow-sm" href="#booking-inquiry">
+                  Book Now
+                </a>
+</div>
+</div>
+</div>
+<!-- 4. Sylhet Tea Gardens & Tanguar Haor -->
+<div class="css-tilt-card glass-card rounded-3xl overflow-hidden flex flex-col shadow-sm border border-white/70">
+<div class="relative h-56 w-full overflow-hidden">
+<img alt="Sylhet Ratargul and Tanguar Haor" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOIil9b8zOsH8MJwJ-_uMoEORp0BLCNze916cwzm2OTa9hr9RTo5b0frVxzmgjI_IvbwYn_mj5rznkPdaBWjav6U_Ckx-dCcVAk2mBVQKKlOCtCWw9MC8FL2rbd_nQZQ_TACDKb5TvPz_cZeL_Tcn3HQMfSAK7Ma-xg1vyGjsZY7mB3vuMNRF0sb8BYbgBEdhEgwCbNy0FGcAewtrxtnhhfmHYvm74E11u41TtyZYk"/>
+<span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-secondary/90 backdrop-blur-md text-on-secondary text-xs font-bold shadow-sm">
+                Haor Special
+              </span>
+<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-xs font-bold shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[14px]">schedule</span> 3D / 2N
+              </span>
+</div>
+<div class="p-6 flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-1 text-tertiary mb-1.5 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="text-on-surface font-bold">4.92</span>
+<span class="text-on-surface-variant font-normal">(115 reviews)</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface">Sylhet Ratargul &amp; Tanguar Haor</h3>
+<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                  Swamp forest wooden dinghy cruises, Niladri lake crystal waters, and premier Sreemangal tea-resort relaxation.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container-high/60">
+<div>
+<span class="text-[11px] text-on-surface-variant block uppercase font-medium">Starting from</span>
+<span class="text-xl font-extrabold text-primary">৳8,800</span>
+</div>
+<a class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all shadow-sm" href="#booking-inquiry">
+                  Book Now
+                </a>
+</div>
+</div>
+</div>
+<!-- 5. Bandarban Nilgiri & Boga Lake -->
+<div class="css-tilt-card glass-card rounded-3xl overflow-hidden flex flex-col shadow-sm border border-white/70">
+<div class="relative h-56 w-full overflow-hidden">
+<img alt="Bandarban Nilgiri Peak" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Myk9PkUAMX8n2z_xmJmLF52fVP0DwIYfpdUsuZDjVJNtosppWj0XbXEGOSAERnX926ZpvaLoAyrmZ64twFxEFDwZ69c7lYI4sXVLg_FhNz3U7pzi4DqggpNEa9HKVvUmsEf2gDGiKw6kYHqCFxlk_fyufvqRLkz12eoeKGE6WaEB4x1OlSBao6Ec5BJK0t547efka4eSdbH3g_kClEYFWEpgqUvkCHMsHnlvo5Ys"/>
+<span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-tertiary/90 backdrop-blur-md text-on-tertiary text-xs font-bold shadow-sm">
+                Adventure Peak
+              </span>
+<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-xs font-bold shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[14px]">schedule</span> 4D / 3N
+              </span>
+</div>
+<div class="p-6 flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-1 text-tertiary mb-1.5 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="text-on-surface font-bold">4.94</span>
+<span class="text-on-surface-variant font-normal">(180 reviews)</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface">Bandarban Nilgiri Peak Expedition</h3>
+<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                  Nilachal golden sunset, Chimbuk mountain range, tribal culinary feast, and high-altitude 4WD hill thrill.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container-high/60">
+<div>
+<span class="text-[11px] text-on-surface-variant block uppercase font-medium">Starting from</span>
+<span class="text-xl font-extrabold text-primary">৳8,900</span>
+</div>
+<a class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all shadow-sm" href="#booking-inquiry">
+                  Book Now
+                </a>
+</div>
+</div>
+</div>
+<!-- 6. Cox's Bazar Marine Drive -->
+<div class="css-tilt-card glass-card rounded-3xl overflow-hidden flex flex-col shadow-sm border border-white/70">
+<div class="relative h-56 w-full overflow-hidden">
+<img alt="Cox's Bazar Marine Drive Retreat" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATbGUt95e9vlZuxD95ik9Liz73KD6easr4utZASeARnfejiBnXfATtaJXdCof3Lj7D5m1zR---ErVz6mx_BoagAp1KeKOVHqgsYxKnUk-1-dQC6DObIs66ILut9BH0uA5V88u154b4BQnEQQ15CQj-YE8T6TxswT_9hDeMHx7CF_49Ud1nCxo40L6jeq9n9IgMLA3XNQ9JYDH36xFrV8A-JZXGrmVGwz3WmzvMPMkL"/>
+<span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-on-primary text-xs font-bold shadow-sm">
+                Coastal Retreat
+              </span>
+<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-xs font-bold shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[14px]">schedule</span> 4D / 3N
+              </span>
+</div>
+<div class="p-6 flex flex-col flex-1 justify-between gap-4">
+<div>
+<div class="flex items-center gap-1 text-tertiary mb-1.5 text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="text-on-surface font-bold">4.91</span>
+<span class="text-on-surface-variant font-normal">(340 reviews)</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface">Cox's Bazar Marine Drive Retreat</h3>
+<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                  Inani Coral beach safari, Himchari waterfalls, open jeep sea cruise, and premium beach-view luxury suite.
+                </p>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-surface-container-high/60">
+<div>
+<span class="text-[11px] text-on-surface-variant block uppercase font-medium">Starting from</span>
+<span class="text-xl font-extrabold text-primary">৳11,500</span>
+</div>
+<a class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all shadow-sm" href="#booking-inquiry">
+                  Book Now
+                </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 'Why Choose Us' (আমাদের বৈশিষ্ট্য / Why Traverse BD) Section -->
+<section class="w-full py-16 px-6 lg:px-12 bg-surface-container-low/60 border-t border-outline-variant/20" id="why-choose-us">
+<div class="max-w-7xl mx-auto">
+<div class="text-center max-w-2xl mx-auto mb-12">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container text-xs font-bold uppercase tracking-wider mb-2">
+            The Traverse BD Promise
+          </div>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-on-surface tracking-tight">
+            আমাদের বৈশিষ্ট্য <span class="text-secondary font-medium text-xl sm:text-2xl block sm:inline opacity-80">(Why Choose Traverse BD)</span>
+</h2>
+<p class="text-sm sm:text-base text-on-surface-variant mt-2">
+            Combining authentic hospitality, certified local expertise, and precision logistical execution across all 64 districts.
+          </p>
+</div>
+<!-- 4-Column Feature Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- 1. Verified Guides & Security -->
+<div class="glass-panel p-6 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col items-start border border-white/80">
+<div class="w-12 h-12 rounded-2xl bg-primary text-on-primary flex items-center justify-center mb-4 shadow-sm">
+<span class="material-symbols-outlined text-[26px]">verified_user</span>
+</div>
+<h3 class="font-bold text-base text-on-surface mb-2">Verified Guides &amp; Security First</h3>
+<p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+              100% TOAB-certified escorts, authorized mountain 4x4 drivers, and full medical first-aid readiness on all trails.
+            </p>
+</div>
+<!-- 2. Transparent Pricing -->
+<div class="glass-panel p-6 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col items-start border border-white/80">
+<div class="w-12 h-12 rounded-2xl bg-secondary text-on-secondary flex items-center justify-center mb-4 shadow-sm">
+<span class="material-symbols-outlined text-[26px]">receipt_long</span>
+</div>
+<h3 class="font-bold text-base text-on-surface mb-2">100% Transparent Pricing</h3>
+<p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+              Zero hidden surcharges. All-inclusive quotes covering tickets, permits, food, and eco-resort stays with verified contracts.
+            </p>
+</div>
+<!-- 3. Dedicated Concierge -->
+<div class="glass-panel p-6 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col items-start border border-white/80">
+<div class="w-12 h-12 rounded-2xl bg-tertiary text-on-tertiary flex items-center justify-center mb-4 shadow-sm">
+<span class="material-symbols-outlined text-[26px]">support_agent</span>
+</div>
+<h3 class="font-bold text-base text-on-surface mb-2">24/7 Logistics Concierge</h3>
+<p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+              Direct hotline (<a class="text-tertiary font-bold hover:underline" href="tel:01627444330">01627444330</a>) &amp; live WhatsApp dispatch during flights, ferries, and hilly transit.
+            </p>
+</div>
+<!-- 4. Community & Eco-Conscious -->
+<div class="glass-panel p-6 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col items-start border border-white/80">
+<div class="w-12 h-12 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center mb-4 shadow-sm">
+<span class="material-symbols-outlined text-[26px]">eco</span>
+</div>
+<h3 class="font-bold text-base text-on-surface mb-2">Eco-Conscious Tourism</h3>
+<p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+              We empower indigenous mountain &amp; river communities, minimize plastic waste, and preserve historical ecosystems.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Narratives & Snapshots Gallery -->
+<section class="w-full py-16 px-6 lg:px-12 bg-surface" id="gallery-section">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<span class="text-xs font-bold text-secondary uppercase tracking-wider block">Visual Field Narratives</span>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mt-0.5">Snapshots from the Field</h2>
+</div>
+<a class="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:text-primary-container transition-colors" href="#">
+<span>Explore Full Gallery &amp; Stories</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Photo 1 -->
+<div class="relative h-64 rounded-2xl overflow-hidden group shadow-sm">
+<img alt="Floating Guava Market Barisal" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiaFmv9mApEOzimZAgNlLQSAPmpmCWC3JBsQeOTITSMHAqdrmky5KrxKTl7P_pJRE_zAsmpwUXI3QTqx9PYkGdkuAnFi8S2FvM-ZGapUJgeB0mtauoq8GuwRb2gYXunqinVv4YpaW_79E36PVt8-Jz94-mu5oFfP4PcsKNhseGvDCxuxkHJDOdDSIquSl-R89JJlUDKeOwrHQLTbf4uF0i5-iZnprnlWkO6Zp-hzc6"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-3 text-white">
+<span class="text-[10px] uppercase font-bold text-primary-fixed tracking-wider">Barisal</span>
+<p class="font-bold text-sm">Floating Guava Market</p>
+</div>
+</div>
+<!-- Photo 2 -->
+<div class="relative h-64 rounded-2xl overflow-hidden group shadow-sm">
+<img alt="Sajek Rangamati Valley" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRlsOENXotdw5MKvQusue3JoavwYbh9GdceLyts5jBELAzjaIz2jCvswI-myUeLImSqjl6ZvoQsRQOWIaKJruMpdtHqQS-2KS6DwpqrQixnkxeXePn7NPFk4MjM80xSPLvSYfPmZV0OuY3mXfJq2j2f-VKKCl-0K8b1d8EmJ162j_C1t-P7exEkg-MlEHrD5r2ZL4LS5mBFTPsuObjN7puIF1GSj_V1gjQNHUw7bLO"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-3 text-white">
+<span class="text-[10px] uppercase font-bold text-secondary-fixed tracking-wider">Rangamati</span>
+<p class="font-bold text-sm">Helipad Cloudscape</p>
+</div>
+</div>
+<!-- Photo 3 -->
+<div class="relative h-64 rounded-2xl overflow-hidden group shadow-sm">
+<img alt="Chhera Dwip Reef" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnnrHmpEVaCCk0zg0lrl9BJP-op2OSC4G2sGY_C0BNdeunUf1LinZ5g0-W24DyS-8VU8MLrHLnHIOY8lA25Q5WxkOhK2zt2HJ4yPcDoZgBEmSzb4I1nPVx3RiujKYmzYGpX7a2YT6wWuhvojIT0HWvAAA_LlmOM7MU1TlzY1j0NQORm3rBiEmLSvTJ2P1CenoJ6nVA0ndde7QhhMN5pu2O_BssJJpuBEkpvxysT1vN"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-3 text-white">
+<span class="text-[10px] uppercase font-bold text-tertiary-fixed-dim tracking-wider">Bay of Bengal</span>
+<p class="font-bold text-sm">Chhera Dwip Reef</p>
+</div>
+</div>
+<!-- Photo 4 -->
+<div class="relative h-64 rounded-2xl overflow-hidden group shadow-sm">
+<img alt="Sundarbans Wildlife Trail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvQ1lDOh6ygvJnCEVAeBptTBpOcJo-CknNkSAoEzQjTndsYlCn55xoh_ATBMrH37AXeLIN4pvywjv3AhKr88XYkiEpfDLNhiR-ajlPZu9bUX-Bjz6DKEPiNPIiom4yK8w43hJGRfSOnwtszVGeP6LjmUg9bnXeRZqnve4BmUYUcROLiD93oLe2Z-Sa9l1LEJm03eLhMqXjdoY3O_o5XUmq0irPJ2F17p_O49YkofLD"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-3 text-white">
+<span class="text-[10px] uppercase font-bold text-primary-fixed tracking-wider">Khulna</span>
+<p class="font-bold text-sm">Kotka Wildlife Canal</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Booking Inquiry & Direct Callout Banner -->
+<section class="w-full py-16 px-6 lg:px-12 bg-surface-container-low" id="booking-inquiry">
+<div class="max-w-5xl mx-auto bg-primary rounded-3xl p-8 md:p-12 text-on-primary shadow-2xl relative overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-on-primary-container/15 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+<div class="max-w-xl">
+<span class="px-3 py-1 rounded-full bg-on-primary-container/20 text-on-primary-container text-xs font-bold uppercase tracking-wider inline-block mb-3">
+              Instant Inquiry &amp; Custom Itinerary
+            </span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-on-primary tracking-tight">
+              Ready to Traverse Bangladesh?
+            </h2>
+<p class="text-sm sm:text-base text-on-primary-container/90 mt-2 leading-relaxed">
+              Speak directly with our senior travel planner for customized family tours, university excursions, or immediate ship &amp; bus ticketing.
+            </p>
+<div class="flex flex-wrap items-center gap-3 mt-6">
+<a class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-primary font-bold text-sm shadow-md hover:bg-surface-container-low transition-all" href="tel:01627444330">
+<span class="material-symbols-outlined text-[18px]">call</span>
+<span>01627444330</span>
+</a>
+<a class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-on-primary-container/20 hover:bg-on-primary-container/30 text-on-primary font-bold text-sm transition-all border border-on-primary-container/30" href="https://wa.me/8801627444330" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+<span>WhatsApp Us</span>
+</a>
+</div>
+</div>
+<!-- Quick Request Card -->
+<div class="w-full lg:w-80 p-5 rounded-2xl bg-surface-container-lowest text-on-surface shadow-xl">
+<span class="font-bold text-base text-on-surface block mb-3">Quick Callback Request</span>
+<form class="space-y-3" onsubmit="event.preventDefault(); alert('Thank you! Our travel consultant will call you back within 15 minutes.');">
+<input class="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs sm:text-sm outline-none focus:ring-2 focus:ring-primary/40 border border-outline-variant/30" placeholder="Your Name" required="" type="text"/>
+<input class="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs sm:text-sm outline-none focus:ring-2 focus:ring-primary/40 border border-outline-variant/30" placeholder="Phone Number (e.g. 017...)" required="" type="tel"/>
+<select class="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs sm:text-sm outline-none border border-outline-variant/30 cursor-pointer">
+<option>Sajek Valley Expedition</option>
+<option>Saint Martin Cruise</option>
+<option>Sundarbans Houseboat</option>
+<option>Cox's Bazar Tour</option>
+<option>Corporate Custom Charter</option>
+</select>
+<button class="w-full py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs sm:text-sm transition-all shadow-md" type="submit">
+                Request Itinerary
+              </button>
+</form>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Sticky Action Buttons (WhatsApp & Messenger with subtle pulsing ping) -->
+<div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+<!-- WhatsApp Button -->
+<a aria-label="WhatsApp Support" class="relative group w-12 h-12 rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_8px_24px_rgba(0,95,73,0.22)] flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 border border-primary/20" href="https://wa.me/8801627444330" rel="noopener noreferrer" target="_blank">
+<span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-primary"></span>
+</span>
+<span class="material-symbols-outlined text-[24px]">chat</span>
+</a>
+<!-- Messenger Button -->
+<a aria-label="Facebook Messenger" class="relative group w-12 h-12 rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_8px_24px_rgba(0,88,134,0.22)] flex items-center justify-center text-tertiary hover:bg-tertiary hover:text-white transition-all duration-300 hover:scale-105 border border-tertiary/20" href="https://m.me/traversebd" rel="noopener noreferrer" target="_blank">
+<span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-tertiary"></span>
+</span>
+<span class="material-symbols-outlined text-[24px]">forum</span>
+</a>
+</div>
+<!-- Footer with Prominently Highlighted 'Developed by Pointfex' -->
+<footer class="w-full bg-surface-container-low border-t border-outline-variant/30">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 pt-14 pb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+<div class="lg:col-span-2 flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<img alt="Traverse BD" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXJry_084FVvaamK2wzFARSx0govYR3D9JvwW4cvnnywmeoQWr_MN_fdOW25FZ9ucz0-zZSsepESRyonG0FsaNv5kagA7IeMNNWgJFZRV-3766QFRhRWRPL1SBZN1aacv_3zVrGgQSUB_Y04t_73bKrRFsZrOg78wq7xGhWAYwqw-aB_FwI1RfsUGCvWUgcgeXSlk1EXvoiUpmD2FOJsGcOy73vsHaIVUNHjojvCy6uI9LkXmC85zKEQ"/>
+<span class="font-bold text-lg text-primary">Traverse BD</span>
+</div>
+<p class="text-xs sm:text-sm text-on-surface-variant max-w-sm leading-relaxed">
+            Crafting pristine expeditions across Bangladesh—from the mystical Sundarbans mangroves and Cox's Bazar coastlines to the majestic Bandarban peaks and quiet tea valleys.
+          </p>
+<div class="flex items-center gap-2 mt-2">
+<a aria-label="Community" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[16px]">public</span>
+</a>
+<a aria-label="Explore" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[16px]">travel_explore</span>
+</a>
+<a aria-label="Gallery Feed" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[16px]">photo_camera</span>
+</a>
+<a aria-label="Media" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[16px]">smart_display</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-bold text-sm text-on-surface mb-1">Quick Links</span>
+<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#packages-section">Tour Packages</a>
+<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#services-section">Destinations &amp; Services</a>
+<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#why-choose-us">Why Choose Us</a>
+<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#gallery-section">Gallery &amp; Stories</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-bold text-sm text-on-surface mb-1">Contact Info</span>
+<div class="flex items-center gap-2 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-primary text-[16px]">call</span>
+<a class="hover:text-primary" href="tel:01627444330">01627444330</a>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-primary text-[16px]">mail</span>
+<span>info@traversebd.com</span>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-primary text-[16px] mt-0.5">location_on</span>
+<span>Dhaka, Bangladesh</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-bold text-sm text-on-surface mb-1">Newsletter</span>
+<p class="text-xs text-on-surface-variant">Get curated seasonal travel itineraries directly to your inbox.</p>
+<form class="flex flex-col gap-2 mt-1" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+<input class="px-3 py-2 rounded-xl bg-surface-container-lowest text-on-surface text-xs outline-none border border-outline-variant/30 focus:border-primary" placeholder="Your email address" required="" type="email"/>
+<button class="px-3 py-2 rounded-xl bg-secondary text-on-secondary hover:bg-tertiary font-bold text-xs transition-all" type="submit">Subscribe</button>
+</form>
+</div>
+</div>
+<!-- Trust Badges Bar -->
+<div class="bg-surface-container/70 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 mb-8 border border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+<span class="text-xs font-bold text-on-surface">Accredited Tour Operator</span>
+</div>
+<div class="flex flex-wrap items-center gap-4 text-on-surface-variant text-[11px] font-semibold uppercase tracking-wider">
+<span>TOAB Member</span>
+<span>•</span>
+<span>Civil Aviation Approved</span>
+<span>•</span>
+<span>Bangladesh Tourism Board Partner</span>
+</div>
+</div>
+<!-- Bottom Credits with Pointfex Highlight -->
+<div class="pt-4 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+<p class="text-xs text-on-surface-variant">
+          © 2025 Traverse BD. All rights reserved.
+        </p>
+<p class="text-xs text-on-surface font-medium flex items-center gap-1.5">
+<span>Developed by</span>
+<span class="text-primary font-bold hover:underline tracking-wide cursor-pointer">Pointfex</span>
+</p>
+</div>
+</div>
+</footer>
+</body></html>
