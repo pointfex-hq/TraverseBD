@@ -1,0 +1,95 @@
+import { NextRequest } from 'next/server';
+import { verifyAdminSession } from '@backend/services/admin/admin-auth.service';
+import {
+  getAdminBlogById,
+  updateAdminBlog,
+  deleteAdminBlog,
+  toggleBlogStatus,
+} from '@backend/services/admin/admin-blogs.service';
+import { successResponse, errorResponse } from '@backend/utils/api-response';
+
+export const dynamic = 'force-dynamic';
+
+interface RouteContext {
+  params: Promise<{ id: string }>;
+}
+
+export async function GET(request: NextRequest, { params }: RouteContext) {
+  try {
+    const admin = await verifyAdminSession(request);
+    if (!admin) {
+      return errorResponse('Unauthorized: Admin access required', 'UNAUTHORIZED', 401);
+    }
+
+    const { id } = await params;
+    const blog = getAdminBlogById(id);
+    if (!blog) {
+      return errorResponse('Blog post not found', 'NOT_FOUND', 404);
+    }
+
+    return successResponse(blog, 200);
+  } catch (err: any) {
+    return errorResponse(err.message || 'Failed to fetch blog post', 'INTERNAL_ERROR', 500);
+  }
+}
+
+export async function PUT(request: NextRequest, { params }: RouteContext) {
+  try {
+    const admin = await verifyAdminSession(request);
+    if (!admin) {
+      return errorResponse('Unauthorized: Admin access required', 'UNAUTHORIZED', 401);
+    }
+
+    const { id } = await params;
+    const body = await request.json();
+    const updated = updateAdminBlog(id, body, admin.email);
+
+    if (!updated) {
+      return errorResponse('Blog post not found', 'NOT_FOUND', 404);
+    }
+
+    return successResponse(updated, 200);
+  } catch (err: any) {
+    return errorResponse(err.message || 'Failed to update blog post', 'BAD_REQUEST', 400);
+  }
+}
+
+export async function PATCH(request: NextRequest, { params }: RouteContext) {
+  try {
+    const admin = await verifyAdminSession(request);
+    if (!admin) {
+      return errorResponse('Unauthorized: Admin access required', 'UNAUTHORIZED', 401);
+    }
+
+    const { id } = await params;
+    const toggled = toggleBlogStatus(id, admin.email);
+
+    if (!toggled) {
+      return errorResponse('Blog post not found', 'NOT_FOUND', 404);
+    }
+
+    return successResponse(toggled, 200);
+  } catch (err: any) {
+    return errorResponse(err.message || 'Failed to toggle blog post status', 'BAD_REQUEST', 400);
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: RouteContext) {
+  try {
+    const admin = await verifyAdminSession(request);
+    if (!admin) {
+      return errorResponse('Unauthorized: Admin access required', 'UNAUTHORIZED', 401);
+    }
+
+    const { id } = await params;
+    const success = deleteAdminBlog(id, admin.email);
+
+    if (!success) {
+      return errorResponse('Blog post not found', 'NOT_FOUND', 404);
+    }
+
+    return successResponse({ deleted: true }, 200);
+  } catch (err: any) {
+    return errorResponse(err.message || 'Failed to delete blog post', 'BAD_REQUEST', 400);
+  }
+}
