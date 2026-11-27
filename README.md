@@ -16,7 +16,7 @@
 - **Lead Full-Stack Developer & Technical Project Manager:**  
   **Hafizur Rahman** ([@Hafizur-Rahman-SD](https://github.com/Hafizur-Rahman-SD))  
   *Email:* [hafizurrahman5004@gmail.com](mailto:hafizurrahman5004@gmail.com) | [2022200000178@seu.edu.bd](mailto:2022200000178@seu.edu.bd)  
-  *Team:* Team Lithium / Pointfex  
+  *Team:* TraverseBD / Pointfex  
 
 ---
 
@@ -152,4 +152,4 @@ npm run build
 
 ## 📄 License & Attribution
 
-This project is proprietary software developed by **Hafizur Rahman** for **TraverseBD / Team Lithium / Pointfex**. All rights reserved.
+This project is proprietary software developed by **Hafizur Rahman** for **TraverseBD / Pointfex**. All rights reserved.
