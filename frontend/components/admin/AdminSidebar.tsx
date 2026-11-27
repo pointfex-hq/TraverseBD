@@ -109,7 +109,7 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
           <span>View Live Portal</span>
         </Link>
         <p className="text-[10px] text-slate-500 px-3">
-          TraverseBD CMS v1.2 • Team Lithium
+          TraverseBD CMS v1.2 • Operations Platform
         </p>
       </div>
     </>
