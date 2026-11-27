@@ -4,20 +4,21 @@ import { getAllAdminUsers, createAdminUser } from '@backend/services/admin/admin
 import { successResponse, errorResponse } from '@backend/utils/api-response';
 
 export async function GET(request: NextRequest) {
-  // Super Admin only check
-  const user = await verifyAdminSession(request, true);
+  // Any authenticated active admin can view the admin directory
+  const user = await verifyAdminSession(request);
   if (!user) {
-    return errorResponse('Forbidden: Super Admin access required', 'FORBIDDEN', 403);
+    return errorResponse('Unauthorized: Administrator access required', 'UNAUTHORIZED', 401);
   }
 
   const users = getAllAdminUsers();
-  return successResponse({ users });
+  return successResponse({ users, currentUser: user });
 }
 
 export async function POST(request: NextRequest) {
+  // Only Super Admin can provision new administrators
   const user = await verifyAdminSession(request, true);
   if (!user) {
-    return errorResponse('Forbidden: Super Admin access required', 'FORBIDDEN', 403);
+    return errorResponse('Forbidden: Only Super Administrator can provision new administrators', 'FORBIDDEN', 403);
   }
 
   try {
