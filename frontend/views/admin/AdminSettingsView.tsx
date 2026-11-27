@@ -19,6 +19,7 @@ export default function AdminSettingsView() {
   const [statRating, setStatRating] = useState('');
   const [statCertified, setStatCertified] = useState('');
   const [socialFacebook, setSocialFacebook] = useState('');
+  const [socialMessenger, setSocialMessenger] = useState('');
   const [socialInstagram, setSocialInstagram] = useState('');
   const [socialYoutube, setSocialYoutube] = useState('');
   const [socialWhatsappGroup, setSocialWhatsappGroup] = useState('');
@@ -41,6 +42,7 @@ export default function AdminSettingsView() {
         setStatRating(s.stat_rating || '');
         setStatCertified(s.stat_certified || '');
         setSocialFacebook(s.social_facebook || '');
+        setSocialMessenger((s as any).social_messenger || '');
         setSocialInstagram(s.social_instagram || '');
         setSocialYoutube(s.social_youtube || '');
         setSocialWhatsappGroup(s.social_whatsapp_group || '');
@@ -79,6 +81,7 @@ export default function AdminSettingsView() {
         stat_rating: statRating.trim(),
         stat_certified: statCertified.trim(),
         social_facebook: socialFacebook.trim(),
+        social_messenger: socialMessenger.trim(),
         social_instagram: socialInstagram.trim(),
         social_youtube: socialYoutube.trim(),
         social_whatsapp_group: socialWhatsappGroup.trim(),
@@ -338,9 +341,22 @@ export default function AdminSettingsView() {
                 </label>
                 <input
                   type="url"
-                  placeholder="https://facebook.com/traversebd"
+                  placeholder="https://www.facebook.com/profile.php?id=61568715145902"
                   value={socialFacebook}
                   onChange={(e) => setSocialFacebook(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-mono text-[11px] placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Facebook Messenger Direct Link
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://www.facebook.com/messages/t/431751336697364"
+                  value={socialMessenger}
+                  onChange={(e) => setSocialMessenger(e.target.value)}
                   className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-mono text-[11px] placeholder-slate-500"
                 />
               </div>
