@@ -4,13 +4,14 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import PackageCard from '@frontend/components/packages/PackageCard';
 import PackageFilterSidebar from '@frontend/components/packages/PackageFilterSidebar';
-import { Package } from '@backend/types/database.types';
+import { Package, Category } from '@backend/types/database.types';
 
 interface PackagesViewProps {
   initialPackages: (Package & {
     destination?: { name_en?: string; name_bn?: string };
     category?: { slug?: string; name_en?: string; name_bn?: string };
   })[];
+  categories?: Category[];
   initialCategory?: string;
   initialDestination?: string;
   initialQuery?: string;
@@ -26,6 +27,7 @@ const CATEGORY_TABS = [
 
 export default function PackagesView({
   initialPackages,
+  categories,
   initialCategory = '',
   initialQuery = '',
 }: PackagesViewProps) {
@@ -34,6 +36,27 @@ export default function PackagesView({
   const [maxPrice, setMaxPrice] = useState<number>(80000);
   const [selectedDuration, setSelectedDuration] = useState('');
   const [sortBy, setSortBy] = useState('newest');
+
+  const categoryTabs = useMemo(() => {
+    if (categories && categories.length > 0) {
+      return [
+        { slug: '', label: 'All Expeditions', icon: 'explore' },
+        ...categories.map((c) => ({
+          slug: c.slug,
+          label: c.name_en,
+          icon:
+            c.slug.includes('beach') || c.slug.includes('coast')
+              ? 'beach_access'
+              : c.slug.includes('hill') || c.slug.includes('mountain')
+              ? 'terrain'
+              : c.slug.includes('forest') || c.slug.includes('wildlife') || c.slug.includes('mangrove')
+              ? 'forest'
+              : 'travel_explore',
+        })),
+      ];
+    }
+    return CATEGORY_TABS;
+  }, [categories]);
 
   // Client-side filtering on packages
   const filteredPackages = useMemo(() => {
@@ -107,13 +130,13 @@ export default function PackagesView({
 
           {/* Quick Category Filter Pills */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-4 max-w-4xl">
-            {CATEGORY_TABS.map((tab) => {
+            {categoryTabs.map((tab) => {
               const isActive = selectedCategory === tab.slug;
               return (
                 <button
                   key={tab.slug}
                   onClick={() => setSelectedCategory(tab.slug)}
-                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold transition ${isActive
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold transition cursor-pointer ${isActive
                     ? 'bg-primary text-white font-bold shadow-sm'
                     : 'bg-surface-container-lowest text-on-surface-variant hover:text-primary border border-surface-container'
                     }`}
@@ -142,6 +165,7 @@ export default function PackagesView({
               selectedDuration={selectedDuration}
               setSelectedDuration={setSelectedDuration}
               onReset={handleReset}
+              categories={categories}
             />
           </div>
 
