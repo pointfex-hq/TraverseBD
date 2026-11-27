@@ -360,6 +360,108 @@ export const INITIAL_GALLERY_ITEMS: GalleryItem[] = [
   },
 ];
 
+export interface Testimonial {
+  id: string;
+  name: string;
+  role?: string;
+  location: string;
+  avatarUrl: string;
+  quote: string;
+  rating: number;
+  package_title: string;
+  package_slug: string;
+  date: string;
+  verified: boolean;
+  status: 'published' | 'draft';
+}
+
+export const INITIAL_TESTIMONIALS: Testimonial[] = [
+  {
+    id: 't1',
+    name: 'Tanvir Ahmed',
+    role: 'Corporate Team Lead (Grameenphone)',
+    location: 'Uttara, Dhaka',
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=250&auto=format&fit=crop',
+    quote: 'Our 35-person corporate retreat from Dhaka to Sajek Valley was coordinated down to every minute. Dedicated 4x4 Chander Gari, private resort buyout at Konglak, and delicious Pahari meals. Traverse BD is undoubtedly our trusted travel partner!',
+    rating: 5,
+    package_title: 'Sajek Valley Cloud Kingdom Escape',
+    package_slug: 'sajek-valley-cloud-expedition',
+    date: 'November 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't2',
+    name: 'Nusrat Jahan & Tahsin',
+    role: 'Family Vacationers',
+    location: 'Panchlaish, Chattogram',
+    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=250&auto=format&fit=crop',
+    quote: 'Visiting Saint Martin with my toddler and elderly parents felt completely effortless. Traverse BD pre-booked the VIP ship tickets from Teknaf and an eco-resort right beside the west beach. Truly memorable experience!',
+    rating: 5,
+    package_title: 'Saint Martin Coral Island Cruise',
+    package_slug: 'saint-martin-coral-cruise',
+    date: 'October 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't3',
+    name: 'Farhan Chowdhury',
+    role: 'Travel Blogger & Photographer',
+    location: 'Zindabazar, Sylhet',
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=250&auto=format&fit=crop',
+    quote: 'The premium wooden houseboat expedition across Tanguar Haor and Shimul Bagan was breathtaking. Silent solar cruise, fresh local duck curry, and stargazing at Tekerghat. Best weekend journey of my life.',
+    rating: 5,
+    package_title: 'Tanguar Haor Luxury Houseboat Cruise',
+    package_slug: 'tanguar-haor-luxury-houseboat',
+    date: 'September 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't4',
+    name: 'Dr. Sabrina Karim',
+    role: 'Cardiologist & Wildlife Enthusiast',
+    location: 'Dhanmondi, Dhaka',
+    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=250&auto=format&fit=crop',
+    quote: 'Silent early dawn country boat rowing into Kotka canals with armed forest guards and veteran naturalist escorts. We spotted spotted deer, kingfishers, and fresh Bengal tiger pugmarks. World-class safety and service.',
+    rating: 5,
+    package_title: 'Sundarbans Deep Mangrove Safari',
+    package_slug: 'sundarbans-deep-mangrove-safari',
+    date: 'November 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't5',
+    name: 'Mahir Faisal',
+    role: 'Banker & Trekking Enthusiast',
+    location: 'Mirpur DOHS, Dhaka',
+    avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=250&auto=format&fit=crop',
+    quote: 'Climbing through the misty clouds of Nilgiri and exploring Chimbuk Hill was made seamless with our experienced local guide. Pricing was completely transparent with zero hidden costs. Highly recommended!',
+    rating: 5,
+    package_title: 'Bandarban & Nilgiri Summit Expedition',
+    package_slug: 'bandarban-nilgiri-summit',
+    date: 'December 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't6',
+    name: 'Anika Tabassum',
+    role: 'Product Designer',
+    location: 'Sonadanga, Khulna',
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=250&auto=format&fit=crop',
+    quote: 'Peaceful escape among the lush tea estates of Sreemangal and morning trail inside Lawachara rain forest. The 7-color tea tasting and boutique resort stay were memorable highlights.',
+    rating: 5,
+    package_title: 'Sreemangal Tea Gardens & Lawachara Forest',
+    package_slug: 'sreemangal-tea-gardens-lawachara',
+    date: 'January 2026',
+    verified: true,
+    status: 'published',
+  },
+];
+
 // In-Memory state store for local CRUD persistence
 class AdminMemoryStore {
   public packages: Package[] = JSON.parse(JSON.stringify(MOCK_PACKAGES));
@@ -367,6 +469,7 @@ class AdminMemoryStore {
   public categories: Category[] = JSON.parse(JSON.stringify(MOCK_CATEGORIES));
   public gallery: GalleryItem[] = JSON.parse(JSON.stringify(INITIAL_GALLERY_ITEMS)).map((g: GalleryItem) => ({ ...g, status: 'published' }));
   public blogs: BlogItem[] = JSON.parse(JSON.stringify(INITIAL_BLOGS));
+  public testimonials: Testimonial[] = JSON.parse(JSON.stringify(INITIAL_TESTIMONIALS));
   public siteSettings: SiteSettings = JSON.parse(JSON.stringify(INITIAL_SITE_SETTINGS));
   public users: AdminUser[] = JSON.parse(JSON.stringify(INITIAL_ADMIN_USERS));
   public auditLogs: AdminAuditLog[] = JSON.parse(JSON.stringify(INITIAL_AUDIT_LOGS));

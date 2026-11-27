@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Package, Category } from '@backend/types/database.types';
-import { MOCK_TESTIMONIALS } from '@backend/services/testimonials.service';
+import { Testimonial, MOCK_TESTIMONIALS } from '@backend/services/testimonials.service';
 import { SiteSettings } from '@backend/data/admin-mock-data';
 
 interface HomeViewProps {
@@ -13,10 +13,16 @@ interface HomeViewProps {
     category?: { slug?: string; name_en?: string; name_bn?: string };
   })[];
   categories?: Category[];
+  testimonials?: Testimonial[];
   siteSettings?: SiteSettings;
 }
 
-export default function HomeView({ packages = [], categories = [], siteSettings }: HomeViewProps) {
+export default function HomeView({
+  packages = [],
+  categories = [],
+  testimonials = [],
+  siteSettings,
+}: HomeViewProps) {
   const router = useRouter();
 
   // Trending Packages Category Filter Tab
@@ -518,7 +524,7 @@ export default function HomeView({ packages = [], categories = [], siteSettings 
 
           {/* Reviews Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {MOCK_TESTIMONIALS.map((review) => (
+            {(testimonials && testimonials.length > 0 ? testimonials : MOCK_TESTIMONIALS).map((review) => (
               <div
                 key={review.id}
                 className="p-6 rounded-3xl bg-surface-container-low border border-surface-container flex flex-col justify-between gap-5 hover:border-primary/30 transition shadow-sm"
