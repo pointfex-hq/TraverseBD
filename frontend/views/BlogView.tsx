@@ -204,40 +204,40 @@ export default function BlogView({ initialBlogs = [] }: BlogViewProps) {
   const articlesList: BlogPostItem[] =
     initialBlogs.length > 0
       ? initialBlogs.map((b) => {
-          let category: BlogPostItem['category'] = 'Travel Tips & Checklists';
-          const titleLower = (b.title_en || '').toLowerCase();
-          const destLower = (b.destination_slug || '').toLowerCase();
+        let category: BlogPostItem['category'] = 'Travel Tips & Checklists';
+        const titleLower = (b.title_en || '').toLowerCase();
+        const destLower = (b.destination_slug || '').toLowerCase();
 
-          if (titleLower.includes('mountain') || destLower.includes('sajek') || destLower.includes('bandarban')) {
-            category = 'Mountain Expeditions';
-          } else if (titleLower.includes('wildlife') || destLower.includes('sundarban') || destLower.includes('sreemangal')) {
-            category = 'Wildlife & Eco';
-          } else if (titleLower.includes('coast') || titleLower.includes('coral') || destLower.includes('cox') || destLower.includes('saint-martin')) {
-            category = 'Coastal Expeditions';
-          }
+        if (titleLower.includes('mountain') || destLower.includes('sajek') || destLower.includes('bandarban')) {
+          category = 'Mountain Expeditions';
+        } else if (titleLower.includes('wildlife') || destLower.includes('sundarban') || destLower.includes('sreemangal')) {
+          category = 'Wildlife & Eco';
+        } else if (titleLower.includes('coast') || titleLower.includes('coral') || destLower.includes('cox') || destLower.includes('saint-martin')) {
+          category = 'Coastal Expeditions';
+        }
 
-          return {
-            id: b.slug || b.id,
-            title: b.title_en,
-            excerpt: b.excerpt_en,
-            category,
-            readTime: b.read_time || '5 min read',
-            date: b.published_at ? new Date(b.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Nov 2026',
-            author: 'Traverse BD Guild',
-            authorRole: 'Expedition Guide',
-            imageUrl: b.cover_image_url || 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop',
-            keyPoints: [
-              'Authentic field report curated by Traverse BD expeditions',
-              'Verified local logistics, seasonal weather, and travel tips',
-            ],
-            contentSections: [
-              {
-                heading: 'Field Overview & Route Logistics',
-                body: b.content_en || b.excerpt_en,
-              },
-            ],
-          };
-        })
+        return {
+          id: b.slug || b.id,
+          title: b.title_en,
+          excerpt: b.excerpt_en,
+          category,
+          readTime: b.read_time || '5 min read',
+          date: b.published_at ? new Date(b.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Nov 2026',
+          author: 'Traverse BD Guild',
+          authorRole: 'Expedition Guide',
+          imageUrl: b.cover_image_url || 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop',
+          keyPoints: [
+            'Authentic field report curated by Traverse BD expeditions',
+            'Verified local logistics, seasonal weather, and travel tips',
+          ],
+          contentSections: [
+            {
+              heading: 'Field Overview & Route Logistics',
+              body: b.content_en || b.excerpt_en,
+            },
+          ],
+        };
+      })
       : BLOG_ARTICLES;
 
   const featuredPost = articlesList[0] || FEATURED_POST;
