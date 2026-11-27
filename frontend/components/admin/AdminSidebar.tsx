@@ -15,6 +15,7 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: 'dashboard' },
     { label: 'Tour Packages', href: '/admin/packages', icon: 'tour' },
+    { label: 'Destinations', href: '/admin/destinations', icon: 'location_on' },
     { label: 'Categories', href: '/admin/categories', icon: 'category' },
     { label: 'Gallery Media', href: '/admin/gallery', icon: 'photo_library' },
     { label: 'Travel Blogs', href: '/admin/blogs', icon: 'article' },
@@ -124,15 +125,16 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
 
       {/* Mobile Drawer (Visible on < lg screens when toggled) */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden animate-fadeIn">
           {/* Backdrop overlay */}
           <div
             className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
             onClick={onClose}
+            aria-hidden="true"
           />
 
           {/* Slide-out Drawer */}
-          <aside className="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 border-r border-slate-800 flex flex-col justify-between text-slate-300 shadow-2xl overflow-y-auto">
+          <aside className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-slate-900 border-r border-slate-800 flex flex-col justify-between text-slate-300 shadow-2xl overflow-y-auto overscroll-contain">
             {renderNavContent(true)}
           </aside>
         </div>

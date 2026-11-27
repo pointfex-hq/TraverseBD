@@ -32,12 +32,12 @@ export default function AdminHeader({
   };
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="h-16 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md px-3 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-30">
+      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
         {onToggleMobileSidebar && (
           <button
             onClick={onToggleMobileSidebar}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition lg:hidden shrink-0 border border-slate-800"
+            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition lg:hidden shrink-0 border border-slate-800 cursor-pointer active:scale-95"
             aria-label="Toggle navigation menu"
           >
             <span className="material-symbols-outlined text-[20px]">menu</span>
@@ -49,7 +49,7 @@ export default function AdminHeader({
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4 shrink-0">
         {/* Live Portal Shortcut */}
         <Link
           href="/"
@@ -61,8 +61,8 @@ export default function AdminHeader({
         </Link>
 
         {/* User Pill */}
-        <div className="flex items-center gap-3 pl-4 border-l border-slate-800">
-          <div className="w-8 h-8 rounded-full bg-primary/20 text-primary-fixed border border-primary/40 flex items-center justify-center font-bold text-xs">
+        <div className="flex items-center gap-2.5 sm:gap-3 pl-2 sm:pl-4 border-l border-slate-800">
+          <div className="w-8 h-8 rounded-full bg-primary/20 text-primary-fixed border border-primary/40 flex items-center justify-center font-bold text-xs shrink-0">
             {currentUser.name
               ? currentUser.name
                   .split(' ')
@@ -84,7 +84,7 @@ export default function AdminHeader({
         <button
           onClick={handleLogout}
           title="Sign Out"
-          className="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition border border-slate-800"
+          className="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition border border-slate-800 shrink-0 cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">logout</span>
         </button>
