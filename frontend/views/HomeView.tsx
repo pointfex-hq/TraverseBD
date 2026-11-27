@@ -276,7 +276,7 @@ export default function HomeView({ packages = [], categories = [], siteSettings 
                   All Journeys
                 </button>
                 {categories && categories.length > 0 ? (
-                  categories.map((cat) => (
+                  categories.slice(0, 4).map((cat) => (
                     <button
                       key={cat.id}
                       type="button"

@@ -22,6 +22,8 @@ export default function AdminPackagesView() {
   const [titleBn, setTitleBn] = useState('');
   const [destinationInput, setDestinationInput] = useState('');
   const [categoryInput, setCategoryInput] = useState('');
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [isCustomDestination, setIsCustomDestination] = useState(false);
   const [priceBdt, setPriceBdt] = useState<number>(8500);
   const [priceMode, setPriceMode] = useState<'fixed' | 'starting_from'>('fixed');
   const [durationDays, setDurationDays] = useState<number>(3);
@@ -81,6 +83,8 @@ export default function AdminPackagesView() {
     setEditingPackage(null);
     setTitleEn('');
     setTitleBn('');
+    setIsCustomCategory(false);
+    setIsCustomDestination(false);
     setDestinationInput(destinations[0]?.name_en || 'Sajek Valley');
     setCategoryInput(categories[0]?.name_en || 'Hill Tract Expeditions');
     setPriceBdt(8500);
@@ -120,6 +124,8 @@ export default function AdminPackagesView() {
     setEditingPackage(pkg);
     setTitleEn(pkg.title_en);
     setTitleBn(pkg.title_bn);
+    setIsCustomCategory(false);
+    setIsCustomDestination(false);
     const dest = destinations.find((d) => d.id === pkg.destination_id);
     const cat = categories.find((c) => c.id === pkg.category_id);
     setDestinationInput(dest?.name_en || pkg.destination?.name_en || pkg.destination_id);
@@ -583,52 +589,118 @@ export default function AdminPackagesView() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Destination Field with Select & Custom Toggle */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                       <label className="text-xs font-bold text-slate-300">
                         Destination <span className="text-red-400">*</span>
                       </label>
-                      <span className="text-[10px] text-slate-400">Pick or type</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomDestination(!isCustomDestination);
+                          if (!isCustomDestination) setDestinationInput('');
+                          else setDestinationInput(destinations[0]?.name_en || 'Sajek Valley');
+                        }}
+                        className="text-[11px] text-primary-fixed hover:underline font-semibold"
+                      >
+                        {isCustomDestination ? '← Select Existing' : '+ Add Custom'}
+                      </button>
                     </div>
-                    <input
-                      type="text"
-                      list="destinations-datalist"
-                      required
-                      value={destinationInput}
-                      onChange={(e) => setDestinationInput(e.target.value)}
-                      placeholder="e.g. Sajek Valley or type new..."
-                      className="w-full bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
-                    <datalist id="destinations-datalist">
-                      {destinations.map((d) => (
-                        <option key={d.id} value={d.name_en}>
-                          {d.region ? `Region: ${d.region}` : ''}
-                        </option>
-                      ))}
-                    </datalist>
+                    {isCustomDestination ? (
+                      <input
+                        type="text"
+                        required
+                        value={destinationInput}
+                        onChange={(e) => setDestinationInput(e.target.value)}
+                        placeholder="Type new destination name (e.g. Sajek Valley)..."
+                        className="w-full bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500"
+                      />
+                    ) : (
+                      <select
+                        required
+                        value={destinationInput}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setIsCustomDestination(true);
+                            setDestinationInput('');
+                          } else {
+                            setDestinationInput(e.target.value);
+                          }
+                        }}
+                        className="w-full bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                      >
+                        {destinations.length === 0 && (
+                          <option value="">No destinations available</option>
+                        )}
+                        {destinations.map((d) => (
+                          <option key={d.id} value={d.name_en}>
+                            {d.name_en} {d.region ? `(${d.region})` : ''}
+                          </option>
+                        ))}
+                        {!destinations.some((d) => d.name_en === destinationInput || d.id === destinationInput) && destinationInput && (
+                          <option value={destinationInput}>{destinationInput} (Selected)</option>
+                        )}
+                        <option value="__custom__">+ Enter custom destination...</option>
+                      </select>
+                    )}
                   </div>
 
+                  {/* Category Field with Select & Custom Toggle */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                       <label className="text-xs font-bold text-slate-300">
-                        Category <span className="text-red-400">*</span>
+                        Tour Category <span className="text-red-400">*</span>
                       </label>
-                      <span className="text-[10px] text-slate-400">Pick or type</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomCategory(!isCustomCategory);
+                          if (!isCustomCategory) setCategoryInput('');
+                          else setCategoryInput(categories[0]?.name_en || 'Hill Tract Expeditions');
+                        }}
+                        className="text-[11px] text-primary-fixed hover:underline font-semibold"
+                      >
+                        {isCustomCategory ? '← Select Existing' : '+ Add Custom'}
+                      </button>
                     </div>
-                    <input
-                      type="text"
-                      list="categories-datalist"
-                      required
-                      value={categoryInput}
-                      onChange={(e) => setCategoryInput(e.target.value)}
-                      placeholder="e.g. Hill Tract Expeditions..."
-                      className="w-full bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
-                    <datalist id="categories-datalist">
-                      {categories.map((c) => (
-                        <option key={c.id} value={c.name_en} />
-                      ))}
-                    </datalist>
+                    {isCustomCategory ? (
+                      <input
+                        type="text"
+                        required
+                        value={categoryInput}
+                        onChange={(e) => setCategoryInput(e.target.value)}
+                        placeholder="Type new category name (e.g. Hill Trekking)..."
+                        className="w-full bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500"
+                      />
+                    ) : (
+                      <select
+                        required
+                        value={categoryInput}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setIsCustomCategory(true);
+                            setCategoryInput('');
+                          } else {
+                            setCategoryInput(e.target.value);
+                          }
+                        }}
+                        className="w-full bg-slate-800 text-white text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                      >
+                        {categories.length === 0 && (
+                          <option value="">No categories available</option>
+                        )}
+                        {categories.map((c) => (
+                          <option key={c.id} value={c.name_en}>
+                            {c.name_en}
+                          </option>
+                        ))}
+                        {!categories.some((c) => c.name_en === categoryInput || c.id === categoryInput) && categoryInput && (
+                          <option value={categoryInput}>{categoryInput} (Selected)</option>
+                        )}
+                        <option value="__custom__">+ Enter custom category...</option>
+                      </select>
+                    )}
                   </div>
                 </div>
               </div>
