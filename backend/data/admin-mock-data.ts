@@ -119,6 +119,7 @@ export interface SiteSettings {
   stat_rating: string;
   stat_certified: string;
   social_facebook?: string;
+  social_messenger?: string;
   social_instagram?: string;
   social_youtube?: string;
   social_whatsapp_group?: string;
@@ -135,7 +136,8 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   stat_travelers: '15,000+',
   stat_rating: '4.95 / 5.0',
   stat_certified: '100% Certified',
-  social_facebook: 'https://facebook.com/traversebd',
+  social_facebook: 'https://www.facebook.com/profile.php?id=61568715145902',
+  social_messenger: 'https://www.facebook.com/messages/t/431751336697364',
   social_instagram: 'https://instagram.com/traversebd',
   social_youtube: 'https://youtube.com/@traversebd',
   social_whatsapp_group: 'https://chat.whatsapp.com/traversebd',
