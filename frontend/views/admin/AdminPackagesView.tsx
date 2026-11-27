@@ -347,11 +347,11 @@ export default function AdminPackagesView() {
   });
 
   return (
-    <div className="p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
       {/* 1. TOP HEADER & CREATE BUTTON */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-white tracking-tight">
+          <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
             Tour Packages Management
           </h2>
           <p className="text-xs text-slate-400">
@@ -361,7 +361,7 @@ export default function AdminPackagesView() {
 
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-primary/20 transition self-start sm:self-auto cursor-pointer"
+          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-primary/20 transition w-full sm:w-auto cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">add_circle</span>
           <span>Add New Package</span>
@@ -369,7 +369,7 @@ export default function AdminPackagesView() {
       </div>
 
       {/* 2. SEARCH & FILTER TABS */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 p-4 rounded-2xl border border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-slate-900 p-3 sm:p-4 rounded-2xl border border-slate-800">
         <div className="relative w-full sm:w-80">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-[18px]">
             search
@@ -383,7 +383,7 @@ export default function AdminPackagesView() {
           />
         </div>
 
-        <div className="flex items-center gap-1.5 self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 scrollbar-none">
           {[
             { key: 'all', label: 'All Packages' },
             { key: 'published', label: 'Published' },
@@ -392,7 +392,7 @@ export default function AdminPackagesView() {
             <button
               key={tab.key}
               onClick={() => setStatusFilter(tab.key as any)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
                 statusFilter === tab.key
                   ? 'bg-slate-800 text-white border border-slate-700'
                   : 'text-slate-400 hover:text-white'
@@ -407,7 +407,7 @@ export default function AdminPackagesView() {
       {/* 3. PACKAGES TABLE */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
+          <table className="w-full text-left text-xs text-slate-300 min-w-[780px]">
             <thead className="text-[10px] uppercase font-bold text-slate-500 border-b border-slate-800 bg-slate-950/40">
               <tr>
                 <th className="py-3 px-4">Package</th>
@@ -530,14 +530,14 @@ export default function AdminPackagesView() {
 
       {/* 4. CREATE / EDIT MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-3xl rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8 space-y-6 shadow-2xl my-8 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+          <div className="w-full max-w-3xl rounded-2xl sm:rounded-3xl bg-slate-900 border border-slate-800 p-4 sm:p-6 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl my-2 sm:my-8 max-h-[94vh] sm:max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
               <div>
-                <h3 className="text-base font-bold text-white">
+                <h3 className="text-sm sm:text-base font-bold text-white">
                   {editingPackage ? 'Edit Tour Package' : 'Create New Tour Package'}
                 </h3>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[10px] sm:text-[11px] text-slate-400">
                   Configure package details, ratings, day-by-day itinerary, and inclusions.
                 </p>
               </div>
@@ -679,7 +679,7 @@ export default function AdminPackagesView() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 items-center">
                   <div className="space-y-1">
                     <label className="text-xs font-bold text-slate-300">Duration (Days):</label>
                     <input

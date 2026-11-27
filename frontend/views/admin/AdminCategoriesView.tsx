@@ -110,10 +110,10 @@ export default function AdminCategoriesView() {
   };
 
   return (
-    <div className="p-8 space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-5xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-white tracking-tight">
+          <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
             Tour Categories &amp; Classifications
           </h2>
           <p className="text-xs text-slate-400">
@@ -123,7 +123,7 @@ export default function AdminCategoriesView() {
 
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-primary/20 transition cursor-pointer"
+          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-primary/20 transition w-full sm:w-auto cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
           <span>Add Category</span>
@@ -131,7 +131,8 @@ export default function AdminCategoriesView() {
       </div>
 
       <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-sm">
-        <table className="w-full text-left text-xs text-slate-300">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs text-slate-300 min-w-[520px]">
           <thead className="text-[10px] uppercase font-bold text-slate-500 border-b border-slate-800 bg-slate-950/40">
             <tr>
               <th className="py-3 px-4">Order</th>
@@ -179,12 +180,13 @@ export default function AdminCategoriesView() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8 space-y-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+          <div className="w-full max-w-md rounded-2xl sm:rounded-3xl bg-slate-900 border border-slate-800 p-4 sm:p-6 sm:p-8 space-y-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-bold text-white">
                 {editingCategory ? 'Edit Category' : 'Add Category'}
