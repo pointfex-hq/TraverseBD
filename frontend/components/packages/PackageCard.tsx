@@ -97,7 +97,7 @@ export default function PackageCard({ pkg, packageData }: PackageCardProps) {
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Quick WhatsApp Inquiry */}
           <a
             href={waUrl}
@@ -109,10 +109,21 @@ export default function PackageCard({ pkg, packageData }: PackageCardProps) {
             <span className="material-symbols-outlined text-[18px]">chat</span>
           </a>
 
+          {/* Quick Messenger Inquiry */}
+          <a
+            href="https://www.facebook.com/messages/t/431751336697364"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Inquire on Facebook Messenger"
+            className="w-9 h-9 rounded-xl bg-blue-50 hover:bg-blue-600 text-[#0084FF] hover:text-white flex items-center justify-center transition shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[18px]">forum</span>
+          </a>
+
           {/* View Details */}
           <Link
             href={`/packages/${p.slug}`}
-            className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold transition shadow-sm"
+            className="px-3.5 sm:px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold transition shadow-sm"
           >
             Details
           </Link>
