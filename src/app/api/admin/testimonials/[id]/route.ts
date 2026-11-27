@@ -32,6 +32,30 @@ export async function PUT(
   }
 }
 
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const admin = await verifyAdminSession(request);
+    if (!admin) {
+      return errorResponse('Unauthorized: Admin access required', 'UNAUTHORIZED', 401);
+    }
+
+    const { id } = await params;
+    const body = await request.json().catch(() => ({}));
+    const updated = updateAdminTestimonial(id, body, admin.email);
+
+    if (!updated) {
+      return errorResponse('Testimonial not found', 'NOT_FOUND', 404);
+    }
+
+    return successResponse({ testimonial: updated }, 200);
+  } catch (err: any) {
+    return errorResponse(err.message || 'Failed to patch testimonial', 'BAD_REQUEST', 400);
+  }
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

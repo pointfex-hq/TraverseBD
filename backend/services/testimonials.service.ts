@@ -3,8 +3,15 @@ import { adminStore, Testimonial, INITIAL_TESTIMONIALS } from '@backend/data/adm
 export type { Testimonial };
 export const MOCK_TESTIMONIALS: Testimonial[] = INITIAL_TESTIMONIALS;
 
+function getStoreTestimonials(): Testimonial[] {
+  if (!adminStore.testimonials || !Array.isArray(adminStore.testimonials)) {
+    adminStore.testimonials = JSON.parse(JSON.stringify(INITIAL_TESTIMONIALS));
+  }
+  return adminStore.testimonials;
+}
+
 export async function getPublishedTestimonials(packageSlug?: string) {
-  const storeList = adminStore.testimonials || INITIAL_TESTIMONIALS;
+  const storeList = getStoreTestimonials();
   let list = storeList.filter((t) => t.status === 'published');
   if (packageSlug) {
     list = list.filter((t) => t.package_slug === packageSlug);
@@ -13,13 +20,14 @@ export async function getPublishedTestimonials(packageSlug?: string) {
 }
 
 export function getAllAdminTestimonials(): Testimonial[] {
-  return adminStore.testimonials || INITIAL_TESTIMONIALS;
+  return getStoreTestimonials();
 }
 
 export function createAdminTestimonial(
   input: Omit<Testimonial, 'id'>,
   adminEmail = 'admin@traversebd.com'
 ): Testimonial {
+  const list = getStoreTestimonials();
   const newId = `t-${Date.now()}`;
   const testimonial: Testimonial = {
     ...input,
@@ -29,7 +37,7 @@ export function createAdminTestimonial(
     status: input.status || 'published',
   };
 
-  adminStore.testimonials.unshift(testimonial);
+  list.unshift(testimonial);
   adminStore.addAuditLog(
     adminEmail,
     'ADMIN',
@@ -46,10 +54,11 @@ export function updateAdminTestimonial(
   updates: Partial<Testimonial>,
   adminEmail = 'admin@traversebd.com'
 ): Testimonial | null {
-  const index = adminStore.testimonials.findIndex((t) => t.id === id);
+  const list = getStoreTestimonials();
+  const index = list.findIndex((t) => t.id === id);
   if (index === -1) return null;
 
-  const existing = adminStore.testimonials[index];
+  const existing = list[index];
   const updated: Testimonial = {
     ...existing,
     ...updates,
@@ -57,7 +66,7 @@ export function updateAdminTestimonial(
     rating: updates.rating !== undefined ? Number(updates.rating) : existing.rating,
   };
 
-  adminStore.testimonials[index] = updated;
+  list[index] = updated;
   adminStore.addAuditLog(
     adminEmail,
     'ADMIN',
@@ -73,10 +82,11 @@ export function deleteAdminTestimonial(
   id: string,
   adminEmail = 'admin@traversebd.com'
 ): boolean {
-  const existing = adminStore.testimonials.find((t) => t.id === id);
+  const list = getStoreTestimonials();
+  const existing = list.find((t) => t.id === id);
   if (!existing) return false;
 
-  adminStore.testimonials = adminStore.testimonials.filter((t) => t.id !== id);
+  adminStore.testimonials = list.filter((t) => t.id !== id);
   adminStore.addAuditLog(
     adminEmail,
     'ADMIN',
