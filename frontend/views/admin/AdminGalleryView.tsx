@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { GalleryItem } from '@backend/data/admin-mock-data';
 import ImageUploadField from '@frontend/components/admin/ImageUploadField';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminGalleryView() {
   const [items, setItems] = useState<GalleryItem[]>([]);
@@ -16,6 +17,10 @@ export default function AdminGalleryView() {
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -154,21 +159,22 @@ export default function AdminGalleryView() {
     }
   };
 
-  const handleDelete = async (id: string, itemTitle: string) => {
-    if (!confirm(`Are you sure you want to permanently delete "${itemTitle}" from Gallery?`)) {
-      return;
-    }
-
+  const confirmDeleteGalleryItem = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/gallery/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/gallery/${deleteTarget.id}`, { method: 'DELETE' });
       if (res.ok) {
-        setItems((prev) => prev.filter((i) => i.id !== id));
+        setItems((prev) => prev.filter((i) => i.id !== deleteTarget.id));
+        setDeleteTarget(null);
       } else {
         alert('Failed to delete gallery item.');
       }
     } catch (err) {
       console.error(err);
       alert('Error deleting gallery item.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -359,8 +365,8 @@ export default function AdminGalleryView() {
                     <span className="material-symbols-outlined text-[18px]">edit</span>
                   </button>
                   <button
-                    onClick={() => handleDelete(item.id, item.title)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                    onClick={() => setDeleteTarget({ id: item.id, title: item.title })}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all cursor-pointer"
                     title="Delete photo"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -560,6 +566,16 @@ export default function AdminGalleryView() {
           </div>
         </div>
       )}
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Delete Gallery Photo"
+        message={`Are you sure you want to permanently delete "${deleteTarget?.title}"? This photo will be removed from the public visual showcase.`}
+        confirmLabel="Delete Photo"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteGalleryItem}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
