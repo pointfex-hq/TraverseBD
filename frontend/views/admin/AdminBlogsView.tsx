@@ -181,15 +181,15 @@ export default function AdminBlogsView() {
   const draftCount = blogs.filter((b) => b.status === 'draft').length;
 
   return (
-    <div className="p-4 sm:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-sm">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary-fixed text-xs font-bold uppercase tracking-wider mb-2 border border-primary/30">
             <span className="material-symbols-outlined text-[15px]">article</span>
             Editorial Content Management
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Travel Guide &amp; Field Blogs</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Travel Guide &amp; Field Blogs</h1>
           <p className="text-xs text-slate-400 mt-1">
             Publish travel tips, packing guides, and expedition field dispatches. Toggle between Published and Draft to control public website visibility.
           </p>
@@ -197,7 +197,7 @@ export default function AdminBlogsView() {
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-primary-container transition-all"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-primary-container transition-all w-full sm:w-auto cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">post_add</span>
           Write New Article
@@ -283,7 +283,7 @@ export default function AdminBlogsView() {
           No blog posts found matching your criteria.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredBlogs.map((b) => (
             <div
               key={b.id}
@@ -390,8 +390,8 @@ export default function AdminBlogsView() {
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 w-full max-w-2xl rounded-2xl border border-slate-800 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-white">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-slate-900 w-full max-w-2xl rounded-2xl sm:rounded-3xl border border-slate-800 p-4 sm:p-6 shadow-2xl space-y-4 my-2 sm:my-8 max-h-[94vh] sm:max-h-[90vh] overflow-y-auto text-white">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h2 className="text-lg font-black text-white tracking-tight">
                 {editingBlog ? 'Edit Blog Article' : 'Write New Travel Article'}
