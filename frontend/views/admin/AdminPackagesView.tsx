@@ -58,6 +58,11 @@ export default function AdminPackagesView() {
   const [exclusions, setExclusions] = useState<string[]>([]);
   const [newExclusionInput, setNewExclusionInput] = useState('');
 
+  // Dynamic Departure Batches & Seats
+  const [departures, setDepartures] = useState<
+    { id?: string; departure_date: string; capacity: number; available_seats: number; status: 'available' | 'few_seats' | 'sold_out' }[]
+  >([]);
+
   // Delete Confirmation Modal State
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -139,6 +144,7 @@ export default function AdminPackagesView() {
           itinerary,
           inclusions,
           exclusions,
+          departures,
           savedAt: Date.now(),
         };
         localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftPayload));
@@ -176,6 +182,7 @@ export default function AdminPackagesView() {
     itinerary,
     inclusions,
     exclusions,
+    departures,
   ]);
 
   // Restore draft
@@ -205,6 +212,7 @@ export default function AdminPackagesView() {
       if (d.itinerary) setItinerary(d.itinerary);
       if (d.inclusions) setInclusions(d.inclusions);
       if (d.exclusions) setExclusions(d.exclusions);
+      if (d.departures) setDepartures(d.departures);
       setEditingPackage(null);
       setViewMode('editor');
     } catch (e) {
@@ -267,6 +275,25 @@ export default function AdminPackagesView() {
       'Driver and guide tips or gratuities',
       'Optional adventure activities not mentioned in itinerary',
     ]);
+    const today = new Date();
+    const d1 = new Date(today);
+    d1.setDate(today.getDate() + 7);
+    const d2 = new Date(today);
+    d2.setDate(today.getDate() + 14);
+    setDepartures([
+      {
+        departure_date: d1.toISOString().split('T')[0],
+        capacity: 20,
+        available_seats: 12,
+        status: 'available',
+      },
+      {
+        departure_date: d2.toISOString().split('T')[0],
+        capacity: 20,
+        available_seats: 6,
+        status: 'available',
+      },
+    ]);
     setNewInclusionInput('');
     setNewExclusionInput('');
     setViewMode('editor');
@@ -327,6 +354,30 @@ export default function AdminPackagesView() {
       'Tips for drivers and guides',
     ]);
 
+    if (pkg.departures && pkg.departures.length > 0) {
+      setDepartures(
+        pkg.departures.map((d: any) => ({
+          id: d.id,
+          departure_date: d.departure_date ? d.departure_date.split('T')[0] : new Date().toISOString().split('T')[0],
+          capacity: Number(d.capacity) || 20,
+          available_seats: d.available_seats !== undefined ? Number(d.available_seats) : (Number(d.capacity) || 20),
+          status: d.status || (Number(d.available_seats) === 0 ? 'sold_out' : Number(d.available_seats) <= 5 ? 'few_seats' : 'available'),
+        }))
+      );
+    } else {
+      const today = new Date();
+      const d1 = new Date(today);
+      d1.setDate(today.getDate() + 7);
+      setDepartures([
+        {
+          departure_date: d1.toISOString().split('T')[0],
+          capacity: 20,
+          available_seats: 12,
+          status: 'available',
+        },
+      ]);
+    }
+
     setNewInclusionInput('');
     setNewExclusionInput('');
     setViewMode('editor');
@@ -335,6 +386,44 @@ export default function AdminPackagesView() {
   const handleBackToList = () => {
     setViewMode('list');
     setEditingPackage(null);
+  };
+
+  // Departure Batch handlers
+  const handleAddDepartureBatch = () => {
+    const today = new Date();
+    today.setDate(today.getDate() + 7 * (departures.length + 1));
+    setDepartures([
+      ...departures,
+      {
+        departure_date: today.toISOString().split('T')[0],
+        capacity: 20,
+        available_seats: 20,
+        status: 'available',
+      },
+    ]);
+  };
+
+  const handleUpdateDepartureBatch = (
+    index: number,
+    field: 'departure_date' | 'capacity' | 'available_seats',
+    value: any
+  ) => {
+    setDepartures((prev) =>
+      prev.map((item, idx) => {
+        if (idx !== index) return item;
+        const updated = { ...item, [field]: value };
+        const cap = Number(updated.capacity) || 20;
+        const avail = Number(updated.available_seats);
+        updated.capacity = cap;
+        updated.available_seats = avail;
+        updated.status = avail === 0 ? 'sold_out' : avail <= 5 ? 'few_seats' : 'available';
+        return updated;
+      })
+    );
+  };
+
+  const handleRemoveDepartureBatch = (index: number) => {
+    setDepartures((prev) => prev.filter((_, idx) => idx !== index));
   };
 
   // Itinerary helper handlers
@@ -422,6 +511,7 @@ export default function AdminPackagesView() {
       itinerary,
       inclusions,
       exclusions,
+      departures,
     };
 
     try {
@@ -1133,6 +1223,127 @@ export default function AdminPackagesView() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* CARD 6: DEPARTURE BATCHES & SEAT AVAILABILITY */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 space-y-4 shadow-sm">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-[18px]">calendar_month</span>
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-bold text-white">
+                      6. Scheduled Departure Batches &amp; Seats ({departures.length} Batches)
+                    </h3>
+                    <p className="text-[11px] text-slate-400">
+                      Configure specific trip departure dates and remaining seats visible on the public tour booking portal
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleAddDepartureBatch}
+                  className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-primary-fixed text-xs font-bold flex items-center gap-1 transition cursor-pointer border border-slate-700"
+                >
+                  <span className="material-symbols-outlined text-[15px]">add</span>
+                  <span>Add Batch</span>
+                </button>
+              </div>
+
+              {departures.length === 0 ? (
+                <div className="p-4 rounded-xl bg-slate-800/40 border border-slate-750 text-center text-xs text-slate-400">
+                  No fixed departure dates configured. Travelers will be prompted with flexible inquiry dates.
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {departures.map((batch, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3.5 rounded-xl bg-slate-800/70 border border-slate-700/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 hover:border-slate-650 transition"
+                    >
+                      <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Departure Date:
+                          </label>
+                          <input
+                            type="date"
+                            required
+                            value={batch.departure_date}
+                            onChange={(e) =>
+                              handleUpdateDepartureBatch(idx, 'departure_date', e.target.value)
+                            }
+                            className="w-full bg-slate-900 text-white text-xs px-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Total Capacity:
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            required
+                            value={batch.capacity}
+                            onChange={(e) =>
+                              handleUpdateDepartureBatch(idx, 'capacity', Number(e.target.value))
+                            }
+                            placeholder="e.g. 20"
+                            className="w-full bg-slate-900 text-white text-xs px-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                              Seats Available:
+                            </label>
+                            <span
+                              className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                                batch.available_seats === 0
+                                  ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                                  : batch.available_seats <= 5
+                                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                                  : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                              }`}
+                            >
+                              {batch.available_seats === 0
+                                ? 'Sold Out'
+                                : batch.available_seats <= 5
+                                ? 'Few Seats Left'
+                                : 'Available'}
+                            </span>
+                          </div>
+                          <input
+                            type="number"
+                            min="0"
+                            max={batch.capacity}
+                            required
+                            value={batch.available_seats}
+                            onChange={(e) =>
+                              handleUpdateDepartureBatch(idx, 'available_seats', Number(e.target.value))
+                            }
+                            placeholder="e.g. 12"
+                            className="w-full bg-slate-900 text-white text-xs px-3 py-2 rounded-lg border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDepartureBatch(idx)}
+                        title="Remove Departure Batch"
+                        className="self-end sm:self-center p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer shrink-0"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </form>
         </div>

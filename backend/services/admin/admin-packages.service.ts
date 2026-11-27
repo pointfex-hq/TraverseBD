@@ -380,6 +380,25 @@ export function updateAdminPackage(
     ];
   }
 
+  let departures = existing.departures;
+  if (updates.departures !== undefined) {
+    departures = (updates.departures || []).map((dep: any, idx: number) => {
+      const cap = Number(dep.capacity) || 20;
+      const avail = dep.available_seats !== undefined ? Number(dep.available_seats) : cap;
+      const status = avail === 0 ? 'sold_out' : avail <= 5 ? 'few_seats' : 'available';
+      return {
+        id: dep.id || `dep-${Date.now()}-${idx}`,
+        package_id: id,
+        departure_date: dep.departure_date || new Date().toISOString().split('T')[0],
+        capacity: cap,
+        available_seats: avail,
+        status,
+        created_at: dep.created_at || new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+    });
+  }
+
   const updatedPackage: any = {
     ...existing,
     ...updates,
@@ -389,6 +408,7 @@ export function updateAdminPackage(
     category,
     itinerary,
     items,
+    departures,
     rating_average:
       updates.rating_average !== undefined
         ? Number(updates.rating_average)
