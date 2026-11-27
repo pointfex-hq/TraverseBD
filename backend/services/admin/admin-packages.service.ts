@@ -28,6 +28,11 @@ export interface CreatePackageInput {
   status?: 'draft' | 'published';
   is_featured?: boolean;
   is_trending?: boolean;
+  rating_average?: number;
+  reviews_count?: number;
+  itinerary?: { id?: string; day_no: number; title_en: string; description_en: string }[];
+  inclusions?: string[];
+  exclusions?: string[];
   departures?: Partial<PackageDeparture>[];
 }
 
@@ -138,6 +143,8 @@ export function createAdminPackage(input: CreatePackageInput, adminEmail = 'admi
     status: input.status || 'draft',
     is_featured: !!input.is_featured,
     is_trending: !!input.is_trending,
+    rating_average: input.rating_average !== undefined ? Number(input.rating_average) : 4.95,
+    reviews_count: input.reviews_count !== undefined ? Number(input.reviews_count) : 120,
     created_at: now,
     updated_at: now,
     destination: destination
@@ -157,8 +164,36 @@ export function createAdminPackage(input: CreatePackageInput, adminEmail = 'admi
           name_bn: category.name_bn,
         }
       : undefined,
-    itinerary: [],
-    items: [],
+    itinerary: (input.itinerary || []).map((it, idx) => ({
+      id: it.id || `itin-${Date.now()}-${idx}`,
+      package_id: newId,
+      day_no: it.day_no || idx + 1,
+      title_en: it.title_en || `Day ${idx + 1}`,
+      title_bn: it.title_en || `Day ${idx + 1}`,
+      description_en: it.description_en || '',
+      description_bn: it.description_en || '',
+      created_at: now,
+    })),
+    items: [
+      ...(input.inclusions || []).map((inc, idx) => ({
+        id: `inc-${Date.now()}-${idx}`,
+        package_id: newId,
+        type: 'included' as const,
+        text_en: inc,
+        text_bn: inc,
+        sort_order: idx + 1,
+        created_at: now,
+      })),
+      ...(input.exclusions || []).map((exc, idx) => ({
+        id: `exc-${Date.now()}-${idx}`,
+        package_id: newId,
+        type: 'excluded' as const,
+        text_en: exc,
+        text_bn: exc,
+        sort_order: idx + 1,
+        created_at: now,
+      })),
+    ],
     departures: (input.departures || []).map((dep, idx) => ({
       id: `dep-${Date.now()}-${idx}`,
       package_id: newId,
@@ -297,6 +332,54 @@ export function updateAdminPackage(
     }
   }
 
+  let itinerary = existing.itinerary;
+  if (updates.itinerary !== undefined) {
+    itinerary = (updates.itinerary || []).map((it, idx) => ({
+      id: it.id || `itin-${Date.now()}-${idx}`,
+      package_id: id,
+      day_no: it.day_no || idx + 1,
+      title_en: it.title_en || `Day ${idx + 1}`,
+      title_bn: it.title_en || `Day ${idx + 1}`,
+      description_en: it.description_en || '',
+      description_bn: it.description_en || '',
+      created_at: new Date().toISOString(),
+    }));
+  }
+
+  let items = existing.items;
+  if (updates.inclusions !== undefined || updates.exclusions !== undefined) {
+    const existingInclusions = (existing.items || [])
+      .filter((i: any) => i.type === 'included')
+      .map((i: any) => i.text_en);
+    const existingExclusions = (existing.items || [])
+      .filter((i: any) => i.type === 'excluded')
+      .map((i: any) => i.text_en);
+
+    const finalInclusions = updates.inclusions !== undefined ? updates.inclusions : existingInclusions;
+    const finalExclusions = updates.exclusions !== undefined ? updates.exclusions : existingExclusions;
+
+    items = [
+      ...finalInclusions.map((inc, idx) => ({
+        id: `inc-${Date.now()}-${idx}`,
+        package_id: id,
+        type: 'included' as const,
+        text_en: inc,
+        text_bn: inc,
+        sort_order: idx + 1,
+        created_at: new Date().toISOString(),
+      })),
+      ...finalExclusions.map((exc, idx) => ({
+        id: `exc-${Date.now()}-${idx}`,
+        package_id: id,
+        type: 'excluded' as const,
+        text_en: exc,
+        text_bn: exc,
+        sort_order: idx + 1,
+        created_at: new Date().toISOString(),
+      })),
+    ];
+  }
+
   const updatedPackage: any = {
     ...existing,
     ...updates,
@@ -304,6 +387,17 @@ export function updateAdminPackage(
     category_id: categoryId,
     destination,
     category,
+    itinerary,
+    items,
+    rating_average:
+      updates.rating_average !== undefined
+        ? Number(updates.rating_average)
+        : existing.rating_average || 4.95,
+    reviews_count:
+      updates.reviews_count !== undefined
+        ? Number(updates.reviews_count)
+        : existing.reviews_count || 120,
+    is_featured: updates.is_featured !== undefined ? !!updates.is_featured : existing.is_featured,
     updated_at: new Date().toISOString(),
   };
 
