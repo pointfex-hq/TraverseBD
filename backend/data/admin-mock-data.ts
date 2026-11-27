@@ -106,6 +106,10 @@ export interface BlogItem {
   read_time?: string;
   status: 'published' | 'draft';
   published_at?: string;
+  is_featured?: boolean;
+  gallery_images?: string[];
+  author_name?: string;
+  author_role?: string;
 }
 
 export interface SiteSettings {
@@ -164,36 +168,63 @@ export const INITIAL_BLOGS: BlogItem[] = [
     slug: 'coxs-bazar-travel-guide',
     title_en: "Ultimate Travel Guide to Cox's Bazar in 2026",
     excerpt_en: 'Everything you need to know about hotels, local seafood, Marine Drive drives, and quiet beaches.',
-    content_en: "Cox's Bazar offers much more than just the main crowded beach. Traveling down the 80km Marine Drive to Inani and Teknaf opens up hidden coral coasts, secluded fishing hamlets, and dramatic ocean viewpoints...",
+    content_en: "Cox's Bazar offers much more than just the main crowded beach. Traveling down the 80km Marine Drive to Inani and Teknaf opens up hidden coral coasts, secluded fishing hamlets, and dramatic ocean viewpoints. Whether you are sampling fresh grilled pomfret at Kolatoli or watching local moon boats return at sunset, Cox's Bazar remains the coastal jewel of Bengal.\n\nFrom luxury beachside resorts near Marine Drive to peaceful trails through Himchari National Park, this guide covers the exact logistics you need for a safe and unforgettable trip.",
     cover_image_url: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop',
     destination_slug: 'coxs-bazar',
     read_time: '6 min read',
     status: 'published',
     published_at: '2026-11-15T09:00:00Z',
+    is_featured: true,
+    gallery_images: [
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?q=80&w=800&auto=format&fit=crop',
+    ],
+    author_name: 'Tanvir Chowdhury',
+    author_role: 'Lead Coastal Specialist',
   },
   {
     id: 'b2',
     slug: 'sajek-cloud-valley-tips',
     title_en: 'How to Catch the Sea of Clouds in Sajek Valley',
     excerpt_en: 'The best months, cottage balcony tips, and early morning viewpoints at Konglak Para.',
-    content_en: 'The magic of Sajek Valley lies in its elevation and geographical pocket that traps morning fog and clouds. Between October and February, waking up at 5:30 AM guarantees an ocean of white cotton clouds...',
+    content_en: "The magic of Sajek Valley lies in its elevation and geographical pocket that traps morning fog and clouds. Between October and February, waking up at 5:30 AM guarantees an ocean of white cotton clouds rolling across the green mountain ranges.\n\nMake sure to join the scheduled army convoy from Dighinala and reserve wooden eco-cottages on the Konglak ridge for the premier 360-degree panorama.",
     cover_image_url: 'https://images.unsplash.com/photo-1628178122971-45607ef3c428?q=80&w=1200&auto=format&fit=crop',
     destination_slug: 'sajek-valley',
     read_time: '5 min read',
     status: 'published',
     published_at: '2026-11-18T10:00:00Z',
+    is_featured: false,
+    gallery_images: [
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop',
+    ],
+    author_name: 'Farzana Rahman',
+    author_role: 'Hill Tract Expedition Guide',
   },
   {
     id: 'b3',
     slug: 'sundarbans-wildlife-houseboat-guide',
     title_en: 'Deep in the Mangroves: Complete Guide to Sundarbans Houseboat Cruises',
     excerpt_en: 'Navigating tidal creeks, spotting Royal Bengal tigers and spotted deer from watchtowers.',
-    content_en: 'The UNESCO World Heritage mangrove forest of Sundarbans is best explored on an eco-houseboat cruising through Kotka and Kochikhali wildlife sanctuaries...',
+    content_en: 'The UNESCO World Heritage mangrove forest of Sundarbans is best explored on an eco-houseboat cruising through Kotka and Kochikhali wildlife sanctuaries. Dawn birdwatching, silent canoe tours, and guided shore walks with armed forest guards make it an unparalleled wilderness expedition in South Asia.',
     cover_image_url: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop',
     destination_slug: 'sundarbans',
     read_time: '7 min read',
     status: 'published',
     published_at: '2026-11-20T11:00:00Z',
+    is_featured: false,
+    gallery_images: [
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
+    ],
+    author_name: 'Mahmudul Hasan',
+    author_role: 'Certified Naturalist Guide',
   },
 ];
 

@@ -9,6 +9,8 @@ export interface CreateBlogInput {
   destination_slug?: string;
   read_time?: string;
   status?: 'published' | 'draft';
+  is_featured?: boolean;
+  gallery_images?: string[];
 }
 
 function generateSlug(text: string): string {
@@ -43,6 +45,12 @@ export function createAdminBlog(
     throw new Error(`A blog post with slug "${slug}" already exists.`);
   }
 
+  if (input.is_featured) {
+    adminStore.blogs.forEach((b) => {
+      b.is_featured = false;
+    });
+  }
+
   const newBlog: BlogItem = {
     id: `blog-${Date.now()}`,
     slug,
@@ -56,6 +64,10 @@ export function createAdminBlog(
     read_time: input.read_time?.trim() || '5 min read',
     status: input.status || 'published',
     published_at: new Date().toISOString(),
+    is_featured: !!input.is_featured,
+    gallery_images: Array.isArray(input.gallery_images)
+      ? input.gallery_images.filter((img) => img && img.trim().length > 0).slice(0, 5)
+      : [],
   };
 
   adminStore.blogs.unshift(newBlog);
@@ -90,10 +102,20 @@ export function updateAdminBlog(
     slug = formattedSlug;
   }
 
+  if (updates.is_featured) {
+    adminStore.blogs.forEach((b) => {
+      if (b.id !== id) b.is_featured = false;
+    });
+  }
+
   const updated: BlogItem = {
     ...existing,
     ...updates,
     slug,
+    is_featured: updates.is_featured !== undefined ? !!updates.is_featured : existing.is_featured,
+    gallery_images: Array.isArray(updates.gallery_images)
+      ? updates.gallery_images.filter((img) => img && img.trim().length > 0).slice(0, 5)
+      : existing.gallery_images || [],
   };
 
   adminStore.blogs[index] = updated;

@@ -27,7 +27,10 @@ export default function AdminBlogsView() {
   const [destinationSlug, setDestinationSlug] = useState('');
   const [readTime, setReadTime] = useState('5 min read');
   const [status, setStatus] = useState<'published' | 'draft'>('published');
+  const [isFeatured, setIsFeatured] = useState(false);
   const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [newGalleryInput, setNewGalleryInput] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
 
@@ -57,7 +60,10 @@ export default function AdminBlogsView() {
     setDestinationSlug('');
     setReadTime('5 min read');
     setStatus('published');
+    setIsFeatured(false);
     setCoverImageUrl('https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop');
+    setGalleryImages([]);
+    setNewGalleryInput('');
     setExcerpt('');
     setContent('');
     setErrorMsg('');
@@ -71,7 +77,10 @@ export default function AdminBlogsView() {
     setDestinationSlug(b.destination_slug || '');
     setReadTime(b.read_time || '5 min read');
     setStatus(b.status || 'published');
+    setIsFeatured(!!b.is_featured);
     setCoverImageUrl(b.cover_image_url);
+    setGalleryImages(b.gallery_images || []);
+    setNewGalleryInput('');
     setExcerpt(b.excerpt_en);
     setContent(b.content_en);
     setErrorMsg('');
@@ -95,7 +104,9 @@ export default function AdminBlogsView() {
         destination_slug: destinationSlug.trim() || undefined,
         read_time: readTime.trim() || '5 min read',
         status,
+        is_featured: isFeatured,
         cover_image_url: coverImageUrl.trim(),
+        gallery_images: galleryImages.filter((img) => img.trim().length > 0).slice(0, 5),
         excerpt_en: excerpt.trim(),
         content_en: content.trim(),
       };
@@ -141,6 +152,21 @@ export default function AdminBlogsView() {
     } catch (err) {
       console.error(err);
       alert('Error toggling status');
+    }
+  };
+
+  const handleToggleFeatured = async (id: string, currentFeatured: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/blogs/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_featured: !currentFeatured }),
+      });
+      if (res.ok) {
+        await fetchBlogs();
+      }
+    } catch (e) {
+      console.error('Failed to toggle featured', e);
     }
   };
 
@@ -310,9 +336,23 @@ export default function AdminBlogsView() {
                     {b.status === 'draft' ? 'Draft (Hidden)' : 'Published (Live)'}
                   </span>
 
+                  {b.is_featured && (
+                    <span className="absolute top-10 left-3 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider bg-amber-500 text-white shadow-md flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[12px]">stars</span>
+                      <span>Featured</span>
+                    </span>
+                  )}
+
                   {b.read_time && (
                     <span className="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
                       {b.read_time}
+                    </span>
+                  )}
+
+                  {b.gallery_images && b.gallery_images.length > 0 && (
+                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-white text-[10px] font-bold flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[12px]">photo_library</span>
+                      <span>{b.gallery_images.length} photos</span>
                     </span>
                   )}
                 </div>
@@ -358,6 +398,20 @@ export default function AdminBlogsView() {
                 </button>
 
                 <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleToggleFeatured(b.id, !!b.is_featured)}
+                    title={b.is_featured ? 'Remove featured status' : 'Mark as Top Featured Article'}
+                    className={`p-1.5 rounded-lg transition-all ${
+                      b.is_featured
+                        ? 'text-amber-400 bg-amber-500/20 hover:bg-amber-500/30'
+                        : 'text-slate-400 hover:text-amber-400 hover:bg-slate-800'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[18px]">
+                      {b.is_featured ? 'stars' : 'star'}
+                    </span>
+                  </button>
                   <a
                     href={`/blog/${b.slug}`}
                     target="_blank"
@@ -496,6 +550,84 @@ export default function AdminBlogsView() {
                 required
                 helperText="Upload article banner (max 10MB) or toggle to paste direct image link."
               />
+
+              {/* Featured Article Flag */}
+              <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-bold text-white block flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-amber-400 text-[18px]">stars</span>
+                    <span>Top Featured Article</span>
+                  </span>
+                  <span className="text-[11px] text-slate-400 block mt-0.5">
+                    Places this article as the hero spotlight header on the main travel journal.
+                  </span>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isFeatured}
+                    onChange={(e) => setIsFeatured(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-10 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+              </div>
+
+              {/* Article Photo Gallery (Up to 5 Images) */}
+              <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-primary-fixed text-[18px]">photo_library</span>
+                    <span>Article Image Gallery ({galleryImages.length}/5)</span>
+                  </label>
+                  <span className="text-[10px] text-slate-400">Up to 5 high-resolution photos</span>
+                </div>
+
+                {galleryImages.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+                    {galleryImages.map((imgUrl, idx) => (
+                      <div key={idx} className="relative aspect-video rounded-lg overflow-hidden border border-slate-700 group">
+                        <img src={imgUrl} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => setGalleryImages(galleryImages.filter((_, i) => i !== idx))}
+                          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center text-xs transition"
+                          title="Remove photo"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {galleryImages.length < 5 ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      placeholder="Paste image URL (https://...)"
+                      value={newGalleryInput}
+                      onChange={(e) => setNewGalleryInput(e.target.value)}
+                      className="flex-1 px-3 py-1.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary font-mono text-[11px]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (newGalleryInput.trim()) {
+                          setGalleryImages([...galleryImages, newGalleryInput.trim()].slice(0, 5));
+                          setNewGalleryInput('');
+                        }
+                      }}
+                      className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold transition flex items-center gap-1 shrink-0"
+                    >
+                      <span className="material-symbols-outlined text-[15px]">add</span>
+                      <span>Add</span>
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-slate-400 italic">Maximum limit of 5 photos reached.</p>
+                )}
+              </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
