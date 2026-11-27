@@ -97,22 +97,14 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
         </nav>
       </div>
 
-      {/* Footer / Public Link */}
-      <div className="p-6 border-t border-slate-800 space-y-3">
-        <Link
-          href="/"
-          target="_blank"
-          onClick={() => isMobile && onClose?.()}
-          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition"
-        >
-          <span className="material-symbols-outlined text-[18px] text-primary-fixed">
-            open_in_new
-          </span>
-          <span>View Live Portal</span>
-        </Link>
-        <p className="text-[10px] text-slate-500 px-3">
-          TraverseBD CMS v1.2 • Operations Platform
-        </p>
+      {/* Footer / Version Branding */}
+      <div className="p-5 border-t border-slate-800 flex items-center justify-between">
+        <span className="text-[11px] font-bold text-slate-400 tracking-wide">
+          TraverseBD v1.2
+        </span>
+        <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          Online
+        </span>
       </div>
     </>
   );
