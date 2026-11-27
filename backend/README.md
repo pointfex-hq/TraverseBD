@@ -1,7 +1,7 @@
 # TraverseBD — Backend Architecture & Core Services
 
 **Project Manager & Technical Lead:** Hafizur Rahman  
-**Team:** Team Lithium / Pointfex  
+**Team:** TraverseBD / Pointfex  
 **Stack:** Next.js 14, TypeScript, Supabase (PostgreSQL), Zod, Tailwind CSS  
 
 ---
