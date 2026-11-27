@@ -32,7 +32,7 @@ export default function AdminHeader({
   };
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md px-3 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-30">
+    <header className="h-16 shrink-0 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md px-3 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-30">
       <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
         {onToggleMobileSidebar && (
           <button

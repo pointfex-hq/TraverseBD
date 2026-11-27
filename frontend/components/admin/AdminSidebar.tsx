@@ -111,7 +111,7 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
   return (
     <>
       {/* Desktop Persistent Sidebar */}
-      <aside className="hidden lg:flex w-64 bg-slate-900 border-r border-slate-800 flex-col justify-between shrink-0 min-h-screen text-slate-300">
+      <aside className="hidden lg:flex w-64 bg-slate-900 border-r border-slate-800 flex-col justify-between shrink-0 h-screen overflow-y-auto sticky top-0 text-slate-300">
         {renderNavContent(false)}
       </aside>
 
