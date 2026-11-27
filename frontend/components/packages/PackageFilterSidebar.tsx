@@ -122,18 +122,29 @@ export default function PackageFilterSidebar({
         </div>
       </div>
 
-      {/* Direct WhatsApp Assistance */}
+      {/* Direct Assistance */}
       <div className="pt-2 border-t border-surface-container text-center space-y-2">
         <p className="text-[11px] text-on-surface-variant">Looking for a customized group itinerary?</p>
-        <a
-          href="https://wa.me/8801627444330?text=Hello%20Traverse%20BD!%20I%20would%20like%20to%20customize%20a%20private%20tour%20package."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#20ba59] transition shadow-sm"
-        >
-          <span className="material-symbols-outlined text-[16px]">chat</span>
-          <span>Chat on WhatsApp</span>
-        </a>
+        <div className="space-y-1.5">
+          <a
+            href="https://wa.me/8801627444330?text=Hello%20Traverse%20BD!%20I%20would%20like%20to%20customize%20a%20private%20tour%20package."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#20ba59] transition shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[16px]">chat</span>
+            <span>Chat on WhatsApp</span>
+          </a>
+          <a
+            href="https://www.facebook.com/messages/t/431751336697364"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-[#0084FF] text-white text-xs font-bold hover:bg-[#0073e6] transition shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[16px]">forum</span>
+            <span>Message on Facebook</span>
+          </a>
+        </div>
       </div>
     </aside>
   );
