@@ -248,7 +248,7 @@ export default function AboutView() {
             Meet the Team Driving Traverse BD
           </h2>
           <p className="text-xs sm:text-sm text-on-surface-variant">
-            Built by engineers and travel architects under Team Lithium (Pointfex), combining technical excellence with grassroots field expertise.
+            Built by engineers and travel architects under Traverse BD (Pointfex), combining technical excellence with grassroots field expertise.
           </p>
         </div>
 
