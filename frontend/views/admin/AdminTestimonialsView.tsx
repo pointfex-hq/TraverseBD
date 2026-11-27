@@ -3,15 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { Testimonial } from '@backend/data/admin-mock-data';
 import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
+import ImageUploadField from '@frontend/components/admin/ImageUploadField';
 
-const PRESET_AVATARS = [
-  { label: 'Male 1 (Tanvir)', url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=250&auto=format&fit=crop' },
-  { label: 'Female 1 (Nusrat)', url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=250&auto=format&fit=crop' },
-  { label: 'Male 2 (Farhan)', url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=250&auto=format&fit=crop' },
-  { label: 'Female 2 (Sabrina)', url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=250&auto=format&fit=crop' },
-  { label: 'Male 3 (Mahir)', url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=250&auto=format&fit=crop' },
-  { label: 'Female 3 (Anika)', url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=250&auto=format&fit=crop' },
-];
+const DEFAULT_AVATAR_FALLBACK = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=250&auto=format&fit=crop';
 
 export default function AdminTestimonialsView() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -68,7 +62,7 @@ export default function AdminTestimonialsView() {
     setName('');
     setRole('Family Vacationer');
     setLocation('Dhaka');
-    setAvatarUrl(PRESET_AVATARS[0].url);
+    setAvatarUrl('');
     setQuote('');
     setRating(5);
     setPackageTitle(packages[0]?.title_en || 'Sajek Valley Cloud Kingdom Escape');
@@ -117,7 +111,7 @@ export default function AdminTestimonialsView() {
       name: name.trim(),
       role: role.trim(),
       location: location.trim(),
-      avatarUrl: avatarUrl.trim() || PRESET_AVATARS[0].url,
+      avatarUrl: avatarUrl.trim() || DEFAULT_AVATAR_FALLBACK,
       quote: quote.trim(),
       rating: Number(rating) || 5,
       package_title: packageTitle.trim() || 'Custom Tour',
@@ -166,20 +160,31 @@ export default function AdminTestimonialsView() {
 
   const handleToggleStatus = async (item: Testimonial) => {
     const newStatus = item.status === 'published' ? 'draft' : 'published';
+    // Optimistic UI update so the eye and status pill reflect immediately
+    setTestimonials((prev) =>
+      prev.map((t) => (t.id === item.id ? { ...t, status: newStatus } : t))
+    );
+
     try {
       const res = await fetch(`/api/admin/testimonials/${item.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
       });
       const data = await res.json();
-      if (data.success) {
+      if (!res.ok || !data.success) {
+        // Revert on error
         setTestimonials((prev) =>
-          prev.map((t) => (t.id === item.id ? { ...t, status: newStatus } : t))
+          prev.map((t) => (t.id === item.id ? { ...t, status: item.status } : t))
         );
+        alert(data.error?.message || data.error || 'Failed to toggle review visibility');
       }
     } catch (e) {
-      console.error('Failed to toggle status:', e);
+      // Revert on error
+      setTestimonials((prev) =>
+        prev.map((t) => (t.id === item.id ? { ...t, status: item.status } : t))
+      );
+      alert('Network error while toggling review visibility');
     }
   };
 
@@ -351,15 +356,23 @@ export default function AdminTestimonialsView() {
                     </div>
                   </div>
 
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase shrink-0 ${
+                  <button
+                    type="button"
+                    onClick={() => handleToggleStatus(item)}
+                    title={item.status === 'published' ? 'Live on website (Click to Hide/Draft)' : 'Draft/Hidden (Click to Publish Live)'}
+                    className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase shrink-0 transition cursor-pointer flex items-center gap-1.5 border ${
                       item.status === 'published'
-                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                        : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/25'
+                        : 'bg-amber-500/15 text-amber-400 border-amber-500/30 hover:bg-amber-500/25'
                     }`}
                   >
-                    {item.status}
-                  </span>
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        item.status === 'published' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
+                      }`}
+                    />
+                    <span>{item.status === 'published' ? 'Published' : 'Draft'}</span>
+                  </button>
                 </div>
 
                 {/* Tour & Rating */}
@@ -385,12 +398,17 @@ export default function AdminTestimonialsView() {
                 <span className="text-[10px] text-slate-500 font-medium">{item.date}</span>
                 <div className="flex items-center gap-1">
                   <button
+                    type="button"
                     onClick={() => handleToggleStatus(item)}
-                    title={item.status === 'published' ? 'Switch to Draft' : 'Publish to Website'}
-                    className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+                    title={item.status === 'published' ? 'Review is visible on site (Click to Hide/Draft)' : 'Review is hidden (Click to Publish Live)'}
+                    className={`p-1.5 rounded-lg transition cursor-pointer ${
+                      item.status === 'published'
+                        ? 'text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    }`}
                   >
-                    <span className="material-symbols-outlined text-[16px]">
-                      {item.status === 'published' ? 'visibility_off' : 'visibility'}
+                    <span className="material-symbols-outlined text-[18px]">
+                      {item.status === 'published' ? 'visibility' : 'visibility_off'}
                     </span>
                   </button>
                   <button
@@ -514,36 +532,14 @@ export default function AdminTestimonialsView() {
                 </select>
               </div>
 
-              {/* Avatar Preset Quick-Pick */}
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                  Traveler Photo / Avatar (Select Bangladeshi Portrait Preset or Custom URL)
-                </label>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {PRESET_AVATARS.map((p) => (
-                    <button
-                      key={p.url}
-                      type="button"
-                      onClick={() => setAvatarUrl(p.url)}
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium transition border ${
-                        avatarUrl === p.url
-                          ? 'bg-primary text-white border-primary'
-                          : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500'
-                      }`}
-                    >
-                      <img src={p.url} alt="" className="w-4 h-4 rounded-full object-cover" />
-                      <span>{p.label}</span>
-                    </button>
-                  ))}
-                </div>
-                <input
-                  type="url"
-                  placeholder="Custom Avatar URL (https://...)"
-                  value={avatarUrl}
-                  onChange={(e) => setAvatarUrl(e.target.value)}
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary font-mono text-[11px]"
-                />
-              </div>
+              {/* Traveler Photo / Avatar with ImageUploadField */}
+              <ImageUploadField
+                label="Traveler Photo / Avatar"
+                value={avatarUrl}
+                onChange={(url) => setAvatarUrl(url)}
+                folder="testimonials"
+                helperText="Upload traveler photo (<10MB) or paste direct image URL (Unsplash, Cloudinary, etc.)"
+              />
 
               {/* Rating & Verified & Status */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
