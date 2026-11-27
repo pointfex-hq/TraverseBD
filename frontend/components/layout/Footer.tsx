@@ -2,8 +2,16 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Do not render public Footer on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -86,9 +94,6 @@ export default function Footer() {
             </Link>
             <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors" href="/packages">
               Tour Packages
-            </Link>
-            <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors" href="/destinations">
-              Destinations
             </Link>
             <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors" href="/services">
               Our Services
