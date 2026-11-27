@@ -28,6 +28,22 @@ export default function HomeView({
   // Trending Packages Category Filter Tab
   const [activeCategoryTab, setActiveCategoryTab] = useState<string>('all');
 
+  // Live Testimonials with client-side synchronization
+  const [liveTestimonials, setLiveTestimonials] = useState<Testimonial[]>(
+    testimonials.filter((t) => t.status === 'published')
+  );
+
+  useEffect(() => {
+    fetch('/api/public/testimonials')
+      .then((r) => r.json())
+      .then((json) => {
+        if (json.data && Array.isArray(json.data)) {
+          setLiveTestimonials(json.data.filter((t: Testimonial) => t.status === 'published'));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Quick Callback Form State
   const [callbackName, setCallbackName] = useState('');
   const [callbackPhone, setCallbackPhone] = useState('');
@@ -523,53 +539,61 @@ export default function HomeView({
           </div>
 
           {/* Reviews Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(testimonials && testimonials.length > 0 ? testimonials : MOCK_TESTIMONIALS).map((review) => (
-              <div
-                key={review.id}
-                className="p-6 rounded-3xl bg-surface-container-low border border-surface-container flex flex-col justify-between gap-5 hover:border-primary/30 transition shadow-sm"
-              >
-                <div className="space-y-3">
-                  {/* Rating Stars */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex text-amber-500 text-sm">
-                      {Array.from({ length: review.rating }).map((_, i) => (
-                        <span key={i}>★</span>
-                      ))}
-                    </div>
-                    {review.verified && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
-                        <span className="material-symbols-outlined text-[12px]">verified</span> Verified
-                      </span>
-                    )}
-                  </div>
+          {liveTestimonials.filter((review) => review.status === 'published').length === 0 ? (
+            <div className="p-8 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-3xl border border-surface-container">
+              Verified traveler reviews are being updated. Connect with our guides for live post-trip reviews.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {liveTestimonials
+                .filter((review) => review.status === 'published')
+                .map((review) => (
+                  <div
+                    key={review.id}
+                    className="p-6 rounded-3xl bg-surface-container-low border border-surface-container flex flex-col justify-between gap-5 hover:border-primary/30 transition shadow-sm"
+                  >
+                    <div className="space-y-3">
+                      {/* Rating Stars */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex text-amber-500 text-sm">
+                          {Array.from({ length: review.rating }).map((_, i) => (
+                            <span key={i}>★</span>
+                          ))}
+                        </div>
+                        {review.verified && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
+                            <span className="material-symbols-outlined text-[12px]">verified</span> Verified
+                          </span>
+                        )}
+                      </div>
 
-                  {/* Review Text */}
-                  <p className="text-xs text-on-surface-variant leading-relaxed italic">
-                    &ldquo;{review.quote}&rdquo;
-                  </p>
-                </div>
+                      {/* Review Text */}
+                      <p className="text-xs text-on-surface-variant leading-relaxed italic">
+                        &ldquo;{review.quote}&rdquo;
+                      </p>
+                    </div>
 
-                {/* Author Info */}
-                <div className="pt-3 border-t border-surface-container-high/60 space-y-2">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={review.avatarUrl}
-                      alt={review.name}
-                      className="w-10 h-10 rounded-full object-cover border border-outline-variant/30"
-                    />
-                    <div>
-                      <h4 className="font-bold text-xs text-on-surface">{review.name}</h4>
-                      <p className="text-[10px] text-on-surface-variant">{review.role} • {review.location}</p>
+                    {/* Author Info */}
+                    <div className="pt-3 border-t border-surface-container-high/60 space-y-2">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={review.avatarUrl}
+                          alt={review.name}
+                          className="w-10 h-10 rounded-full object-cover border border-outline-variant/30"
+                        />
+                        <div>
+                          <h4 className="font-bold text-xs text-on-surface">{review.name}</h4>
+                          <p className="text-[10px] text-on-surface-variant">{review.role} • {review.location}</p>
+                        </div>
+                      </div>
+                      <div className="text-[10px] text-primary font-semibold truncate">
+                        Tour: {review.package_title}
+                      </div>
                     </div>
                   </div>
-                  <div className="text-[10px] text-primary font-semibold truncate">
-                    Tour: {review.package_title}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                ))}
+            </div>
+          )}
         </div>
       </section>
 
