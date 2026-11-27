@@ -131,7 +131,50 @@ export default function AdminCategoriesView() {
       </div>
 
       <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
+        {/* Mobile cards view (< sm) */}
+        <div className="sm:hidden divide-y divide-slate-800/80">
+          {categories.map((cat) => (
+            <div key={cat.id} className="p-4 flex items-center justify-between gap-3">
+              <div className="min-w-0 space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded bg-primary/20 text-primary-fixed text-[10px] font-bold flex items-center justify-center shrink-0">
+                    #{cat.sort_order}
+                  </span>
+                  <span className="font-bold text-white text-xs truncate">{cat.name_en}</span>
+                </div>
+                <span className="text-[11px] text-slate-400 font-bengali block truncate">
+                  {cat.name_bn}
+                </span>
+                <span className="text-[10px] font-mono text-slate-500 block truncate">
+                  slug: {cat.slug}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={() => openEditModal(cat)}
+                  className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs transition"
+                  title="Edit Category"
+                >
+                  <span className="material-symbols-outlined text-[16px]">edit</span>
+                </button>
+                <button
+                  onClick={() => setDeleteTarget({ id: cat.id, name: cat.name_en })}
+                  className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
+                  title="Delete Category"
+                >
+                  <span className="material-symbols-outlined text-[16px]">delete</span>
+                </button>
+              </div>
+            </div>
+          ))}
+          {categories.length === 0 && (
+            <div className="p-6 text-center text-slate-400 text-xs">No categories created yet.</div>
+          )}
+        </div>
+
+        {/* Desktop Table (sm and above) */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300 min-w-[520px]">
           <thead className="text-[10px] uppercase font-bold text-slate-500 border-b border-slate-800 bg-slate-950/40">
             <tr>
