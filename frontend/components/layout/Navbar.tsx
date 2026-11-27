@@ -75,14 +75,14 @@ export default function Navbar() {
 
           {/* Right Action Buttons */}
           <div className="hidden sm:flex items-center gap-2.5 xl:gap-3 shrink-0 whitespace-nowrap">
-            {/* Direct Call Action (No phone number string displayed) */}
+            {/* Direct Call Action */}
             <a
               href={phoneTel}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface hover:text-primary transition-all border border-outline-variant/40 whitespace-nowrap text-xs font-bold"
               title="Call Operations Desk"
             >
               <span className="material-symbols-outlined text-primary text-[17px]">call</span>
-              <span>Call Us</span>
+              <span>01627-444330</span>
             </a>
 
             {/* Book Now Primary WhatsApp CTA */}
@@ -160,7 +160,7 @@ export default function Navbar() {
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-xs font-bold border border-outline-variant/30"
             >
               <span className="material-symbols-outlined text-primary text-base">call</span>
-              <span>Call Us</span>
+              <span>Call 01627-444330</span>
             </a>
             <a
               href={whatsappBookingUrl}

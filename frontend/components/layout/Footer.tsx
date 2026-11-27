@@ -15,7 +15,7 @@ export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const phoneDisplay = '01627444330';
+  const phoneDisplay = '01627-444330';
   const phoneTel = 'tel:01627444330';
   const whatsappUrl = 'https://wa.me/8801627444330';
 

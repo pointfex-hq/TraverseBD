@@ -12,7 +12,7 @@ export default function ContactView() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const phoneDisplay = '01627444330';
+  const phoneDisplay = '01627-444330';
   const phoneTel = 'tel:01627444330';
   const defaultWaNumber = process.env.NEXT_PUBLIC_DEFAULT_WHATSAPP_NUMBER || '8801627444330';
 
