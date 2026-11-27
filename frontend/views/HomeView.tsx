@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Package } from '@backend/types/database.types';
+import { Package, Category } from '@backend/types/database.types';
 import { MOCK_TESTIMONIALS } from '@backend/services/testimonials.service';
 import { SiteSettings } from '@backend/data/admin-mock-data';
 
@@ -12,14 +12,15 @@ interface HomeViewProps {
     destination?: { name_en?: string; name_bn?: string };
     category?: { slug?: string; name_en?: string; name_bn?: string };
   })[];
+  categories?: Category[];
   siteSettings?: SiteSettings;
 }
 
-export default function HomeView({ packages = [], siteSettings }: HomeViewProps) {
+export default function HomeView({ packages = [], categories = [], siteSettings }: HomeViewProps) {
   const router = useRouter();
 
   // Trending Packages Category Filter Tab
-  const [activeCategoryTab, setActiveCategoryTab] = useState<'all' | 'hills' | 'coastal' | 'mangroves'>('all');
+  const [activeCategoryTab, setActiveCategoryTab] = useState<string>('all');
 
   // Quick Callback Form State
   const [callbackName, setCallbackName] = useState('');
@@ -77,13 +78,13 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
     const priceFormatted = pkg.price_bdt
       ? `BDT ${pkg.price_bdt.toLocaleString()}`
       : 'Contact for Price';
-    const ratingFormatted = '4.95';
-    const reviewsCount = '120';
+    const ratingFormatted = (pkg.rating_average || 4.95).toFixed(2);
+    const reviewsCount = String(pkg.reviews_count || 120);
     const durationFormatted = `${pkg.duration_days || 3}D / ${pkg.duration_nights || 2}N`;
     const badgeText = pkg.is_featured ? 'Bestseller' : 'Signature Tour';
     const badgeColor = pkg.is_featured
-      ? 'bg-primary/90 text-on-primary'
-      : 'bg-tertiary/90 text-on-tertiary';
+      ? 'bg-amber-500 text-white'
+      : 'bg-primary/90 text-on-primary';
 
     return {
       id: pkg.id,
@@ -99,6 +100,8 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
       reviews: reviewsCount,
       price: priceFormatted,
       category: mappedCat,
+      categorySlug: catSlug,
+      categoryId: pkg.category_id,
       img:
         pkg.cover_image_url ||
         'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
@@ -108,7 +111,12 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
   const filteredTrendingPackages =
     activeCategoryTab === 'all'
       ? dynamicPackages
-      : dynamicPackages.filter((p) => p.category === activeCategoryTab);
+      : dynamicPackages.filter(
+          (p) =>
+            p.categorySlug === activeCategoryTab.toLowerCase() ||
+            p.categoryId === activeCategoryTab ||
+            p.category === activeCategoryTab
+        );
 
   return (
     <main className="w-full bg-surface">
@@ -252,7 +260,7 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
                 <button
                   type="button"
                   onClick={() => setActiveCategoryTab('all')}
-                  className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
+                  className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm cursor-pointer ${
                     activeCategoryTab === 'all'
                       ? 'active bg-primary text-white'
                       : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
@@ -260,39 +268,58 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
                 >
                   All Journeys
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveCategoryTab('hills')}
-                  className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    activeCategoryTab === 'hills'
-                      ? 'active bg-primary text-white shadow-sm'
-                      : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  Hills &amp; Mountains
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveCategoryTab('coastal')}
-                  className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    activeCategoryTab === 'coastal'
-                      ? 'active bg-primary text-white shadow-sm'
-                      : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  Coastal &amp; Islands
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveCategoryTab('mangroves')}
-                  className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    activeCategoryTab === 'mangroves'
-                      ? 'active bg-primary text-white shadow-sm'
-                      : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  Mangroves &amp; Wildlife
-                </button>
+                {categories && categories.length > 0 ? (
+                  categories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setActiveCategoryTab(cat.slug || cat.id)}
+                      className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        activeCategoryTab === (cat.slug || cat.id)
+                          ? 'active bg-primary text-white shadow-sm'
+                          : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
+                      }`}
+                    >
+                      {cat.name_en}
+                    </button>
+                  ))
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setActiveCategoryTab('hills')}
+                      className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        activeCategoryTab === 'hills'
+                          ? 'active bg-primary text-white shadow-sm'
+                          : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
+                      }`}
+                    >
+                      Hills &amp; Mountains
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveCategoryTab('coastal')}
+                      className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        activeCategoryTab === 'coastal'
+                          ? 'active bg-primary text-white shadow-sm'
+                          : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
+                      }`}
+                    >
+                      Coastal &amp; Islands
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveCategoryTab('mangroves')}
+                      className={`filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                        activeCategoryTab === 'mangroves'
+                          ? 'active bg-primary text-white shadow-sm'
+                          : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
+                      }`}
+                    >
+                      Mangroves &amp; Wildlife
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
