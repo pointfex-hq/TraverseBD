@@ -53,64 +53,19 @@ export default function ServicesView() {
       badge: 'Academic Discount',
     },
     {
-      id: 'ship-tickets',
-      title: 'Ship Tickets & Cruise Charters',
-      subtitle: 'Saint Martin Island Ferries & Sundarbans Houseboats',
-      icon: 'directions_boat',
-      desc: 'Guaranteed advance seat reservations on authorized tourist ships to Saint Martin (Bay One, MV Karnafuly Express, MV Baro Aulia) and private charter of shallow-draft tourist vessels navigating the Sundarbans mangrove channels.',
+      id: 'guided-expeditions',
+      title: 'Guided Signature Expeditions',
+      subtitle: 'Expert Field Naturalists, 4x4 Mountain Safaris & Island Cruises',
+      icon: 'explore',
+      desc: 'All-inclusive guided expeditions across Bangladesh’s most breathtaking terrain. From Sajek Valley cloud summits with private 4x4 Chander Gari convoys to UNESCO Sundarbans mangrove vessel journeys and remote Saint Martin coral reefs.',
       highlights: [
-        'Confirmed Open Deck, Business, & VIP lounge cabins',
-        'Guaranteed BIWTA authorized vessel schedules',
-        'Roundtrip Teknaf / Cox’s Bazar to Saint Martin boarding passes',
-        'Private Sundarbans eco-houseboat charters with onboard chefs',
+        'Dedicated licensed tour captains & local tribal guides',
+        'Pre-secured forest entry permits, armed guard escorts & inland passes',
+        'Carefully inspected hill cottages, eco-resorts & cruise cabins',
+        '24/7 on-ground emergency dispatch & WhatsApp trip assistance',
       ],
-      ctaText: 'Book Ship Tickets',
-      badge: 'Maritime Access',
-    },
-    {
-      id: 'bus-tickets',
-      title: 'Inter-District Bus Ticketing',
-      subtitle: 'Premium AC Sleeper & Business Class Highway Coaches',
-      icon: 'directions_bus',
-      desc: 'Fast, reliable seat allocation across top intercity bus lines departing Dhaka, Chittagong, and Sylhet. We partner with Shohag, Green Line, Hanif, Shyamoli, and Saintmartin Paribahan to ensure hassle-free night and day departures.',
-      highlights: [
-        'Premium Scania, Volvo, and Hyundai Multi-Axle coaches',
-        'Single & couple sleeper berth seat reservation',
-        'Direct phone/WhatsApp seat confirmation with PNR',
-        'Roundtrip pickup coordination from major city terminals',
-      ],
-      ctaText: 'Reserve Bus Seats',
-      badge: 'Highway Network',
-    },
-    {
-      id: 'hotel-bookings',
-      title: 'Hotel & Eco-Cottage Bookings',
-      subtitle: 'Curated Hill Ridges, Beach Resorts & Heritage Havens',
-      icon: 'hotel',
-      desc: 'Direct reservations at certified accommodations that cannot be booked easily online. From high-altitude bamboo cottages with 360-degree cloud views in Konglak to 5-star beachfront suites in Cox’s Bazar and heritage tea estate bungalows in Sreemangal.',
-      highlights: [
-        'Exclusive allocations at top Konglak & Helipad 1 eco-resorts',
-        'Pre-inspected cleanliness, clean attached washrooms, and solar power',
-        'Special negotiated room rates with early check-in assistance',
-        'Zero middleman markups: exact whole BDT pricing',
-      ],
-      ctaText: 'Book Eco-Resorts',
-      badge: 'Pre-Vetted Stays',
-    },
-    {
-      id: 'flight-tickets',
-      title: 'Domestic Air Ticketing',
-      subtitle: 'Fast Flight Bookings Across Bangladesh',
-      icon: 'airplane_ticket',
-      desc: 'Instant flight bookings and reissuance across all domestic airlines in Bangladesh—including US-Bangla Airlines, Biman Bangladesh Airlines, Air Astra, and Novoair. Fly conveniently to Cox’s Bazar, Sylhet, Saidpur, Chittagong, and Barisal.',
-      highlights: [
-        'Instant PNR issuance and e-ticket dispatch via WhatsApp/email',
-        'Competitive fares on popular tourist flight corridors',
-        'Prompt flight date rescheduling and cancellation assistance',
-        'Direct baggage and airport transfer coordination upon arrival',
-      ],
-      ctaText: 'Inquire Domestic Flights',
-      badge: 'Air Travel',
+      ctaText: 'Explore Guided Expeditions',
+      badge: 'All-Inclusive',
     },
   ];
 
@@ -223,9 +178,9 @@ export default function ServicesView() {
           <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <span className="material-symbols-outlined text-3xl">headset_mic</span>
           </div>
-          <h2 className="text-2xl font-bold text-on-surface">Need a Custom Travel Combination?</h2>
+          <h2 className="text-2xl font-bold text-on-surface">Need a Custom Travel Expedition?</h2>
           <p className="text-xs sm:text-sm text-on-surface-variant max-w-xl mx-auto leading-relaxed">
-            Need flight tickets combined with private Chander Gari hill transfers and Saint Martin ship passes? Our trip coordinators arrange multi-service packages with single-point accountability.
+            Planning a tailor-made expedition with private 4x4 Chander Gari hill convoys, dedicated resort buyouts, and specialized meal arrangements? Our trip coordinators curate custom itineraries with single-point accountability.
           </p>
           <div className="pt-2">
             <Link
