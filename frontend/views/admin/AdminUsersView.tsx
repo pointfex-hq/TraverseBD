@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AdminUser, AdminRole } from '@backend/types/admin.types';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminUsersView() {
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -15,6 +16,10 @@ export default function AdminUsersView() {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<AdminRole>('ADMIN');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // In-App Confirm Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<AdminUser | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadUsers = async () => {
     setIsLoading(true);
@@ -81,7 +86,6 @@ export default function AdminUsersView() {
       return;
     }
     const nextRole: AdminRole = user.role === 'SUPER_ADMIN' ? 'ADMIN' : 'SUPER_ADMIN';
-    if (!confirm(`Change role of ${user.name} to ${nextRole}?`)) return;
 
     try {
       const res = await fetch(`/api/admin/users/${user.id}`, {
@@ -130,26 +134,31 @@ export default function AdminUsersView() {
     }
   };
 
-  const handleDeleteUser = async (user: AdminUser) => {
+  const handleDeleteUser = (user: AdminUser) => {
     if (!isSuperAdmin) {
       alert('Forbidden: Only Super Administrator can delete administrator accounts.');
       return;
     }
-    if (!confirm(`Revoke and permanently delete administrator ${user.name} (${user.email})?`)) {
-      return;
-    }
+    setDeleteTarget(user);
+  };
 
+  const confirmDeleteUser = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/users/${user.id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/users/${deleteTarget.id}`, { method: 'DELETE' });
       const data = await res.json();
 
       if (data.success) {
-        setUsers((prev) => prev.filter((u) => u.id !== user.id));
+        setUsers((prev) => prev.filter((u) => u.id !== deleteTarget.id));
+        setDeleteTarget(null);
       } else {
         alert(data.error?.message || 'Failed to delete user.');
       }
     } catch {
       alert('Failed to delete user.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -420,6 +429,16 @@ export default function AdminUsersView() {
           </div>
         </div>
       )}
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Revoke Administrator Account"
+        message={`Are you sure you want to permanently revoke and delete administrator "${deleteTarget?.name}" (${deleteTarget?.email})? They will immediately lose all administrative dashboard access.`}
+        confirmLabel="Revoke Administrator"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteUser}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
