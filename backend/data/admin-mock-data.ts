@@ -124,12 +124,19 @@ export interface SiteSettings {
   social_youtube?: string;
   social_whatsapp_group?: string;
   corporate_inquiry_notice?: string;
+  hero_featured_badge?: string;
+  hero_featured_title?: string;
+  hero_featured_subtitle?: string;
+  hero_featured_price?: string;
+  hero_featured_location?: string;
+  hero_featured_image?: string;
+  hero_featured_link?: string;
 }
 
 export const INITIAL_SITE_SETTINGS: SiteSettings = {
   hero_title: 'Discover the Untamed Beauty of Bengal & Beyond',
   hero_subtitle: 'Customized corporate tours, student adventures, luxury mangrove houseboats & seamless transit ticketing crafted for lifelong memories across riverways, cloud peaks, and marine horizons.',
-  phone_hotline: '01627444330',
+  phone_hotline: '01627-444330',
   whatsapp_number: '8801627444330',
   contact_email: 'info@traversebd.com',
   operations_mode: '100% Online Operations (Nationwide Bangladesh)',
@@ -142,6 +149,13 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   social_youtube: 'https://youtube.com/@traversebd',
   social_whatsapp_group: 'https://chat.whatsapp.com/traversebd',
   corporate_inquiry_notice: 'Official VAT invoices, corporate retreat buyouts & dedicated trip coordinators available.',
+  hero_featured_badge: 'Featured Haven',
+  hero_featured_title: 'Saint Martin Coral Bay',
+  hero_featured_subtitle: 'Curated Beach Expedition',
+  hero_featured_price: 'BDT 9,200',
+  hero_featured_location: 'Dhaka • Cox • Saint Martin',
+  hero_featured_image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=1200&auto=format&fit=crop',
+  hero_featured_link: '/packages',
 };
 
 export const INITIAL_BLOGS: BlogItem[] = [

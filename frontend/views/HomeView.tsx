@@ -201,36 +201,43 @@ export default function HomeView({ packages = [], categories = [], siteSettings 
               </div>
             </div>
 
-            {/* Right Hero Featured Highlight Card */}
+            {/* Right Hero Featured Highlight Card (Dynamic from Admin Settings) */}
             <div className="lg:col-span-4 flex justify-center">
               <div className="relative w-full max-w-sm rounded-3xl overflow-hidden glass-panel p-3.5 shadow-xl border border-white/80 group">
                 <div className="relative h-60 w-full rounded-2xl overflow-hidden">
                   <img
-                    alt="Saint Martin Coral Bay"
+                    alt={siteSettings?.hero_featured_title || 'Saint Martin Coral Bay'}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM2x8rjAbfJ96Au-izTIVK4SiGyz8NH-S9t-nMVV2ZgbmW27-mqRquN9Iyk93kThRdiW--zP7zefec7oWjA11JFylFaa5aE-c6sQmNzOzWChSFMgOSmS5uAcHVC6bSb8gFPJ_nBEdZMr9-_jzBbrt42wcnuWksPucCvvJfIVmhvP0R_lLv0GgU2WjKd397-Y0o8YLvo1l33cTBMJn3T2mK9wcdWIvp5Z9oPIVPNHYA"
+                    src={
+                      siteSettings?.hero_featured_image ||
+                      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=1200&auto=format&fit=crop'
+                    }
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/85 via-inverse-surface/20 to-transparent" />
                   <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary/80 backdrop-blur-md text-on-primary text-[11px] font-bold uppercase tracking-wider">
-                    Featured Haven
+                    {siteSettings?.hero_featured_badge || 'Featured Haven'}
                   </div>
                   <div className="absolute bottom-3 left-3 right-3 text-surface-bright flex items-end justify-between">
                     <div>
-                      <h3 className="font-bold text-lg text-white">Saint Martin Coral Bay</h3>
-                      <p className="text-xs text-primary-fixed-dim">Curated Beach Expedition</p>
+                      <h3 className="font-bold text-lg text-white">
+                        {siteSettings?.hero_featured_title || 'Saint Martin Coral Bay'}
+                      </h3>
+                      <p className="text-xs text-primary-fixed-dim">
+                        {siteSettings?.hero_featured_subtitle || 'Curated Beach Expedition'}
+                      </p>
                     </div>
                     <span className="px-3 py-1 rounded-xl bg-surface-container-lowest/95 backdrop-blur-md text-primary font-bold text-sm shadow">
-                      BDT 9,200
+                      {siteSettings?.hero_featured_price || 'BDT 9,200'}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between px-2 pt-3 pb-1 text-xs text-on-surface-variant font-medium">
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-primary text-[16px]">location_on</span>
-                    Dhaka • Cox • Saint Martin
+                    {siteSettings?.hero_featured_location || 'Dhaka • Cox • Saint Martin'}
                   </span>
                   <Link
-                    href="/packages"
+                    href={siteSettings?.hero_featured_link || '/packages'}
                     className="text-secondary font-bold uppercase hover:underline"
                   >
                     Explore Tour
