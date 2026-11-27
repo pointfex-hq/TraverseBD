@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BlogItem } from '@backend/data/admin-mock-data';
 import ImageUploadField from '@frontend/components/admin/ImageUploadField';
 import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
@@ -23,14 +23,14 @@ export default function AdminBlogsView() {
 
   // Form Fields
   const [title, setTitle] = useState('');
-  const [slug, setSlug] = useState('');
-  const [destinationSlug, setDestinationSlug] = useState('');
   const [readTime, setReadTime] = useState('5 min read');
   const [status, setStatus] = useState<'published' | 'draft'>('published');
   const [isFeatured, setIsFeatured] = useState(false);
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [newGalleryInput, setNewGalleryInput] = useState('');
+  const [isGalleryUploading, setIsGalleryUploading] = useState(false);
+  const galleryFileInputRef = useRef<HTMLInputElement>(null);
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
 
@@ -56,8 +56,6 @@ export default function AdminBlogsView() {
   const openCreateModal = () => {
     setEditingBlog(null);
     setTitle('');
-    setSlug('');
-    setDestinationSlug('');
     setReadTime('5 min read');
     setStatus('published');
     setIsFeatured(false);
@@ -73,8 +71,6 @@ export default function AdminBlogsView() {
   const openEditModal = (b: BlogItem) => {
     setEditingBlog(b);
     setTitle(b.title_en);
-    setSlug(b.slug);
-    setDestinationSlug(b.destination_slug || '');
     setReadTime(b.read_time || '5 min read');
     setStatus(b.status || 'published');
     setIsFeatured(!!b.is_featured);
@@ -85,6 +81,37 @@ export default function AdminBlogsView() {
     setContent(b.content_en);
     setErrorMsg('');
     setIsModalOpen(true);
+  };
+
+  const handleGalleryFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (galleryImages.length >= 5) {
+      alert('Maximum 5 gallery photos allowed.');
+      return;
+    }
+    setIsGalleryUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'blogs');
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const json = await res.json();
+      if (res.ok && json.data?.url) {
+        setGalleryImages((prev) => [...prev, json.data.url].slice(0, 5));
+      } else {
+        alert(json.error || 'Failed to upload photo');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Image upload error');
+    } finally {
+      setIsGalleryUploading(false);
+      if (galleryFileInputRef.current) galleryFileInputRef.current.value = '';
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -100,8 +127,7 @@ export default function AdminBlogsView() {
 
       const payload = {
         title_en: title.trim(),
-        slug: slug.trim() || undefined,
-        destination_slug: destinationSlug.trim() || undefined,
+        slug: editingBlog?.slug || undefined,
         read_time: readTime.trim() || '5 min read',
         status,
         is_featured: isFeatured,
@@ -495,51 +521,17 @@ export default function AdminBlogsView() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    URL Slug (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. coxs-bazar-travel-guide"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary font-mono text-[11px]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    Destination Tag
-                  </label>
-                  <select
-                    value={destinationSlug}
-                    onChange={(e) => setDestinationSlug(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
-                  >
-                    <option value="">General Travel</option>
-                    <option value="sajek-valley">Sajek Valley</option>
-                    <option value="saint-martins-island">Saint Martin's Island</option>
-                    <option value="sundarbans">Sundarbans</option>
-                    <option value="coxs-bazar">Cox's Bazar</option>
-                    <option value="sreemangal-tea-valleys">Sreemangal</option>
-                    <option value="bandarban-nilgiri">Bandarban</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    Read Time
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 5 min read"
-                    value={readTime}
-                    onChange={(e) => setReadTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Estimated Read Time
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 5 min read"
+                  value={readTime}
+                  onChange={(e) => setReadTime(e.target.value)}
+                  className="w-full sm:w-60 px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
+                />
               </div>
 
               <ImageUploadField
@@ -573,14 +565,14 @@ export default function AdminBlogsView() {
                 </label>
               </div>
 
-              {/* Article Photo Gallery (Up to 5 Images) */}
-              <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 space-y-2.5">
+              {/* Article Photo Gallery (Up to 5 Images with Cloudinary Upload + URL) */}
+              <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
                     <span className="material-symbols-outlined text-primary-fixed text-[18px]">photo_library</span>
                     <span>Article Image Gallery ({galleryImages.length}/5)</span>
                   </label>
-                  <span className="text-[10px] text-slate-400">Up to 5 high-resolution photos</span>
+                  <span className="text-[10px] text-slate-400">Upload to Cloudinary or paste image URL</span>
                 </div>
 
                 {galleryImages.length > 0 && (
@@ -591,7 +583,7 @@ export default function AdminBlogsView() {
                         <button
                           type="button"
                           onClick={() => setGalleryImages(galleryImages.filter((_, i) => i !== idx))}
-                          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center text-xs transition"
+                          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center text-xs transition cursor-pointer"
                           title="Remove photo"
                         >
                           ✕
@@ -602,27 +594,52 @@ export default function AdminBlogsView() {
                 )}
 
                 {galleryImages.length < 5 ? (
-                  <div className="flex gap-2">
-                    <input
-                      type="url"
-                      placeholder="Paste image URL (https://...)"
-                      value={newGalleryInput}
-                      onChange={(e) => setNewGalleryInput(e.target.value)}
-                      className="flex-1 px-3 py-1.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary font-mono text-[11px]"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (newGalleryInput.trim()) {
-                          setGalleryImages([...galleryImages, newGalleryInput.trim()].slice(0, 5));
-                          setNewGalleryInput('');
-                        }
-                      }}
-                      className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold transition flex items-center gap-1 shrink-0"
-                    >
-                      <span className="material-symbols-outlined text-[15px]">add</span>
-                      <span>Add</span>
-                    </button>
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <div className="flex-1 flex gap-2">
+                        <input
+                          type="url"
+                          placeholder="Paste image URL (https://...)"
+                          value={newGalleryInput}
+                          onChange={(e) => setNewGalleryInput(e.target.value)}
+                          className="flex-1 px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary font-mono text-[11px]"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (newGalleryInput.trim()) {
+                              setGalleryImages([...galleryImages, newGalleryInput.trim()].slice(0, 5));
+                              setNewGalleryInput('');
+                            }
+                          }}
+                          className="px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer"
+                        >
+                          <span className="material-symbols-outlined text-[15px]">add</span>
+                          <span>Add URL</span>
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          ref={galleryFileInputRef}
+                          accept="image/*"
+                          onChange={handleGalleryFileUpload}
+                          className="hidden"
+                        />
+                        <button
+                          type="button"
+                          disabled={isGalleryUploading}
+                          onClick={() => galleryFileInputRef.current?.click()}
+                          className="w-full sm:w-auto px-4 py-2 rounded-xl bg-primary/20 hover:bg-primary/30 text-primary-fixed border border-primary/40 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">
+                            {isGalleryUploading ? 'sync' : 'cloud_upload'}
+                          </span>
+                          <span>{isGalleryUploading ? 'Uploading...' : 'Upload Photo'}</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <p className="text-[11px] text-slate-400 italic">Maximum limit of 5 photos reached.</p>
