@@ -12,9 +12,10 @@ interface PackageFilterSidebarProps {
   selectedDuration: string;
   setSelectedDuration: (d: string) => void;
   onReset: () => void;
+  categories?: { slug: string; name_en: string }[];
 }
 
-const CATEGORIES = [
+const DEFAULT_CATEGORIES = [
   { slug: '', label: 'All Categories' },
   { slug: 'beach-coastal', label: 'Beach & Coastal' },
   { slug: 'hill-mountain', label: 'Hill & Mountain' },
@@ -32,7 +33,12 @@ export default function PackageFilterSidebar({
   selectedDuration,
   setSelectedDuration,
   onReset,
+  categories,
 }: PackageFilterSidebarProps) {
+  const categoryOptions =
+    categories && categories.length > 0
+      ? [{ slug: '', label: 'All Categories' }, ...categories.map((c) => ({ slug: c.slug, label: c.name_en }))]
+      : DEFAULT_CATEGORIES;
   return (
     <aside className="bg-white rounded-2xl border border-surface-container-high p-5 space-y-6 shadow-sm sticky top-28">
       {/* Header */}
@@ -74,7 +80,7 @@ export default function PackageFilterSidebar({
           Travel Category
         </label>
         <div className="space-y-1.5">
-          {CATEGORIES.map((cat) => (
+          {categoryOptions.map((cat) => (
             <label
               key={cat.slug}
               className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer transition ${
