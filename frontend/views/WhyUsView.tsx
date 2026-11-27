@@ -79,7 +79,7 @@ export default function WhyUsView() {
   ];
 
   return (
-    <main className="space-y-16 pb-24 pt-20 bg-surface">
+    <main className="space-y-16 pb-24 bg-surface">
       {/* 1. HERO HEADER */}
       <section className="relative overflow-hidden bg-surface-container-low/70 border-b border-surface-container py-16 px-6 lg:px-12 text-center">
         <div className="absolute -top-32 right-1/4 w-96 h-96 bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none" />
