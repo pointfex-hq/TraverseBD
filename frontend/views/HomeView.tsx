@@ -25,8 +25,16 @@ export default function HomeView({ packages = [], categories = [], siteSettings 
   // Quick Callback Form State
   const [callbackName, setCallbackName] = useState('');
   const [callbackPhone, setCallbackPhone] = useState('');
-  const [callbackTour, setCallbackTour] = useState('Sajek Valley Expedition');
+  const [callbackTour, setCallbackTour] = useState(
+    packages && packages.length > 0 ? packages[0].title_en : 'Sajek Valley Expedition'
+  );
   const [callbackSuccess, setCallbackSuccess] = useState(false);
+
+  useEffect(() => {
+    if (packages && packages.length > 0 && (!callbackTour || callbackTour === 'Sajek Valley Expedition')) {
+      setCallbackTour(packages[0].title_en);
+    }
+  }, [packages]);
 
   const phoneDisplay = siteSettings?.phone_hotline || '01627444330';
   const phoneTel = `tel:${phoneDisplay}`;
@@ -774,15 +782,26 @@ export default function HomeView({ packages = [], categories = [], siteSettings 
                   <select
                     value={callbackTour}
                     onChange={(e) => setCallbackTour(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs sm:text-sm outline-none border border-outline-variant/30 cursor-pointer"
+                    className="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs sm:text-sm outline-none border border-outline-variant/30 cursor-pointer font-medium text-on-surface"
                   >
-                    <option value="Sajek Valley Expedition">Sajek Valley Expedition</option>
-                    <option value="Saint Martin Cruise">Saint Martin Coral Cruise</option>
-                    <option value="Sundarbans Houseboat">Sundarbans Mangrove Houseboat</option>
-                    <option value="Cox's Bazar Tour">Cox&apos;s Bazar Coastal Retreat</option>
-                    <option value="Sreemangal &amp; Tanguar Haor">Sreemangal &amp; Tanguar Haor</option>
-                    <option value="Bandarban Peak Expedition">Bandarban Peak Expedition</option>
-                    <option value="Corporate Custom Charter">Corporate Custom Charter</option>
+                    {packages && packages.length > 0 ? (
+                      <>
+                        {packages.map((pkg) => (
+                          <option key={pkg.id} value={pkg.title_en}>
+                            {pkg.title_en} {pkg.price_bdt ? `(BDT ${pkg.price_bdt.toLocaleString()})` : ''}
+                          </option>
+                        ))}
+                        <option value="Custom Corporate Tour Package">Custom Corporate Tour Package</option>
+                        <option value="General Travel Inquiry">General Travel Inquiry</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="Sajek Valley Cloud Expedition">Sajek Valley Cloud Expedition</option>
+                        <option value="Saint Martin Coral Bay">Saint Martin Coral Bay</option>
+                        <option value="Sundarbans Luxury Safari">Sundarbans Luxury Safari</option>
+                        <option value="Custom Corporate Tour Package">Custom Corporate Tour Package</option>
+                      </>
+                    )}
                   </select>
                   <button
                     className="w-full py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs sm:text-sm transition-all shadow-md active:scale-95"
