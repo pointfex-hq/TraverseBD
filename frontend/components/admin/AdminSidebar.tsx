@@ -15,7 +15,6 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: 'dashboard' },
     { label: 'Tour Packages', href: '/admin/packages', icon: 'tour' },
-    { label: 'Destinations', href: '/admin/destinations', icon: 'location_on' },
     { label: 'Categories', href: '/admin/categories', icon: 'category' },
     { label: 'Gallery Media', href: '/admin/gallery', icon: 'photo_library' },
     { label: 'Travel Blogs', href: '/admin/blogs', icon: 'article' },
