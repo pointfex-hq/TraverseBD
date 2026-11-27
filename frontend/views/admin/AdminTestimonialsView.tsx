@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Testimonial } from '@backend/data/admin-mock-data';
-import AdminConfirmModal from '@frontend/components/admin/AdminConfirmModal';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 const PRESET_AVATARS = [
   { label: 'Male 1 (Tanvir)', url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=250&auto=format&fit=crop' },
@@ -627,12 +627,12 @@ export default function AdminTestimonialsView() {
       )}
 
       {/* Delete Confirmation Modal */}
-      <AdminConfirmModal
+      <ConfirmDeleteModal
         isOpen={!!deleteId}
         title="Delete Customer Review"
         message="Are you sure you want to permanently delete this customer testimonial? This action cannot be undone."
-        confirmText={isDeleting ? 'Deleting...' : 'Delete Review'}
-        type="danger"
+        confirmLabel={isDeleting ? 'Deleting...' : 'Delete Review'}
+        isDeleting={isDeleting}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteId(null)}
       />

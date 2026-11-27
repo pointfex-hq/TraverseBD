@@ -27,8 +27,9 @@ export async function generateMetadata({ params }: BlogDetailPageProps) {
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
   const res = await getBlogBySlug(slug);
+  const blog = res.data;
 
-  if (res.error || !res.data) {
+  if (!blog) {
     // If not found by slug, also attempt by ID in adminStore
     const fallback = adminStore.blogs.find(
       (b) => (b.slug === slug || b.id === slug) && b.status === 'published'
@@ -53,12 +54,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
   const allBlogsRes = await getPublishedBlogs();
   const related = (allBlogsRes.data || [])
-    .filter((b) => b.id !== res.data.id)
+    .filter((b) => b.id !== blog.id)
     .slice(0, 4);
 
   return (
     <BlogDetailView
-      blog={res.data}
+      blog={blog}
       relatedBlogs={related}
       phoneHotline={adminStore.siteSettings?.phone_hotline}
       whatsappNumber={adminStore.siteSettings?.whatsapp_number}
