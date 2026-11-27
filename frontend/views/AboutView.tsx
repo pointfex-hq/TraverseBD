@@ -287,9 +287,9 @@ export default function AboutView() {
               Ready to Discover Bangladesh the Authentic Way?
             </h2>
             <p className="text-xs sm:text-sm text-white/90 leading-relaxed">
-              Connect directly with our trip architects on WhatsApp to customize your dates, vehicle type, and preferred eco-cottages.
+              Connect directly with our trip architects on WhatsApp or Facebook Messenger to customize your dates, vehicle type, and preferred eco-cottages.
             </p>
-            <div className="pt-4">
+            <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
               <a
                 href={customTourWaUrl}
                 target="_blank"
@@ -297,7 +297,16 @@ export default function AboutView() {
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-primary text-xs font-extrabold shadow-md hover:bg-white/90 transition-all hover:scale-105"
               >
                 <span className="material-symbols-outlined text-[18px]">chat</span>
-                <span>Chat on WhatsApp (01627444330)</span>
+                <span>Chat on WhatsApp</span>
+              </a>
+              <a
+                href="https://www.facebook.com/messages/t/431751336697364"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#0084FF] text-white text-xs font-extrabold shadow-md hover:bg-[#0073e6] transition-all hover:scale-105"
+              >
+                <span className="material-symbols-outlined text-[18px]">forum</span>
+                <span>Message on Facebook</span>
               </a>
             </div>
           </div>
