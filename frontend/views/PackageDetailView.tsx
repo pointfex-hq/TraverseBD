@@ -44,29 +44,39 @@ export default function PackageDetailView({ packageData }: PackageDetailViewProp
 
 
   return (
-    <main className="pb-24 space-y-12">
+    <main className="pb-24 space-y-8 sm:space-y-10">
       {/* 1. HERO & BREADCRUMB SECTION */}
-      <section className="bg-surface-container-low/70 border-b border-surface-container py-8 px-6 lg:px-12">
+      <section className="bg-surface-container-low/70 border-b border-surface-container pt-4 pb-6 sm:py-6 px-4 sm:px-6 lg:px-12">
         <div className="max-w-7xl mx-auto space-y-4">
-          {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs text-on-surface-variant font-medium">
-            <Link href="/" className="hover:text-primary transition flex items-center gap-1">
-              <span className="material-symbols-outlined text-[15px]">home</span>
-              <span>Home</span>
+          {/* Top Navigation & Back Button */}
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <Link
+              href="/packages"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold transition shadow-sm border border-surface-container-highest cursor-pointer active:scale-95"
+            >
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span>Back to Packages</span>
             </Link>
-            <span className="text-outline-variant">/</span>
-            <Link href="/packages" className="hover:text-primary transition">
-              Tour Packages
-            </Link>
-            <span className="text-outline-variant">/</span>
-            <span className="text-primary font-semibold truncate max-w-xs sm:max-w-md">
-              {packageData.title_en}
-            </span>
-          </nav>
+
+            <nav className="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+              <Link href="/" className="hover:text-primary transition flex items-center gap-1">
+                <span className="material-symbols-outlined text-[14px]">home</span>
+                <span>Home</span>
+              </Link>
+              <span className="text-outline-variant">/</span>
+              <Link href="/packages" className="hover:text-primary transition">
+                Tour Packages
+              </Link>
+              <span className="text-outline-variant">/</span>
+              <span className="text-primary font-semibold truncate max-w-[160px] sm:max-w-xs">
+                {packageData.title_en}
+              </span>
+            </nav>
+          </div>
 
           {/* Title & Key Attributes */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-3">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="space-y-2.5">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
                   {packageData.category?.name_en || 'Expedition'}
@@ -104,17 +114,15 @@ export default function PackageDetailView({ packageData }: PackageDetailViewProp
               </h1>
             </div>
 
-            {/* Quick Action Pill */}
-            <div className="flex items-center gap-3 self-start lg:self-center">
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-md shadow-[#25D366]/20 transition"
-              >
-                <span className="material-symbols-outlined text-[18px]">chat</span>
-                <span>Direct WhatsApp Inquiry</span>
-              </a>
+            {/* Direct Official Helpline Badge */}
+            <div className="flex items-center gap-2.5 text-xs font-bold text-on-surface-variant bg-surface-container-lowest px-4 py-2.5 rounded-2xl border border-surface-container shadow-sm self-start lg:self-center">
+              <span className="material-symbols-outlined text-primary text-[20px]">support_agent</span>
+              <div className="flex flex-col">
+                <span className="text-[10px] text-on-surface-variant uppercase tracking-wider">Direct Trip Hotline</span>
+                <a href="tel:01627444330" className="text-primary hover:underline font-extrabold text-xs">
+                  01627-444330
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -181,21 +189,21 @@ export default function PackageDetailView({ packageData }: PackageDetailViewProp
               </div>
 
               {/* Departure Date Selector */}
-              {packageData.departures && packageData.departures.length > 0 && (
+              {packageData.departures && packageData.departures.length > 0 ? (
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-on-surface flex items-center justify-between">
                     <span>Select Departure Batch:</span>
                     {selectedDepartureObj && (
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          selectedDepartureObj.status === 'sold_out'
+                          selectedDepartureObj.status === 'sold_out' || selectedDepartureObj.available_seats === 0
                             ? 'bg-red-100 text-red-700'
-                            : selectedDepartureObj.status === 'few_seats'
+                            : selectedDepartureObj.status === 'few_seats' || selectedDepartureObj.available_seats <= 5
                             ? 'bg-amber-100 text-amber-700'
                             : 'bg-emerald-100 text-emerald-700'
                         }`}
                       >
-                        {selectedDepartureObj.status === 'sold_out'
+                        {selectedDepartureObj.status === 'sold_out' || selectedDepartureObj.available_seats === 0
                           ? 'Sold Out'
                           : `${selectedDepartureObj.available_seats} Seats Available`}
                       </span>
@@ -206,17 +214,30 @@ export default function PackageDetailView({ packageData }: PackageDetailViewProp
                     onChange={(e) => setSelectedDeparture(e.target.value)}
                     className="w-full bg-surface-container-low text-on-surface text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-surface-container-high focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                   >
-                    {packageData.departures.map((dep) => (
-                      <option key={dep.id} value={dep.departure_date}>
-                        {new Date(dep.departure_date).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}{' '}
-                        ({dep.available_seats} seats left)
-                      </option>
-                    ))}
+                    {packageData.departures.map((dep) => {
+                      const isSoldOut = dep.available_seats === 0 || dep.status === 'sold_out';
+                      const formattedDate = new Date(dep.departure_date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      });
+                      return (
+                        <option key={dep.id} value={dep.departure_date} disabled={isSoldOut}>
+                          {formattedDate} — {isSoldOut ? 'Sold Out' : `${dep.available_seats} seats available`}
+                        </option>
+                      );
+                    })}
                   </select>
+                </div>
+              ) : (
+                <div className="p-3.5 rounded-2xl bg-surface-container-low border border-surface-container space-y-1">
+                  <span className="text-xs font-bold text-on-surface flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-primary text-[16px]">calendar_month</span>
+                    <span>Flexible Departure Dates</span>
+                  </span>
+                  <p className="text-[11px] text-on-surface-variant">
+                    Custom departure dates available upon request. Choose your preferred travel date when chatting with our trip architect.
+                  </p>
                 </div>
               )}
 
