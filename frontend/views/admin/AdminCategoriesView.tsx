@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Category } from '@backend/types/database.types';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminCategoriesView() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -12,6 +13,10 @@ export default function AdminCategoriesView() {
   const [nameBn, setNameBn] = useState('');
   const [sortOrder, setSortOrder] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // In-App Confirm Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadCategories = async () => {
     try {
@@ -86,15 +91,21 @@ export default function AdminCategoriesView() {
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Delete category "${name}"?`)) return;
+  const confirmDeleteCategory = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/categories/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/categories/${deleteTarget.id}`, { method: 'DELETE' });
       if (res.ok) {
-        setCategories((prev) => prev.filter((c) => c.id !== id));
+        setCategories((prev) => prev.filter((c) => c.id !== deleteTarget.id));
+        setDeleteTarget(null);
+      } else {
+        alert('Failed to delete category.');
       }
     } catch {
       alert('Failed to delete category.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -103,7 +114,7 @@ export default function AdminCategoriesView() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-extrabold text-white tracking-tight">
-            Tour Categories & Classifications
+            Tour Categories &amp; Classifications
           </h2>
           <p className="text-xs text-slate-400">
             Manage travel classification pills, sorting priority and icons.
@@ -112,7 +123,7 @@ export default function AdminCategoriesView() {
 
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-primary/20 transition"
+          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-primary/20 transition cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
           <span>Add Category</span>
@@ -150,13 +161,15 @@ export default function AdminCategoriesView() {
                   <div className="inline-flex items-center gap-1">
                     <button
                       onClick={() => openEditModal(cat)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                      title="Edit Category"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-[17px]">edit</span>
                     </button>
                     <button
-                      onClick={() => handleDelete(cat.id, cat.name_en)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition"
+                      onClick={() => setDeleteTarget({ id: cat.id, name: cat.name_en })}
+                      title="Delete Category"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-[17px]">delete</span>
                     </button>
@@ -176,7 +189,10 @@ export default function AdminCategoriesView() {
               <h3 className="text-base font-bold text-white">
                 {editingCategory ? 'Edit Category' : 'Add Category'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
@@ -221,14 +237,14 @@ export default function AdminCategoriesView() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold"
+                  className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold hover:bg-slate-700 transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90"
+                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? 'Saving...' : 'Save Category'}
                 </button>
@@ -237,6 +253,17 @@ export default function AdminCategoriesView() {
           </div>
         </div>
       )}
+
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Delete Tour Category"
+        message={`Are you sure you want to permanently delete category "${deleteTarget?.name}"? Packages mapped to this category may need reassignment.`}
+        confirmLabel="Delete Category"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteCategory}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
