@@ -235,9 +235,9 @@ export default function WhyUsView() {
             Plan Your Next Bangladesh Adventure with Confidence
           </h2>
           <p className="text-xs sm:text-sm text-white/90 max-w-xl mx-auto leading-relaxed">
-            Connect directly with our trip coordinators on WhatsApp. We provide prompt assistance with customized schedules, 4x4 Chander Gari bookings, and verified cottage reservations.
+            Connect directly with our trip coordinators on WhatsApp or Facebook Messenger. We provide prompt assistance with customized schedules, 4x4 Chander Gari bookings, and verified cottage reservations.
           </p>
-          <div className="pt-2">
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
             <a
               href={whatsappUrl}
               target="_blank"
@@ -245,7 +245,16 @@ export default function WhyUsView() {
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-primary text-xs font-extrabold shadow-md hover:bg-white/90 transition-all hover:scale-105"
             >
               <span className="material-symbols-outlined text-[18px]">chat</span>
-              <span>Chat on WhatsApp (01627444330)</span>
+              <span>Chat on WhatsApp</span>
+            </a>
+            <a
+              href="https://www.facebook.com/messages/t/431751336697364"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#0084FF] text-white text-xs font-extrabold shadow-md hover:bg-[#0073e6] transition-all hover:scale-105"
+            >
+              <span className="material-symbols-outlined text-[18px]">forum</span>
+              <span>Message on Facebook</span>
             </a>
           </div>
         </div>
