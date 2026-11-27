@@ -97,6 +97,18 @@ export default function Navbar() {
               <span>WhatsApp Us</span>
             </a>
 
+            {/* Direct Facebook Messenger Button */}
+            <a
+              href="https://www.facebook.com/messages/t/431751336697364"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#0084FF] hover:bg-[#0073e6] text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all hover:scale-102 whitespace-nowrap"
+              title="Chat on Facebook Messenger"
+            >
+              <span className="material-symbols-outlined text-[17px]">forum</span>
+              <span>Messenger</span>
+            </a>
+
             {/* Admin Access Shortcut */}
             <Link
               href="/admin/login"
@@ -170,6 +182,15 @@ export default function Navbar() {
             >
               <span className="material-symbols-outlined text-base">chat</span>
               <span>WhatsApp Us Directly</span>
+            </a>
+            <a
+              href="https://www.facebook.com/messages/t/431751336697364"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#0084FF] text-white text-xs font-bold shadow-md shadow-blue-500/20"
+            >
+              <span className="material-symbols-outlined text-base">forum</span>
+              <span>Message on Facebook</span>
             </a>
           </div>
         </div>
