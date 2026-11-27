@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { BlogItem } from '@backend/data/admin-mock-data';
 import ImageUploadField from '@frontend/components/admin/ImageUploadField';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminBlogsView() {
   const [blogs, setBlogs] = useState<BlogItem[]>([]);
@@ -15,6 +16,10 @@ export default function AdminBlogsView() {
   const [editingBlog, setEditingBlog] = useState<BlogItem | null>(null);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -139,21 +144,22 @@ export default function AdminBlogsView() {
     }
   };
 
-  const handleDelete = async (id: string, blogTitle: string) => {
-    if (!confirm(`Are you sure you want to permanently delete "${blogTitle}"?`)) {
-      return;
-    }
-
+  const confirmDeleteBlog = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/blogs/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/blogs/${deleteTarget.id}`, { method: 'DELETE' });
       if (res.ok) {
-        setBlogs((prev) => prev.filter((b) => b.id !== id));
+        setBlogs((prev) => prev.filter((b) => b.id !== deleteTarget.id));
+        setDeleteTarget(null);
       } else {
         alert('Failed to delete blog post.');
       }
     } catch (err) {
       console.error(err);
       alert('Error deleting blog post.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -369,8 +375,8 @@ export default function AdminBlogsView() {
                     <span className="material-symbols-outlined text-[18px]">edit</span>
                   </button>
                   <button
-                    onClick={() => handleDelete(b.id, b.title_en)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                    onClick={() => setDeleteTarget({ id: b.id, title: b.title_en })}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all cursor-pointer"
                     title="Delete blog post"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -539,6 +545,16 @@ export default function AdminBlogsView() {
           </div>
         </div>
       )}
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Delete Blog Article"
+        message={`Are you sure you want to permanently delete "${deleteTarget?.title}"? This travel story will no longer be visible on the public journal.`}
+        confirmLabel="Delete Article"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteBlog}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
