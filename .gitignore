@@ -10,6 +10,7 @@ node_modules/
 
 # Testing & coverage
 /coverage
+*.tsbuildinfo
 
 # Environment files - STRICTLY LOCAL & NEVER COMMITTED
 .env
