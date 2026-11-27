@@ -14,6 +14,8 @@ export default function Navbar() {
   }
 
   const phoneTel = 'tel:01627444330';
+  const whatsappBookingUrl =
+    'https://wa.me/8801627444330?text=Hello%20Traverse%20BD!%20I%20would%20like%20to%20book%20a%20tour%20package.';
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -83,14 +85,17 @@ export default function Navbar() {
               <span>Call Us</span>
             </a>
 
-            {/* Book Now Primary CTA */}
-            <Link
-              href="/packages"
+            {/* Book Now Primary WhatsApp CTA */}
+            <a
+              href={whatsappBookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-md shadow-primary/20 transition-all hover:scale-102 whitespace-nowrap"
+              title="Book via WhatsApp"
             >
-              <span className="material-symbols-outlined text-[17px] text-primary-fixed">backpack</span>
+              <span className="material-symbols-outlined text-[17px] text-primary-fixed">chat</span>
               <span>Book Now</span>
-            </Link>
+            </a>
 
             {/* Admin Access Shortcut */}
             <Link
@@ -157,14 +162,16 @@ export default function Navbar() {
               <span className="material-symbols-outlined text-primary text-base">call</span>
               <span>Call Us</span>
             </a>
-            <Link
-              href="/packages"
-              onClick={() => setIsMobileMenuOpen(false)}
+            <a
+              href={whatsappBookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-md shadow-primary/20"
+              title="Book via WhatsApp"
             >
-              <span className="material-symbols-outlined text-base">backpack</span>
+              <span className="material-symbols-outlined text-base">chat</span>
               <span>Book Now</span>
-            </Link>
+            </a>
           </div>
         </div>
       )}
