@@ -1,6 +1,6 @@
 # TraverseBD — API Contracts & Backend Documentation
 **Author:** Hafizur Rahman (PM, Technical Lead & Backend Developer)  
-**Team:** Team Lithium (Pointfex)  
+**Team:** TraverseBD (Pointfex)  
 **Target Consumers:** Kazi Azmainur Rahman (Public Frontend), Sifat Mazib (Admin Panel), Janntun Nahar Soha (QA)  
 **Version:** 1.0.0 (P0 MVP Baseline)  
 
