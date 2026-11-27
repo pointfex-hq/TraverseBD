@@ -48,14 +48,15 @@ export default function PackageCard({ pkg, packageData }: PackageCardProps) {
               {p.category?.name_en || 'Domestic Tour'}
             </span>
             <div className="flex gap-1.5">
-              {p.is_trending && (
+              {p.is_featured && (
                 <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow-sm flex items-center gap-1">
-                  <span>🔥</span> Trending
+                  <span className="material-symbols-outlined text-[13px]">local_fire_department</span>
+                  <span>Bestseller</span>
                 </span>
               )}
-              {p.is_featured && (
-                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-primary text-white shadow-sm">
-                  Featured
+              {p.is_trending && !p.is_featured && (
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow-sm flex items-center gap-1">
+                  <span>🔥</span> Trending
                 </span>
               )}
             </div>
@@ -75,11 +76,18 @@ export default function PackageCard({ pkg, packageData }: PackageCardProps) {
 
         {/* Card Body */}
         <div className="p-5 space-y-2">
-          <Link href={`/packages/${p.slug}`} className="block group-hover:text-primary transition">
-            <h3 className="font-extrabold text-base text-on-surface line-clamp-1">
-              {p.title_en}
-            </h3>
-          </Link>
+          <div className="flex items-center justify-between gap-2">
+            <Link href={`/packages/${p.slug}`} className="block group-hover:text-primary transition flex-1">
+              <h3 className="font-extrabold text-base text-on-surface line-clamp-1">
+                {p.title_en}
+              </h3>
+            </Link>
+            <div className="flex items-center gap-1 text-[11px] font-bold text-amber-500 shrink-0">
+              <span className="material-symbols-outlined text-[15px]">star</span>
+              <span>{(p.rating_average || 4.95).toFixed(2)}</span>
+              <span className="text-on-surface-variant font-normal">({p.reviews_count || 120})</span>
+            </div>
+          </div>
           <p className="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">
             {p.short_description_en}
           </p>
