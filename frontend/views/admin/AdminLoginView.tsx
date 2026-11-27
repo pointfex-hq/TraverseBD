@@ -39,14 +39,14 @@ export default function AdminLoginView() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-slate-100 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 sm:p-6 text-slate-100 relative overflow-hidden">
       {/* Subtle ambient gradient highlights */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-emerald-600/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10 space-y-6">
         {/* Main Glassmorphic Login Card */}
-        <div className="rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-slate-800/90 p-8 sm:p-10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] space-y-7">
+        <div className="rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-slate-800/90 p-5 sm:p-8 sm:p-10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] space-y-6 sm:space-y-7">
           {/* Header with Official Traverse BD Logo */}
           <div className="text-center space-y-3">
             <Link href="/" className="inline-block group">

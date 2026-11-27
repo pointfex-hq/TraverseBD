@@ -163,16 +163,16 @@ export default function AdminUsersView() {
   };
 
   return (
-    <div className="p-6 sm:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
       {/* 1. TOP HEADER & ADD ADMIN BUTTON */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-bold uppercase tracking-wider mb-1.5 border border-purple-500/30">
             <span className="material-symbols-outlined text-[14px]">shield</span>
             <span>{isSuperAdmin ? 'Super Admin Master Governance' : 'Staff Directory'}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-            Admin & Staff Access Management
+            Admin &amp; Staff Access Management
           </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
             Role-based access control (RBAC) governance. The master Super Admin is authenticated via deployment environment configuration (<code className="text-purple-300 font-mono">ADMIN_EMAIL</code> / <code className="text-purple-300 font-mono">ADMIN_PASSWORD</code>) and retains exclusive privileges to provision or revoke administrator accounts.
@@ -182,13 +182,13 @@ export default function AdminUsersView() {
         {isSuperAdmin ? (
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-purple-600/25 transition self-start sm:self-auto cursor-pointer"
+            className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-purple-600/25 transition w-full sm:w-auto cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">person_add</span>
             <span>Add Administrator</span>
           </button>
         ) : (
-          <div className="px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-400 text-xs flex items-center gap-2 self-start sm:self-auto" title="Account provisioning is restricted to Super Administrator">
+          <div className="px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-400 text-xs flex items-center justify-center gap-2 w-full sm:w-auto" title="Account provisioning is restricted to Super Administrator">
             <span className="material-symbols-outlined text-[16px] text-amber-400">lock</span>
             <span className="text-[11px] font-semibold">Super Admin Only Creation</span>
           </div>
@@ -218,7 +218,7 @@ export default function AdminUsersView() {
         /* 2. USER TABLE */
         <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[700px]">
               <thead className="text-[10px] uppercase font-bold text-slate-400 border-b border-slate-800 bg-slate-950/60">
                 <tr>
                   <th className="py-3.5 px-4">Staff Member</th>
@@ -357,8 +357,8 @@ export default function AdminUsersView() {
 
       {/* 3. ADD ADMIN MODAL */}
       {isModalOpen && isSuperAdmin && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-          <div className="w-full max-w-md rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8 space-y-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fadeIn overflow-y-auto">
+          <div className="w-full max-w-md rounded-2xl sm:rounded-3xl bg-slate-900 border border-slate-800 p-4 sm:p-6 sm:p-8 space-y-5 shadow-2xl my-2 sm:my-8 max-h-[94vh] sm:max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-purple-400">person_add</span>

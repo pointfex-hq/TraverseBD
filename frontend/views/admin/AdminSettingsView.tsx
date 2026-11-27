@@ -107,15 +107,15 @@ export default function AdminSettingsView() {
   };
 
   return (
-    <div className="p-4 sm:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-sm">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary-fixed text-xs font-bold uppercase tracking-wider mb-2 border border-primary/30">
             <span className="material-symbols-outlined text-[15px]">tune</span>
             Brand &amp; System Configuration
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Website Global Settings</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Website Global Settings</h1>
           <p className="text-xs text-slate-400 mt-1">
             Configure emergency hotlines, WhatsApp routing, homepage headlines, and online operations parameters.
           </p>
@@ -420,7 +420,7 @@ export default function AdminSettingsView() {
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-3 rounded-xl bg-primary text-white text-xs font-bold uppercase tracking-wider shadow-md hover:bg-primary-container disabled:opacity-50 flex items-center gap-2 transition"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-primary text-white text-xs font-bold uppercase tracking-wider shadow-md hover:bg-primary-container disabled:opacity-50 flex items-center justify-center gap-2 transition cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">save</span>
               <span>{saving ? 'Saving Settings...' : 'Save Global Settings'}</span>
