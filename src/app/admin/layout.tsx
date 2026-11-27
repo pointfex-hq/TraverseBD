@@ -15,7 +15,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const getPageTitle = () => {
     if (pathname.includes('/packages')) return 'Tour Packages & Departures';
-    if (pathname.includes('/destinations')) return 'Destinations & Regions';
     if (pathname.includes('/categories')) return 'Tour Categories';
     if (pathname.includes('/gallery')) return 'Gallery Visual Dispatches';
     if (pathname.includes('/blogs')) return 'Travel Blogs & Guides';
