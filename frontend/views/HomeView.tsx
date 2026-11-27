@@ -114,7 +114,7 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
     <main className="w-full bg-surface">
       {/* 1. HERO & TRENDING PACKAGES SHOWCASE */}
       <section
-        className="relative w-full overflow-hidden bg-cover bg-center py-16 md:py-24"
+        className="relative w-full overflow-hidden bg-cover bg-center pt-4 pb-14 md:pt-6 md:pb-20"
         style={{
           backgroundImage:
             "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDufpxjs_5zr3Wi7B0GaO36BUsFRbRR5jRrbeEDzG_eBe0EBeZ_z3Dz5n4K8tHaRCKYjspVEbwlnrCOKcXg-PXFEuva_Aieha3JRRIsCC4D-N_-DKShRgAcH8gVyKIRkhsX1kEr3ITw_Ui_aM1-AYYkDI8YQZmmNl3wEnG8nwFXuXhnFUcLWM3VtDBVxLdiYG0mESdmUp2ZZPj1jRe7OfrLcjpLh2HBTj1Sn69cIjHn')",
