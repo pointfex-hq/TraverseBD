@@ -46,7 +46,7 @@ export default function ContactView() {
   ];
 
   return (
-    <main className="space-y-12 sm:space-y-16 pb-24 pt-8 sm:pt-12 bg-surface">
+    <main className="space-y-12 sm:space-y-16 pb-24 bg-surface">
       {/* 1. HERO HEADER */}
       <section className="bg-surface-container-low/70 border-b border-surface-container py-12 sm:py-16 px-6 lg:px-12">
         <div className="max-w-4xl mx-auto text-center space-y-4">
