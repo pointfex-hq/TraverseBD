@@ -72,6 +72,11 @@ export function toggleAdminUserStatus(
   const user = adminStore.users.find((u) => u.id === userId);
   if (!user) return null;
 
+  const envAdminEmail = (process.env.ADMIN_EMAIL || 'admin@traversebd.com').trim().toLowerCase();
+  if (user.email.toLowerCase() === envAdminEmail || user.id === 'usr-env-admin') {
+    throw new Error('Cannot deactivate the master environment Super Administrator.');
+  }
+
   user.status = user.status === 'Active' ? 'Inactive' : 'Active';
 
   adminStore.addAuditLog(
@@ -91,6 +96,12 @@ export function deleteAdminUser(
 ): boolean {
   const index = adminStore.users.findIndex((u) => u.id === userId);
   if (index === -1) return false;
+
+  const user = adminStore.users[index];
+  const envAdminEmail = (process.env.ADMIN_EMAIL || 'admin@traversebd.com').trim().toLowerCase();
+  if (user.email.toLowerCase() === envAdminEmail || user.id === 'usr-env-admin') {
+    throw new Error('Cannot delete or revoke the master environment Super Administrator.');
+  }
 
   const deleted = adminStore.users.splice(index, 1)[0];
 

@@ -12,9 +12,10 @@ interface PackageFilterSidebarProps {
   selectedDuration: string;
   setSelectedDuration: (d: string) => void;
   onReset: () => void;
+  categories?: { slug: string; name_en: string }[];
 }
 
-const CATEGORIES = [
+const DEFAULT_CATEGORIES = [
   { slug: '', label: 'All Categories' },
   { slug: 'beach-coastal', label: 'Beach & Coastal' },
   { slug: 'hill-mountain', label: 'Hill & Mountain' },
@@ -32,7 +33,12 @@ export default function PackageFilterSidebar({
   selectedDuration,
   setSelectedDuration,
   onReset,
+  categories,
 }: PackageFilterSidebarProps) {
+  const categoryOptions =
+    categories && categories.length > 0
+      ? [{ slug: '', label: 'All Categories' }, ...categories.map((c) => ({ slug: c.slug, label: c.name_en }))]
+      : DEFAULT_CATEGORIES;
   return (
     <aside className="bg-white rounded-2xl border border-surface-container-high p-5 space-y-6 shadow-sm sticky top-28">
       {/* Header */}
@@ -74,7 +80,7 @@ export default function PackageFilterSidebar({
           Travel Category
         </label>
         <div className="space-y-1.5">
-          {CATEGORIES.map((cat) => (
+          {categoryOptions.map((cat) => (
             <label
               key={cat.slug}
               className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer transition ${
@@ -122,18 +128,29 @@ export default function PackageFilterSidebar({
         </div>
       </div>
 
-      {/* Direct WhatsApp Assistance */}
+      {/* Direct Assistance */}
       <div className="pt-2 border-t border-surface-container text-center space-y-2">
         <p className="text-[11px] text-on-surface-variant">Looking for a customized group itinerary?</p>
-        <a
-          href="https://wa.me/8801627444330?text=Hello%20Traverse%20BD!%20I%20would%20like%20to%20customize%20a%20private%20tour%20package."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#20ba59] transition shadow-sm"
-        >
-          <span className="material-symbols-outlined text-[16px]">chat</span>
-          <span>Chat on WhatsApp</span>
-        </a>
+        <div className="space-y-1.5">
+          <a
+            href="https://wa.me/8801627444330?text=Hello%20Traverse%20BD!%20I%20would%20like%20to%20customize%20a%20private%20tour%20package."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#20ba59] transition shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[16px]">chat</span>
+            <span>Chat on WhatsApp</span>
+          </a>
+          <a
+            href="https://www.facebook.com/messages/t/431751336697364"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-[#0084FF] text-white text-xs font-bold hover:bg-[#0073e6] transition shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[16px]">forum</span>
+            <span>Message on Facebook</span>
+          </a>
+        </div>
       </div>
     </aside>
   );

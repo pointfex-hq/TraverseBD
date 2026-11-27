@@ -12,7 +12,7 @@ export default function ContactView() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const phoneDisplay = '01627444330';
+  const phoneDisplay = '01627-444330';
   const phoneTel = 'tel:01627444330';
   const defaultWaNumber = process.env.NEXT_PUBLIC_DEFAULT_WHATSAPP_NUMBER || '8801627444330';
 
@@ -46,7 +46,7 @@ export default function ContactView() {
   ];
 
   return (
-    <main className="space-y-12 sm:space-y-16 pb-24 pt-8 sm:pt-12 bg-surface">
+    <main className="space-y-12 sm:space-y-16 pb-24 bg-surface">
       {/* 1. HERO HEADER */}
       <section className="bg-surface-container-low/70 border-b border-surface-container py-12 sm:py-16 px-6 lg:px-12">
         <div className="max-w-4xl mx-auto text-center space-y-4">
@@ -67,9 +67,9 @@ export default function ContactView() {
         </div>
       </section>
 
-      {/* 2. 3 DIGITAL TOUCHPOINT CARDS */}
+      {/* 2. 4 DIGITAL TOUCHPOINT CARDS */}
       <section className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Card 1: WhatsApp */}
           <div className="p-6 rounded-3xl bg-surface-container-lowest border border-surface-container shadow-sm flex flex-col justify-between space-y-4 hover:border-primary/40 transition">
             <div className="space-y-3">
@@ -80,7 +80,7 @@ export default function ContactView() {
                 <span className="text-[11px] uppercase font-bold text-emerald-700 tracking-wider">Fastest Response</span>
                 <h3 className="text-base font-bold text-on-surface mt-0.5">WhatsApp Helpline</h3>
                 <p className="text-xs text-on-surface-variant leading-relaxed mt-1">
-                  Connect directly with an expedition architect for instant availability, itinerary PDFs, and custom bookings.
+                  Connect directly with an expedition architect for instant availability and custom bookings.
                 </p>
               </div>
             </div>
@@ -95,7 +95,43 @@ export default function ContactView() {
             </a>
           </div>
 
-          {/* Card 2: Phone Hotline */}
+          {/* Card 2: Facebook & Messenger */}
+          <div className="p-6 rounded-3xl bg-surface-container-lowest border border-surface-container shadow-sm flex flex-col justify-between space-y-4 hover:border-blue-500/40 transition">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#0084FF] flex items-center justify-center">
+                <span className="material-symbols-outlined text-2xl">forum</span>
+              </div>
+              <div>
+                <span className="text-[11px] uppercase font-bold text-blue-700 tracking-wider">Social Chat</span>
+                <h3 className="text-base font-bold text-on-surface mt-0.5">Facebook Messenger</h3>
+                <p className="text-xs text-on-surface-variant leading-relaxed mt-1">
+                  Send a direct message on our verified Facebook page or view our latest expedition posts.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <a
+                href="https://www.facebook.com/messages/t/431751336697364"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[#0084FF] hover:bg-[#0073e6] text-white text-xs font-bold transition shadow-sm"
+              >
+                <span className="material-symbols-outlined text-[17px]">forum</span>
+                <span>Direct Messenger</span>
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61568715145902"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface text-[11px] font-semibold border border-outline-variant/30 transition"
+              >
+                <span className="material-symbols-outlined text-[15px] text-blue-600">thumb_up</span>
+                <span>Visit Facebook Page</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Card 3: Phone Hotline */}
           <div className="p-6 rounded-3xl bg-surface-container-lowest border border-surface-container shadow-sm flex flex-col justify-between space-y-4 hover:border-primary/40 transition">
             <div className="space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
@@ -118,7 +154,7 @@ export default function ContactView() {
             </a>
           </div>
 
-          {/* Card 3: Email */}
+          {/* Card 4: Email */}
           <div className="p-6 rounded-3xl bg-surface-container-lowest border border-surface-container shadow-sm flex flex-col justify-between space-y-4 hover:border-primary/40 transition">
             <div className="space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center">
@@ -301,6 +337,16 @@ export default function ContactView() {
                   >
                     <span className="material-symbols-outlined text-[18px]">chat</span>
                     <span>Chat on WhatsApp</span>
+                  </a>
+
+                  <a
+                    href="https://www.facebook.com/messages/t/431751336697364"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#0084FF] hover:bg-[#0073e6] text-white font-bold text-xs shadow-md transition"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">forum</span>
+                    <span>Message on Messenger</span>
                   </a>
                 </div>
               </form>

@@ -71,6 +71,8 @@ export interface Package {
   status: ContentStatus;
   is_featured: boolean;
   is_trending: boolean;
+  rating_average?: number;
+  reviews_count?: number;
   tour_type?: 'domestic' | 'international';
   created_at: string;
   updated_at: string;

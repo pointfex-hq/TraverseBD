@@ -1,6 +1,7 @@
-# TraverseBD — Discover Uncharted Bangladesh 🇧🇩
+# TraverseBD — Discover Uncharted Bangladesh 🇧🇩 (v2.0.0)
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
+[![Release](https://img.shields.io/badge/Release-v2.0.0-success?logo=github)](https://github.com/pointfex-hq/TraverseBD)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-18.3-blue?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
@@ -16,7 +17,7 @@
 - **Lead Full-Stack Developer & Technical Project Manager:**  
   **Hafizur Rahman** ([@Hafizur-Rahman-SD](https://github.com/Hafizur-Rahman-SD))  
   *Email:* [hafizurrahman5004@gmail.com](mailto:hafizurrahman5004@gmail.com) | [2022200000178@seu.edu.bd](mailto:2022200000178@seu.edu.bd)  
-  *Team:* Team Lithium / Pointfex  
+  *Team:* TraverseBD / Pointfex  
 
 ---
 
@@ -152,4 +153,4 @@ npm run build
 
 ## 📄 License & Attribution
 
-This project is proprietary software developed by **Hafizur Rahman** for **TraverseBD / Team Lithium / Pointfex**. All rights reserved.
+This project is proprietary software developed by **Hafizur Rahman** for **TraverseBD / Pointfex**. All rights reserved.

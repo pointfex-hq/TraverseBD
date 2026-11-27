@@ -2,12 +2,20 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Do not render public Footer on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const phoneDisplay = '01627444330';
+  const phoneDisplay = '01627-444330';
   const phoneTel = 'tel:01627444330';
   const whatsappUrl = 'https://wa.me/8801627444330';
 
@@ -47,6 +55,36 @@ export default function Footer() {
               coastlines to the majestic Bandarban peaks and quiet tea valleys with 24/7 digital booking.
             </p>
             <div className="flex items-center gap-2 mt-2">
+              <a
+                aria-label="Official Facebook Page"
+                title="Official Facebook Page"
+                className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all"
+                href="https://www.facebook.com/profile.php?id=61568715145902"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="material-symbols-outlined text-[16px]">thumb_up</span>
+              </a>
+              <a
+                aria-label="Direct Facebook Messenger"
+                title="Direct Facebook Messenger"
+                className="w-8 h-8 rounded-full bg-blue-50 text-[#0084FF] hover:bg-[#0084FF] hover:text-white flex items-center justify-center transition-all"
+                href="https://www.facebook.com/messages/t/431751336697364"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="material-symbols-outlined text-[16px]">forum</span>
+              </a>
+              <a
+                aria-label="WhatsApp Helpline"
+                title="WhatsApp Helpline"
+                className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 hover:bg-[#25D366] hover:text-white flex items-center justify-center transition-all"
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="material-symbols-outlined text-[16px]">chat</span>
+              </a>
               <Link
                 aria-label="Tour Packages"
                 className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all"
@@ -55,25 +93,11 @@ export default function Footer() {
                 <span className="material-symbols-outlined text-[16px]">backpack</span>
               </Link>
               <Link
-                aria-label="Our Services"
-                className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all"
-                href="/services"
-              >
-                <span className="material-symbols-outlined text-[16px]">room_service</span>
-              </Link>
-              <Link
                 aria-label="Photo Gallery"
                 className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all"
                 href="/gallery"
               >
                 <span className="material-symbols-outlined text-[16px]">photo_camera</span>
-              </Link>
-              <Link
-                aria-label="Travel Blog"
-                className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all"
-                href="/blog"
-              >
-                <span className="material-symbols-outlined text-[16px]">article</span>
               </Link>
             </div>
           </div>
@@ -86,9 +110,6 @@ export default function Footer() {
             </Link>
             <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors" href="/packages">
               Tour Packages
-            </Link>
-            <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors" href="/destinations">
-              Destinations
             </Link>
             <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors" href="/services">
               Our Services
@@ -137,6 +158,28 @@ export default function Footer() {
                 WhatsApp 24/7 Helpline
               </a>
             </div>
+            <div className="flex items-center gap-2 text-on-surface-variant text-xs">
+              <span className="material-symbols-outlined text-blue-600 text-[16px]">forum</span>
+              <a
+                className="text-blue-700 font-semibold hover:underline"
+                href="https://www.facebook.com/messages/t/431751336697364"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Messenger Direct Chat
+              </a>
+            </div>
+            <div className="flex items-center gap-2 text-on-surface-variant text-xs">
+              <span className="material-symbols-outlined text-blue-600 text-[16px]">thumb_up</span>
+              <a
+                className="text-blue-700 font-semibold hover:underline"
+                href="https://www.facebook.com/profile.php?id=61568715145902"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Facebook Official Page
+              </a>
+            </div>
           </div>
 
           {/* 4. Newsletter */}
@@ -178,9 +221,14 @@ export default function Footer() {
           </p>
           <p className="text-xs text-on-surface font-medium flex items-center gap-1.5">
             <span>Developed by</span>
-            <span className="text-primary font-bold hover:underline tracking-wide cursor-pointer">
+            <a
+              href="https://www.pointfex.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary font-bold hover:underline tracking-wide cursor-pointer inline-flex items-center gap-1"
+            >
               Pointfex
-            </span>
+            </a>
           </p>
         </div>
       </div>

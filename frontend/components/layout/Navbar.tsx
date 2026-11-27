@@ -8,14 +8,18 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const phoneDisplay = '01627444330';
+  // Do not render public Navbar on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const phoneTel = 'tel:01627444330';
-  const whatsappUrl = 'https://wa.me/8801627444330';
+  const whatsappBookingUrl =
+    'https://wa.me/8801627444330?text=Hello%20Traverse%20BD!%20I%20would%20like%20to%20book%20a%20tour%20package.';
 
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Tour Packages', href: '/packages' },
-    { name: 'Destinations', href: '/destinations' },
     { name: 'Services', href: '/services' },
     { name: 'Why Us', href: '/why-us' },
     { name: 'Gallery', href: '/gallery' },
@@ -71,26 +75,26 @@ export default function Navbar() {
 
           {/* Right Action Buttons */}
           <div className="hidden sm:flex items-center gap-2.5 xl:gap-3 shrink-0 whitespace-nowrap">
-            {/* Phone Call Pill */}
+            {/* Direct Call Action */}
             <a
               href={phoneTel}
-              className="hidden xl:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-all border border-outline-variant/40 whitespace-nowrap"
-              title="Call Traverse BD Customer Care"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface hover:text-primary transition-all border border-outline-variant/40 whitespace-nowrap text-xs font-bold"
+              title="Call Operations Desk"
             >
               <span className="material-symbols-outlined text-primary text-[17px]">call</span>
-              <span className="font-semibold text-[13px] tracking-tight">{phoneDisplay}</span>
+              <span>01627-444330</span>
             </a>
 
-            {/* Direct WhatsApp CTA Button */}
+            {/* Book Now Primary WhatsApp CTA */}
             <a
-              href={whatsappUrl}
+              href={whatsappBookingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-3.5 xl:px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-md shadow-primary/20 transition-all hover:scale-102 whitespace-nowrap"
-              title="Inquire via WhatsApp"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-md shadow-primary/20 transition-all hover:scale-102 whitespace-nowrap"
+              title="Book via WhatsApp"
             >
-              <span className="material-symbols-outlined text-base text-primary-fixed">chat</span>
-              <span>WhatsApp Us</span>
+              <span className="material-symbols-outlined text-[17px] text-primary-fixed">chat</span>
+              <span>Book Now</span>
             </a>
 
             {/* Admin Access Shortcut */}
@@ -156,16 +160,17 @@ export default function Navbar() {
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-xs font-bold border border-outline-variant/30"
             >
               <span className="material-symbols-outlined text-primary text-base">call</span>
-              <span>Call {phoneDisplay}</span>
+              <span>Call 01627-444330</span>
             </a>
             <a
-              href={whatsappUrl}
+              href={whatsappBookingUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-md shadow-primary/20"
+              title="Book via WhatsApp"
             >
               <span className="material-symbols-outlined text-base">chat</span>
-              <span>WhatsApp Us Directly</span>
+              <span>Book Now</span>
             </a>
           </div>
         </div>

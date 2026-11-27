@@ -19,10 +19,18 @@ export default function AdminSettingsView() {
   const [statRating, setStatRating] = useState('');
   const [statCertified, setStatCertified] = useState('');
   const [socialFacebook, setSocialFacebook] = useState('');
+  const [socialMessenger, setSocialMessenger] = useState('');
   const [socialInstagram, setSocialInstagram] = useState('');
   const [socialYoutube, setSocialYoutube] = useState('');
   const [socialWhatsappGroup, setSocialWhatsappGroup] = useState('');
   const [corporateNotice, setCorporateNotice] = useState('');
+  const [heroFeaturedBadge, setHeroFeaturedBadge] = useState('');
+  const [heroFeaturedTitle, setHeroFeaturedTitle] = useState('');
+  const [heroFeaturedSubtitle, setHeroFeaturedSubtitle] = useState('');
+  const [heroFeaturedPrice, setHeroFeaturedPrice] = useState('');
+  const [heroFeaturedLocation, setHeroFeaturedLocation] = useState('');
+  const [heroFeaturedImage, setHeroFeaturedImage] = useState('');
+  const [heroFeaturedLink, setHeroFeaturedLink] = useState('');
 
   const fetchSettings = async () => {
     try {
@@ -41,10 +49,18 @@ export default function AdminSettingsView() {
         setStatRating(s.stat_rating || '');
         setStatCertified(s.stat_certified || '');
         setSocialFacebook(s.social_facebook || '');
+        setSocialMessenger((s as any).social_messenger || '');
         setSocialInstagram(s.social_instagram || '');
         setSocialYoutube(s.social_youtube || '');
         setSocialWhatsappGroup(s.social_whatsapp_group || '');
         setCorporateNotice(s.corporate_inquiry_notice || '');
+        setHeroFeaturedBadge(s.hero_featured_badge || '');
+        setHeroFeaturedTitle(s.hero_featured_title || '');
+        setHeroFeaturedSubtitle(s.hero_featured_subtitle || '');
+        setHeroFeaturedPrice(s.hero_featured_price || '');
+        setHeroFeaturedLocation(s.hero_featured_location || '');
+        setHeroFeaturedImage(s.hero_featured_image || '');
+        setHeroFeaturedLink(s.hero_featured_link || '');
       }
     } catch (err) {
       console.error('Failed to load site settings', err);
@@ -79,10 +95,18 @@ export default function AdminSettingsView() {
         stat_rating: statRating.trim(),
         stat_certified: statCertified.trim(),
         social_facebook: socialFacebook.trim(),
+        social_messenger: socialMessenger.trim(),
         social_instagram: socialInstagram.trim(),
         social_youtube: socialYoutube.trim(),
         social_whatsapp_group: socialWhatsappGroup.trim(),
         corporate_inquiry_notice: corporateNotice.trim(),
+        hero_featured_badge: heroFeaturedBadge.trim(),
+        hero_featured_title: heroFeaturedTitle.trim(),
+        hero_featured_subtitle: heroFeaturedSubtitle.trim(),
+        hero_featured_price: heroFeaturedPrice.trim(),
+        hero_featured_location: heroFeaturedLocation.trim(),
+        hero_featured_image: heroFeaturedImage.trim(),
+        hero_featured_link: heroFeaturedLink.trim(),
       };
 
       const res = await fetch('/api/admin/settings', {
@@ -104,15 +128,15 @@ export default function AdminSettingsView() {
   };
 
   return (
-    <div className="p-4 sm:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-sm">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary-fixed text-xs font-bold uppercase tracking-wider mb-2 border border-primary/30">
             <span className="material-symbols-outlined text-[15px]">tune</span>
             Brand &amp; System Configuration
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Website Global Settings</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Website Global Settings</h1>
           <p className="text-xs text-slate-400 mt-1">
             Configure emergency hotlines, WhatsApp routing, homepage headlines, and online operations parameters.
           </p>
@@ -271,6 +295,112 @@ export default function AdminSettingsView() {
             </div>
           </div>
 
+          {/* Section: Hero Featured Highlight Card ("Featured Haven") */}
+          <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-sm space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
+              <span className="material-symbols-outlined text-primary-fixed text-[20px]">stars</span>
+              <h2 className="font-bold text-sm text-white uppercase tracking-wider">
+                Hero Featured Card (&quot;Featured Haven&quot;)
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Card Badge Label
+                </label>
+                <input
+                  type="text"
+                  placeholder="Featured Haven"
+                  value={heroFeaturedBadge}
+                  onChange={(e) => setHeroFeaturedBadge(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-semibold placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Tour / Haven Title *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Saint Martin Coral Bay"
+                  value={heroFeaturedTitle}
+                  onChange={(e) => setHeroFeaturedTitle(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-semibold placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Subtitle / Subheading
+                </label>
+                <input
+                  type="text"
+                  placeholder="Curated Beach Expedition"
+                  value={heroFeaturedSubtitle}
+                  onChange={(e) => setHeroFeaturedSubtitle(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Price Label (e.g. BDT 9,200)
+                </label>
+                <input
+                  type="text"
+                  placeholder="BDT 9,200"
+                  value={heroFeaturedPrice}
+                  onChange={(e) => setHeroFeaturedPrice(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-bold placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Location Text (e.g. Dhaka • Cox • Saint Martin)
+                </label>
+                <input
+                  type="text"
+                  placeholder="Dhaka • Cox • Saint Martin"
+                  value={heroFeaturedLocation}
+                  onChange={(e) => setHeroFeaturedLocation(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Explore Link (Path or Package URL)
+                </label>
+                <input
+                  type="text"
+                  placeholder="/packages"
+                  value={heroFeaturedLink}
+                  onChange={(e) => setHeroFeaturedLink(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-mono text-[11px] placeholder-slate-500"
+                />
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Feature Image URL
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://images.unsplash.com/..."
+                  value={heroFeaturedImage}
+                  onChange={(e) => setHeroFeaturedImage(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-mono text-[11px] placeholder-slate-500"
+                />
+                <span className="text-[10px] text-slate-400 mt-1 block">
+                  Displayed prominently in the Hero Section card on the homepage.
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Section 3: Social Proof & Metrics */}
           <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-sm space-y-4">
             <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
@@ -338,9 +468,22 @@ export default function AdminSettingsView() {
                 </label>
                 <input
                   type="url"
-                  placeholder="https://facebook.com/traversebd"
+                  placeholder="https://www.facebook.com/profile.php?id=61568715145902"
                   value={socialFacebook}
                   onChange={(e) => setSocialFacebook(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-mono text-[11px] placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Facebook Messenger Direct Link
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://www.facebook.com/messages/t/431751336697364"
+                  value={socialMessenger}
+                  onChange={(e) => setSocialMessenger(e.target.value)}
                   className="w-full px-3 py-2.5 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:border-primary font-mono text-[11px] placeholder-slate-500"
                 />
               </div>
@@ -404,7 +547,7 @@ export default function AdminSettingsView() {
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-3 rounded-xl bg-primary text-white text-xs font-bold uppercase tracking-wider shadow-md hover:bg-primary-container disabled:opacity-50 flex items-center gap-2 transition"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-primary text-white text-xs font-bold uppercase tracking-wider shadow-md hover:bg-primary-container disabled:opacity-50 flex items-center justify-center gap-2 transition cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">save</span>
               <span>{saving ? 'Saving Settings...' : 'Save Global Settings'}</span>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Category } from '@backend/types/database.types';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminCategoriesView() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -12,6 +13,10 @@ export default function AdminCategoriesView() {
   const [nameBn, setNameBn] = useState('');
   const [sortOrder, setSortOrder] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // In-App Confirm Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadCategories = async () => {
     try {
@@ -86,24 +91,30 @@ export default function AdminCategoriesView() {
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Delete category "${name}"?`)) return;
+  const confirmDeleteCategory = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/categories/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/categories/${deleteTarget.id}`, { method: 'DELETE' });
       if (res.ok) {
-        setCategories((prev) => prev.filter((c) => c.id !== id));
+        setCategories((prev) => prev.filter((c) => c.id !== deleteTarget.id));
+        setDeleteTarget(null);
+      } else {
+        alert('Failed to delete category.');
       }
     } catch {
       alert('Failed to delete category.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   return (
-    <div className="p-8 space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-5xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-white tracking-tight">
-            Tour Categories & Classifications
+          <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
+            Tour Categories &amp; Classifications
           </h2>
           <p className="text-xs text-slate-400">
             Manage travel classification pills, sorting priority and icons.
@@ -112,7 +123,7 @@ export default function AdminCategoriesView() {
 
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-primary/20 transition"
+          className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-primary/20 transition w-full sm:w-auto cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
           <span>Add Category</span>
@@ -120,7 +131,51 @@ export default function AdminCategoriesView() {
       </div>
 
       <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-sm">
-        <table className="w-full text-left text-xs text-slate-300">
+        {/* Mobile cards view (< sm) */}
+        <div className="sm:hidden divide-y divide-slate-800/80">
+          {categories.map((cat) => (
+            <div key={cat.id} className="p-4 flex items-center justify-between gap-3">
+              <div className="min-w-0 space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded bg-primary/20 text-primary-fixed text-[10px] font-bold flex items-center justify-center shrink-0">
+                    #{cat.sort_order}
+                  </span>
+                  <span className="font-bold text-white text-xs truncate">{cat.name_en}</span>
+                </div>
+                <span className="text-[11px] text-slate-400 font-bengali block truncate">
+                  {cat.name_bn}
+                </span>
+                <span className="text-[10px] font-mono text-slate-500 block truncate">
+                  slug: {cat.slug}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={() => openEditModal(cat)}
+                  className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs transition"
+                  title="Edit Category"
+                >
+                  <span className="material-symbols-outlined text-[16px]">edit</span>
+                </button>
+                <button
+                  onClick={() => setDeleteTarget({ id: cat.id, name: cat.name_en })}
+                  className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
+                  title="Delete Category"
+                >
+                  <span className="material-symbols-outlined text-[16px]">delete</span>
+                </button>
+              </div>
+            </div>
+          ))}
+          {categories.length === 0 && (
+            <div className="p-6 text-center text-slate-400 text-xs">No categories created yet.</div>
+          )}
+        </div>
+
+        {/* Desktop Table (sm and above) */}
+        <div className="hidden sm:block overflow-x-auto">
+          <table className="w-full text-left text-xs text-slate-300 min-w-[520px]">
           <thead className="text-[10px] uppercase font-bold text-slate-500 border-b border-slate-800 bg-slate-950/40">
             <tr>
               <th className="py-3 px-4">Order</th>
@@ -150,13 +205,15 @@ export default function AdminCategoriesView() {
                   <div className="inline-flex items-center gap-1">
                     <button
                       onClick={() => openEditModal(cat)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                      title="Edit Category"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-[17px]">edit</span>
                     </button>
                     <button
-                      onClick={() => handleDelete(cat.id, cat.name_en)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition"
+                      onClick={() => setDeleteTarget({ id: cat.id, name: cat.name_en })}
+                      title="Delete Category"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-[17px]">delete</span>
                     </button>
@@ -166,17 +223,21 @@ export default function AdminCategoriesView() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-3xl bg-slate-900 border border-slate-800 p-6 sm:p-8 space-y-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+          <div className="w-full max-w-md rounded-2xl sm:rounded-3xl bg-slate-900 border border-slate-800 p-4 sm:p-6 sm:p-8 space-y-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-bold text-white">
                 {editingCategory ? 'Edit Category' : 'Add Category'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
@@ -221,14 +282,14 @@ export default function AdminCategoriesView() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold"
+                  className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold hover:bg-slate-700 transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90"
+                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? 'Saving...' : 'Save Category'}
                 </button>
@@ -237,6 +298,17 @@ export default function AdminCategoriesView() {
           </div>
         </div>
       )}
+
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Delete Tour Category"
+        message={`Are you sure you want to permanently delete category "${deleteTarget?.name}"? Packages mapped to this category may need reassignment.`}
+        confirmLabel="Delete Category"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteCategory}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BlogItem } from '@backend/data/admin-mock-data';
 import ImageUploadField from '@frontend/components/admin/ImageUploadField';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminBlogsView() {
   const [blogs, setBlogs] = useState<BlogItem[]>([]);
@@ -16,13 +17,20 @@ export default function AdminBlogsView() {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   // Form Fields
   const [title, setTitle] = useState('');
-  const [slug, setSlug] = useState('');
-  const [destinationSlug, setDestinationSlug] = useState('');
   const [readTime, setReadTime] = useState('5 min read');
   const [status, setStatus] = useState<'published' | 'draft'>('published');
+  const [isFeatured, setIsFeatured] = useState(false);
   const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [newGalleryInput, setNewGalleryInput] = useState('');
+  const [isGalleryUploading, setIsGalleryUploading] = useState(false);
+  const galleryFileInputRef = useRef<HTMLInputElement>(null);
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
 
@@ -48,11 +56,12 @@ export default function AdminBlogsView() {
   const openCreateModal = () => {
     setEditingBlog(null);
     setTitle('');
-    setSlug('');
-    setDestinationSlug('');
     setReadTime('5 min read');
     setStatus('published');
+    setIsFeatured(false);
     setCoverImageUrl('https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop');
+    setGalleryImages([]);
+    setNewGalleryInput('');
     setExcerpt('');
     setContent('');
     setErrorMsg('');
@@ -62,15 +71,47 @@ export default function AdminBlogsView() {
   const openEditModal = (b: BlogItem) => {
     setEditingBlog(b);
     setTitle(b.title_en);
-    setSlug(b.slug);
-    setDestinationSlug(b.destination_slug || '');
     setReadTime(b.read_time || '5 min read');
     setStatus(b.status || 'published');
+    setIsFeatured(!!b.is_featured);
     setCoverImageUrl(b.cover_image_url);
+    setGalleryImages(b.gallery_images || []);
+    setNewGalleryInput('');
     setExcerpt(b.excerpt_en);
     setContent(b.content_en);
     setErrorMsg('');
     setIsModalOpen(true);
+  };
+
+  const handleGalleryFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (galleryImages.length >= 5) {
+      alert('Maximum 5 gallery photos allowed.');
+      return;
+    }
+    setIsGalleryUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'blogs');
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const json = await res.json();
+      if (res.ok && json.data?.url) {
+        setGalleryImages((prev) => [...prev, json.data.url].slice(0, 5));
+      } else {
+        alert(json.error || 'Failed to upload photo');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Image upload error');
+    } finally {
+      setIsGalleryUploading(false);
+      if (galleryFileInputRef.current) galleryFileInputRef.current.value = '';
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -86,11 +127,12 @@ export default function AdminBlogsView() {
 
       const payload = {
         title_en: title.trim(),
-        slug: slug.trim() || undefined,
-        destination_slug: destinationSlug.trim() || undefined,
+        slug: editingBlog?.slug || undefined,
         read_time: readTime.trim() || '5 min read',
         status,
+        is_featured: isFeatured,
         cover_image_url: coverImageUrl.trim(),
+        gallery_images: galleryImages.filter((img) => img.trim().length > 0).slice(0, 5),
         excerpt_en: excerpt.trim(),
         content_en: content.trim(),
       };
@@ -139,21 +181,37 @@ export default function AdminBlogsView() {
     }
   };
 
-  const handleDelete = async (id: string, blogTitle: string) => {
-    if (!confirm(`Are you sure you want to permanently delete "${blogTitle}"?`)) {
-      return;
-    }
-
+  const handleToggleFeatured = async (id: string, currentFeatured: boolean) => {
     try {
-      const res = await fetch(`/api/admin/blogs/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/blogs/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_featured: !currentFeatured }),
+      });
       if (res.ok) {
-        setBlogs((prev) => prev.filter((b) => b.id !== id));
+        await fetchBlogs();
+      }
+    } catch (e) {
+      console.error('Failed to toggle featured', e);
+    }
+  };
+
+  const confirmDeleteBlog = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/blogs/${deleteTarget.id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setBlogs((prev) => prev.filter((b) => b.id !== deleteTarget.id));
+        setDeleteTarget(null);
       } else {
         alert('Failed to delete blog post.');
       }
     } catch (err) {
       console.error(err);
       alert('Error deleting blog post.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -175,15 +233,15 @@ export default function AdminBlogsView() {
   const draftCount = blogs.filter((b) => b.status === 'draft').length;
 
   return (
-    <div className="p-4 sm:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-sm">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary-fixed text-xs font-bold uppercase tracking-wider mb-2 border border-primary/30">
             <span className="material-symbols-outlined text-[15px]">article</span>
             Editorial Content Management
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Travel Guide &amp; Field Blogs</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Travel Guide &amp; Field Blogs</h1>
           <p className="text-xs text-slate-400 mt-1">
             Publish travel tips, packing guides, and expedition field dispatches. Toggle between Published and Draft to control public website visibility.
           </p>
@@ -191,7 +249,7 @@ export default function AdminBlogsView() {
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-primary-container transition-all"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-primary-container transition-all w-full sm:w-auto cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">post_add</span>
           Write New Article
@@ -277,7 +335,7 @@ export default function AdminBlogsView() {
           No blog posts found matching your criteria.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredBlogs.map((b) => (
             <div
               key={b.id}
@@ -304,9 +362,23 @@ export default function AdminBlogsView() {
                     {b.status === 'draft' ? 'Draft (Hidden)' : 'Published (Live)'}
                   </span>
 
+                  {b.is_featured && (
+                    <span className="absolute top-10 left-3 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider bg-amber-500 text-white shadow-md flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[12px]">stars</span>
+                      <span>Featured</span>
+                    </span>
+                  )}
+
                   {b.read_time && (
                     <span className="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
                       {b.read_time}
+                    </span>
+                  )}
+
+                  {b.gallery_images && b.gallery_images.length > 0 && (
+                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-white text-[10px] font-bold flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[12px]">photo_library</span>
+                      <span>{b.gallery_images.length} photos</span>
                     </span>
                   )}
                 </div>
@@ -352,6 +424,20 @@ export default function AdminBlogsView() {
                 </button>
 
                 <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleToggleFeatured(b.id, !!b.is_featured)}
+                    title={b.is_featured ? 'Remove featured status' : 'Mark as Top Featured Article'}
+                    className={`p-1.5 rounded-lg transition-all ${
+                      b.is_featured
+                        ? 'text-amber-400 bg-amber-500/20 hover:bg-amber-500/30'
+                        : 'text-slate-400 hover:text-amber-400 hover:bg-slate-800'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-[18px]">
+                      {b.is_featured ? 'stars' : 'star'}
+                    </span>
+                  </button>
                   <a
                     href={`/blog/${b.slug}`}
                     target="_blank"
@@ -369,8 +455,8 @@ export default function AdminBlogsView() {
                     <span className="material-symbols-outlined text-[18px]">edit</span>
                   </button>
                   <button
-                    onClick={() => handleDelete(b.id, b.title_en)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                    onClick={() => setDeleteTarget({ id: b.id, title: b.title_en })}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all cursor-pointer"
                     title="Delete blog post"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -384,8 +470,8 @@ export default function AdminBlogsView() {
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 w-full max-w-2xl rounded-2xl border border-slate-800 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-white">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-slate-900 w-full max-w-2xl rounded-2xl sm:rounded-3xl border border-slate-800 p-4 sm:p-6 shadow-2xl space-y-4 my-2 sm:my-8 max-h-[94vh] sm:max-h-[90vh] overflow-y-auto text-white">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h2 className="text-lg font-black text-white tracking-tight">
                 {editingBlog ? 'Edit Blog Article' : 'Write New Travel Article'}
@@ -435,51 +521,17 @@ export default function AdminBlogsView() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    URL Slug (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. coxs-bazar-travel-guide"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary font-mono text-[11px]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    Destination Tag
-                  </label>
-                  <select
-                    value={destinationSlug}
-                    onChange={(e) => setDestinationSlug(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
-                  >
-                    <option value="">General Travel</option>
-                    <option value="sajek-valley">Sajek Valley</option>
-                    <option value="saint-martins-island">Saint Martin's Island</option>
-                    <option value="sundarbans">Sundarbans</option>
-                    <option value="coxs-bazar">Cox's Bazar</option>
-                    <option value="sreemangal-tea-valleys">Sreemangal</option>
-                    <option value="bandarban-nilgiri">Bandarban</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    Read Time
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 5 min read"
-                    value={readTime}
-                    onChange={(e) => setReadTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  Estimated Read Time
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 5 min read"
+                  value={readTime}
+                  onChange={(e) => setReadTime(e.target.value)}
+                  className="w-full sm:w-60 px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
+                />
               </div>
 
               <ImageUploadField
@@ -490,6 +542,109 @@ export default function AdminBlogsView() {
                 required
                 helperText="Upload article banner (max 10MB) or toggle to paste direct image link."
               />
+
+              {/* Featured Article Flag */}
+              <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-bold text-white block flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-amber-400 text-[18px]">stars</span>
+                    <span>Top Featured Article</span>
+                  </span>
+                  <span className="text-[11px] text-slate-400 block mt-0.5">
+                    Places this article as the hero spotlight header on the main travel journal.
+                  </span>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isFeatured}
+                    onChange={(e) => setIsFeatured(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-10 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+              </div>
+
+              {/* Article Photo Gallery (Up to 5 Images with Cloudinary Upload + URL) */}
+              <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/80 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-primary-fixed text-[18px]">photo_library</span>
+                    <span>Article Image Gallery ({galleryImages.length}/5)</span>
+                  </label>
+                  <span className="text-[10px] text-slate-400">Upload to Cloudinary or paste image URL</span>
+                </div>
+
+                {galleryImages.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+                    {galleryImages.map((imgUrl, idx) => (
+                      <div key={idx} className="relative aspect-video rounded-lg overflow-hidden border border-slate-700 group">
+                        <img src={imgUrl} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => setGalleryImages(galleryImages.filter((_, i) => i !== idx))}
+                          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center text-xs transition cursor-pointer"
+                          title="Remove photo"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {galleryImages.length < 5 ? (
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <div className="flex-1 flex gap-2">
+                        <input
+                          type="url"
+                          placeholder="Paste image URL (https://...)"
+                          value={newGalleryInput}
+                          onChange={(e) => setNewGalleryInput(e.target.value)}
+                          className="flex-1 px-3 py-2 bg-slate-800 rounded-xl text-xs text-white border border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary font-mono text-[11px]"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (newGalleryInput.trim()) {
+                              setGalleryImages([...galleryImages, newGalleryInput.trim()].slice(0, 5));
+                              setNewGalleryInput('');
+                            }
+                          }}
+                          className="px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer"
+                        >
+                          <span className="material-symbols-outlined text-[15px]">add</span>
+                          <span>Add URL</span>
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          ref={galleryFileInputRef}
+                          accept="image/*"
+                          onChange={handleGalleryFileUpload}
+                          className="hidden"
+                        />
+                        <button
+                          type="button"
+                          disabled={isGalleryUploading}
+                          onClick={() => galleryFileInputRef.current?.click()}
+                          className="w-full sm:w-auto px-4 py-2 rounded-xl bg-primary/20 hover:bg-primary/30 text-primary-fixed border border-primary/40 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">
+                            {isGalleryUploading ? 'sync' : 'cloud_upload'}
+                          </span>
+                          <span>{isGalleryUploading ? 'Uploading...' : 'Upload Photo'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-slate-400 italic">Maximum limit of 5 photos reached.</p>
+                )}
+              </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
@@ -539,6 +694,16 @@ export default function AdminBlogsView() {
           </div>
         </div>
       )}
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Delete Blog Article"
+        message={`Are you sure you want to permanently delete "${deleteTarget?.title}"? This travel story will no longer be visible on the public journal.`}
+        confirmLabel="Delete Article"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteBlog}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

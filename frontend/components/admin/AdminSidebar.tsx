@@ -15,8 +15,8 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: 'dashboard' },
     { label: 'Tour Packages', href: '/admin/packages', icon: 'tour' },
-    { label: 'Destinations', href: '/admin/destinations', icon: 'location_on' },
     { label: 'Categories', href: '/admin/categories', icon: 'category' },
+    { label: 'Reviews & Testimonials', href: '/admin/testimonials', icon: 'rate_review' },
     { label: 'Gallery Media', href: '/admin/gallery', icon: 'photo_library' },
     { label: 'Travel Blogs', href: '/admin/blogs', icon: 'article' },
     { label: 'Site Settings', href: '/admin/settings', icon: 'tune' },
@@ -96,21 +96,26 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
         </nav>
       </div>
 
-      {/* Footer / Public Link */}
-      <div className="p-6 border-t border-slate-800 space-y-3">
-        <Link
-          href="/"
-          target="_blank"
-          onClick={() => isMobile && onClose?.()}
-          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition"
-        >
-          <span className="material-symbols-outlined text-[18px] text-primary-fixed">
-            open_in_new
+      {/* Footer / Version Branding */}
+      <div className="p-4 border-t border-slate-800 space-y-1.5">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-bold text-slate-400 tracking-wide">
+            TraverseBD v2.0.0
           </span>
-          <span>View Live Portal</span>
-        </Link>
-        <p className="text-[10px] text-slate-500 px-3">
-          TraverseBD CMS v1.2 • Team Lithium
+          <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            Online
+          </span>
+        </div>
+        <p className="text-[10px] text-slate-400 font-medium flex items-center gap-1">
+          <span>Developed by</span>
+          <a
+            href="https://www.pointfex.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:text-emerald-400 font-bold hover:underline"
+          >
+            Pointfex
+          </a>
         </p>
       </div>
     </>
@@ -119,21 +124,22 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
   return (
     <>
       {/* Desktop Persistent Sidebar */}
-      <aside className="hidden lg:flex w-64 bg-slate-900 border-r border-slate-800 flex-col justify-between shrink-0 min-h-screen text-slate-300">
+      <aside className="hidden lg:flex w-64 bg-slate-900 border-r border-slate-800 flex-col justify-between shrink-0 h-screen overflow-y-auto sticky top-0 text-slate-300">
         {renderNavContent(false)}
       </aside>
 
       {/* Mobile Drawer (Visible on < lg screens when toggled) */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden animate-fadeIn">
           {/* Backdrop overlay */}
           <div
             className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
             onClick={onClose}
+            aria-hidden="true"
           />
 
           {/* Slide-out Drawer */}
-          <aside className="fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 border-r border-slate-800 flex flex-col justify-between text-slate-300 shadow-2xl overflow-y-auto">
+          <aside className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-slate-900 border-r border-slate-800 flex flex-col justify-between text-slate-300 shadow-2xl overflow-y-auto overscroll-contain">
             {renderNavContent(true)}
           </aside>
         </div>

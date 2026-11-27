@@ -28,7 +28,7 @@ export interface WhatsAppInquiryParams {
 
 export function generateWhatsAppInquiryUrl(params: WhatsAppInquiryParams): string {
   const defaultNumber =
-    process.env.NEXT_PUBLIC_DEFAULT_WHATSAPP_NUMBER?.replace(/\D/g, '') || '8801700000000';
+    process.env.NEXT_PUBLIC_DEFAULT_WHATSAPP_NUMBER?.replace(/\D/g, '') || '8801627444330';
   const targetNumber = (params.phoneNumber || defaultNumber).replace(/\D/g, '');
   const baseUrl = params.siteUrl || process.env.NEXT_PUBLIC_SITE_URL || 'https://traversebd.com';
   const packageUrl = `${baseUrl.replace(/\/$/, '')}/packages/${params.packageSlug}`;

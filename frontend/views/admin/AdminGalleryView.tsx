@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { GalleryItem } from '@backend/data/admin-mock-data';
 import ImageUploadField from '@frontend/components/admin/ImageUploadField';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminGalleryView() {
   const [items, setItems] = useState<GalleryItem[]>([]);
@@ -16,6 +17,10 @@ export default function AdminGalleryView() {
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -154,21 +159,22 @@ export default function AdminGalleryView() {
     }
   };
 
-  const handleDelete = async (id: string, itemTitle: string) => {
-    if (!confirm(`Are you sure you want to permanently delete "${itemTitle}" from Gallery?`)) {
-      return;
-    }
-
+  const confirmDeleteGalleryItem = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/gallery/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/gallery/${deleteTarget.id}`, { method: 'DELETE' });
       if (res.ok) {
-        setItems((prev) => prev.filter((i) => i.id !== id));
+        setItems((prev) => prev.filter((i) => i.id !== deleteTarget.id));
+        setDeleteTarget(null);
       } else {
         alert('Failed to delete gallery item.');
       }
     } catch (err) {
       console.error(err);
       alert('Error deleting gallery item.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -187,15 +193,15 @@ export default function AdminGalleryView() {
   });
 
   return (
-    <div className="p-4 sm:p-8 space-y-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-sm">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary-fixed text-xs font-bold uppercase tracking-wider mb-2 border border-primary/30">
             <span className="material-symbols-outlined text-[15px]">photo_library</span>
             Visual Archive Management
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Gallery Media Curations</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Gallery Media Curations</h1>
           <p className="text-xs text-slate-400 mt-1">
             Upload and manage photo dispatches displayed on the public Gallery page. Toggle between Published and Draft to control public visibility instantly.
           </p>
@@ -203,7 +209,7 @@ export default function AdminGalleryView() {
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-primary-container transition-all"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-primary-container transition-all w-full sm:w-auto cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">add_photo_alternate</span>
           Add New Photo
@@ -227,7 +233,7 @@ export default function AdminGalleryView() {
           </div>
 
           {/* Status Filter Tabs */}
-          <div className="flex items-center gap-1.5 border-l border-slate-800 pl-0 sm:pl-3">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 sm:border-l sm:border-slate-800 sm:pl-3">
             {[
               { key: 'all', label: 'All' },
               { key: 'published', label: 'Published' },
@@ -283,7 +289,7 @@ export default function AdminGalleryView() {
           No gallery photos found matching your criteria.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredItems.map((item) => (
             <div
               key={item.id}
@@ -359,8 +365,8 @@ export default function AdminGalleryView() {
                     <span className="material-symbols-outlined text-[18px]">edit</span>
                   </button>
                   <button
-                    onClick={() => handleDelete(item.id, item.title)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                    onClick={() => setDeleteTarget({ id: item.id, title: item.title })}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all cursor-pointer"
                     title="Delete photo"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -374,8 +380,8 @@ export default function AdminGalleryView() {
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 w-full max-w-xl rounded-2xl border border-slate-800 p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-white">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-slate-900 w-full max-w-xl rounded-2xl sm:rounded-3xl border border-slate-800 p-4 sm:p-6 shadow-2xl space-y-4 my-2 sm:my-8 max-h-[94vh] sm:max-h-[90vh] overflow-y-auto text-white">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h2 className="text-lg font-black text-white tracking-tight">
                 {editingItem ? 'Edit Gallery Photo' : 'Add New Gallery Photo'}
@@ -560,6 +566,16 @@ export default function AdminGalleryView() {
           </div>
         </div>
       )}
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Delete Gallery Photo"
+        message={`Are you sure you want to permanently delete "${deleteTarget?.title}"? This photo will be removed from the public visual showcase.`}
+        confirmLabel="Delete Photo"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteGalleryItem}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

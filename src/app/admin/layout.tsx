@@ -15,7 +15,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const getPageTitle = () => {
     if (pathname.includes('/packages')) return 'Tour Packages & Departures';
-    if (pathname.includes('/destinations')) return 'Destinations & Regions';
     if (pathname.includes('/categories')) return 'Tour Categories';
     if (pathname.includes('/gallery')) return 'Gallery Visual Dispatches';
     if (pathname.includes('/blogs')) return 'Travel Blogs & Guides';
@@ -25,18 +24,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex font-sans">
+    <div className="h-screen bg-slate-950 text-slate-100 flex font-sans overflow-hidden">
       <AdminSidebar
         isOpen={isMobileSidebarOpen}
         onClose={() => setIsMobileSidebarOpen(false)}
       />
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         <AdminHeader
           title={getPageTitle()}
           subtitle="TraverseBD Operations & Control Center"
           onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
         />
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto min-w-0">{children}</main>
       </div>
     </div>
   );

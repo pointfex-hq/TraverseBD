@@ -1,7 +1,7 @@
 # TraverseBD — Frontend Architecture & Design System Guide
 
 **Frontend Designer & Deployment Engineer:** Kazi Azmainur Rahman  
-**Team:** Team Lithium / Pointfex  
+**Team:** TraverseBD / Pointfex  
 **Design System:** Lush Horizon (Modern Lightweight Tourism Portal)  
 **Stack:** Next.js 14 App Router, React 18, Tailwind CSS, TypeScript, Material Symbols Outlined  
 

@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     return successResponse({
       inquiryUrl,
-      targetPhone: parsed.data.phoneNumber || process.env.NEXT_PUBLIC_DEFAULT_WHATSAPP_NUMBER || '8801700000000',
+      targetPhone: parsed.data.phoneNumber || process.env.NEXT_PUBLIC_DEFAULT_WHATSAPP_NUMBER || '8801627444330',
       status: 'ready',
     });
   } catch (err: unknown) {

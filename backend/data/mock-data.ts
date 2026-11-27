@@ -595,12 +595,12 @@ export const MOCK_PACKAGES: PackageDetailDTO[] = [
 
 export const MOCK_SETTINGS: Record<string, unknown> = {
   contact_info: {
-    phone: '+8801700000000',
+    phone: '+8801627-444330',
     email: 'info@traversebd.com',
     address: 'Banani, Dhaka, Bangladesh',
   },
   whatsapp_config: {
-    number: '8801700000000',
+    number: '8801627444330',
     default_message_en: 'Hello Traverse BD, I want to inquire about a tour package.',
     default_message_bn: 'নমস্কার Traverse BD, আমি একটি ট্যুর প্যাকেজ সম্পর্কে জানতে চাচ্ছি।',
   },

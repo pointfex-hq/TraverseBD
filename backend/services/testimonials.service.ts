@@ -1,81 +1,99 @@
-export interface Testimonial {
-  id: string;
-  name: string;
-  role?: string;
-  location: string;
-  avatarUrl: string;
-  quote: string;
-  rating: number;
-  package_title: string;
-  package_slug: string;
-  date: string;
-  verified: boolean;
-  status: 'published' | 'draft';
+import { adminStore, Testimonial, INITIAL_TESTIMONIALS } from '@backend/data/admin-mock-data';
+
+export type { Testimonial };
+export const MOCK_TESTIMONIALS: Testimonial[] = INITIAL_TESTIMONIALS;
+
+function getStoreTestimonials(): Testimonial[] {
+  if (!adminStore.testimonials || !Array.isArray(adminStore.testimonials)) {
+    adminStore.testimonials = JSON.parse(JSON.stringify(INITIAL_TESTIMONIALS));
+  }
+  return adminStore.testimonials;
 }
 
-export const MOCK_TESTIMONIALS: Testimonial[] = [
-  {
-    id: 't1',
-    name: 'Tanvir Ahmed',
-    role: 'Corporate Team Lead',
-    location: 'Dhaka',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-    quote: 'Our 40-person company retreat to Cox’s Bazar and Marine Drive was organized with unmatched precision. From luxury AC coaches to private beach barbecues, Traverse BD handled everything flawlessly.',
-    rating: 5,
-    package_title: "Cox's Bazar Marine Drive Retreat",
-    package_slug: 'coxs-bazar-coastal-retreat',
-    date: 'November 2025',
-    verified: true,
-    status: 'published',
-  },
-  {
-    id: 't2',
-    name: 'Nusrat Jahan & Family',
-    role: 'Family Vacationer',
-    location: 'Chattogram',
-    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop',
-    quote: 'Visiting Sajek Valley with elderly parents can be nerve-wracking, but Traverse BD assigned us a veteran 4x4 Chander Gari driver and secured an exceptional cloud-facing cottage at Konglak.',
-    rating: 5,
-    package_title: 'Sajek Valley Cloud Kingdom Escape',
-    package_slug: 'sajek-valley-cloud-expedition',
-    date: 'October 2025',
-    verified: true,
-    status: 'published',
-  },
-  {
-    id: 't3',
-    name: 'Dr. Sabrina Karim',
-    role: 'Wildlife Photographer',
-    location: 'Dhaka',
-    avatarUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop',
-    quote: 'The Sundarbans deep mangrove vessel experience exceeded all expectations. Certified naturalist escorts, armed guards for shore walks, and silent dawn canoeing into Kotka sanctuary. Simply world-class.',
-    rating: 5,
-    package_title: 'Sundarbans Deep Mangrove Safari',
-    package_slug: 'sundarbans-deep-mangrove-safari',
-    date: 'November 2025',
-    verified: true,
-    status: 'published',
-  },
-  {
-    id: 't4',
-    name: 'Mahir Faisal',
-    role: 'Adventure Trekker',
-    location: 'Sylhet',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
-    quote: 'Traverse BD arranged our Kashmir and Gulmarg winter expedition. The visa assistance, private heated houseboat in Srinagar, and gondola passes were completely sorted. 100% transparent pricing!',
-    rating: 5,
-    package_title: 'Kashmir Paradise Valley & Gulmarg',
-    package_slug: 'kashmir-paradise-expedition',
-    date: 'December 2025',
-    verified: true,
-    status: 'published',
-  },
-];
-
 export async function getPublishedTestimonials(packageSlug?: string) {
-  let list = MOCK_TESTIMONIALS.filter((t) => t.status === 'published');
+  const storeList = getStoreTestimonials();
+  let list = storeList.filter((t) => t.status === 'published');
   if (packageSlug) {
     list = list.filter((t) => t.package_slug === packageSlug);
   }
   return { data: list, error: null };
+}
+
+export function getAllAdminTestimonials(): Testimonial[] {
+  return getStoreTestimonials();
+}
+
+export function createAdminTestimonial(
+  input: Omit<Testimonial, 'id'>,
+  adminEmail = 'admin@traversebd.com'
+): Testimonial {
+  const list = getStoreTestimonials();
+  const newId = `t-${Date.now()}`;
+  const testimonial: Testimonial = {
+    ...input,
+    id: newId,
+    rating: Number(input.rating) || 5,
+    verified: input.verified !== undefined ? Boolean(input.verified) : true,
+    status: input.status || 'published',
+  };
+
+  list.unshift(testimonial);
+  adminStore.addAuditLog(
+    adminEmail,
+    'ADMIN',
+    'TESTIMONIAL_CREATED',
+    'testimonials',
+    `Added new review from ${testimonial.name} (${testimonial.location})`
+  );
+
+  return testimonial;
+}
+
+export function updateAdminTestimonial(
+  id: string,
+  updates: Partial<Testimonial>,
+  adminEmail = 'admin@traversebd.com'
+): Testimonial | null {
+  const list = getStoreTestimonials();
+  const index = list.findIndex((t) => t.id === id);
+  if (index === -1) return null;
+
+  const existing = list[index];
+  const updated: Testimonial = {
+    ...existing,
+    ...updates,
+    id: existing.id,
+    rating: updates.rating !== undefined ? Number(updates.rating) : existing.rating,
+  };
+
+  list[index] = updated;
+  adminStore.addAuditLog(
+    adminEmail,
+    'ADMIN',
+    'TESTIMONIAL_UPDATED',
+    'testimonials',
+    `Updated review for ${updated.name}`
+  );
+
+  return updated;
+}
+
+export function deleteAdminTestimonial(
+  id: string,
+  adminEmail = 'admin@traversebd.com'
+): boolean {
+  const list = getStoreTestimonials();
+  const existing = list.find((t) => t.id === id);
+  if (!existing) return false;
+
+  adminStore.testimonials = list.filter((t) => t.id !== id);
+  adminStore.addAuditLog(
+    adminEmail,
+    'ADMIN',
+    'TESTIMONIAL_DELETED',
+    'testimonials',
+    `Deleted review from ${existing.name}`
+  );
+
+  return true;
 }

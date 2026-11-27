@@ -106,6 +106,10 @@ export interface BlogItem {
   read_time?: string;
   status: 'published' | 'draft';
   published_at?: string;
+  is_featured?: boolean;
+  gallery_images?: string[];
+  author_name?: string;
+  author_role?: string;
 }
 
 export interface SiteSettings {
@@ -119,27 +123,43 @@ export interface SiteSettings {
   stat_rating: string;
   stat_certified: string;
   social_facebook?: string;
+  social_messenger?: string;
   social_instagram?: string;
   social_youtube?: string;
   social_whatsapp_group?: string;
   corporate_inquiry_notice?: string;
+  hero_featured_badge?: string;
+  hero_featured_title?: string;
+  hero_featured_subtitle?: string;
+  hero_featured_price?: string;
+  hero_featured_location?: string;
+  hero_featured_image?: string;
+  hero_featured_link?: string;
 }
 
 export const INITIAL_SITE_SETTINGS: SiteSettings = {
   hero_title: 'Discover the Untamed Beauty of Bengal & Beyond',
   hero_subtitle: 'Customized corporate tours, student adventures, luxury mangrove houseboats & seamless transit ticketing crafted for lifelong memories across riverways, cloud peaks, and marine horizons.',
-  phone_hotline: '01627444330',
+  phone_hotline: '01627-444330',
   whatsapp_number: '8801627444330',
   contact_email: 'info@traversebd.com',
   operations_mode: '100% Online Operations (Nationwide Bangladesh)',
   stat_travelers: '15,000+',
   stat_rating: '4.95 / 5.0',
   stat_certified: '100% Certified',
-  social_facebook: 'https://facebook.com/traversebd',
+  social_facebook: 'https://www.facebook.com/profile.php?id=61568715145902',
+  social_messenger: 'https://www.facebook.com/messages/t/431751336697364',
   social_instagram: 'https://instagram.com/traversebd',
   social_youtube: 'https://youtube.com/@traversebd',
   social_whatsapp_group: 'https://chat.whatsapp.com/traversebd',
   corporate_inquiry_notice: 'Official VAT invoices, corporate retreat buyouts & dedicated trip coordinators available.',
+  hero_featured_badge: 'Featured Haven',
+  hero_featured_title: 'Saint Martin Coral Bay',
+  hero_featured_subtitle: 'Curated Beach Expedition',
+  hero_featured_price: 'BDT 9,200',
+  hero_featured_location: 'Dhaka • Cox • Saint Martin',
+  hero_featured_image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=1200&auto=format&fit=crop',
+  hero_featured_link: '/packages',
 };
 
 export const INITIAL_BLOGS: BlogItem[] = [
@@ -148,36 +168,63 @@ export const INITIAL_BLOGS: BlogItem[] = [
     slug: 'coxs-bazar-travel-guide',
     title_en: "Ultimate Travel Guide to Cox's Bazar in 2026",
     excerpt_en: 'Everything you need to know about hotels, local seafood, Marine Drive drives, and quiet beaches.',
-    content_en: "Cox's Bazar offers much more than just the main crowded beach. Traveling down the 80km Marine Drive to Inani and Teknaf opens up hidden coral coasts, secluded fishing hamlets, and dramatic ocean viewpoints...",
+    content_en: "Cox's Bazar offers much more than just the main crowded beach. Traveling down the 80km Marine Drive to Inani and Teknaf opens up hidden coral coasts, secluded fishing hamlets, and dramatic ocean viewpoints. Whether you are sampling fresh grilled pomfret at Kolatoli or watching local moon boats return at sunset, Cox's Bazar remains the coastal jewel of Bengal.\n\nFrom luxury beachside resorts near Marine Drive to peaceful trails through Himchari National Park, this guide covers the exact logistics you need for a safe and unforgettable trip.",
     cover_image_url: 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop',
     destination_slug: 'coxs-bazar',
     read_time: '6 min read',
     status: 'published',
     published_at: '2026-11-15T09:00:00Z',
+    is_featured: true,
+    gallery_images: [
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?q=80&w=800&auto=format&fit=crop',
+    ],
+    author_name: 'Tanvir Chowdhury',
+    author_role: 'Lead Coastal Specialist',
   },
   {
     id: 'b2',
     slug: 'sajek-cloud-valley-tips',
     title_en: 'How to Catch the Sea of Clouds in Sajek Valley',
     excerpt_en: 'The best months, cottage balcony tips, and early morning viewpoints at Konglak Para.',
-    content_en: 'The magic of Sajek Valley lies in its elevation and geographical pocket that traps morning fog and clouds. Between October and February, waking up at 5:30 AM guarantees an ocean of white cotton clouds...',
+    content_en: "The magic of Sajek Valley lies in its elevation and geographical pocket that traps morning fog and clouds. Between October and February, waking up at 5:30 AM guarantees an ocean of white cotton clouds rolling across the green mountain ranges.\n\nMake sure to join the scheduled army convoy from Dighinala and reserve wooden eco-cottages on the Konglak ridge for the premier 360-degree panorama.",
     cover_image_url: 'https://images.unsplash.com/photo-1628178122971-45607ef3c428?q=80&w=1200&auto=format&fit=crop',
     destination_slug: 'sajek-valley',
     read_time: '5 min read',
     status: 'published',
     published_at: '2026-11-18T10:00:00Z',
+    is_featured: false,
+    gallery_images: [
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop',
+    ],
+    author_name: 'Farzana Rahman',
+    author_role: 'Hill Tract Expedition Guide',
   },
   {
     id: 'b3',
     slug: 'sundarbans-wildlife-houseboat-guide',
     title_en: 'Deep in the Mangroves: Complete Guide to Sundarbans Houseboat Cruises',
     excerpt_en: 'Navigating tidal creeks, spotting Royal Bengal tigers and spotted deer from watchtowers.',
-    content_en: 'The UNESCO World Heritage mangrove forest of Sundarbans is best explored on an eco-houseboat cruising through Kotka and Kochikhali wildlife sanctuaries...',
+    content_en: 'The UNESCO World Heritage mangrove forest of Sundarbans is best explored on an eco-houseboat cruising through Kotka and Kochikhali wildlife sanctuaries. Dawn birdwatching, silent canoe tours, and guided shore walks with armed forest guards make it an unparalleled wilderness expedition in South Asia.',
     cover_image_url: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop',
     destination_slug: 'sundarbans',
     read_time: '7 min read',
     status: 'published',
     published_at: '2026-11-20T11:00:00Z',
+    is_featured: false,
+    gallery_images: [
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1534177616072-ef7dc120449d?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
+    ],
+    author_name: 'Mahmudul Hasan',
+    author_role: 'Certified Naturalist Guide',
   },
 ];
 
@@ -344,6 +391,108 @@ export const INITIAL_GALLERY_ITEMS: GalleryItem[] = [
   },
 ];
 
+export interface Testimonial {
+  id: string;
+  name: string;
+  role?: string;
+  location: string;
+  avatarUrl: string;
+  quote: string;
+  rating: number;
+  package_title: string;
+  package_slug: string;
+  date: string;
+  verified: boolean;
+  status: 'published' | 'draft';
+}
+
+export const INITIAL_TESTIMONIALS: Testimonial[] = [
+  {
+    id: 't1',
+    name: 'Tanvir Ahmed',
+    role: 'Corporate Team Lead (Grameenphone)',
+    location: 'Uttara, Dhaka',
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=250&auto=format&fit=crop',
+    quote: 'Our 35-person corporate retreat from Dhaka to Sajek Valley was coordinated down to every minute. Dedicated 4x4 Chander Gari, private resort buyout at Konglak, and delicious Pahari meals. Traverse BD is undoubtedly our trusted travel partner!',
+    rating: 5,
+    package_title: 'Sajek Valley Cloud Kingdom Escape',
+    package_slug: 'sajek-valley-cloud-expedition',
+    date: 'November 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't2',
+    name: 'Nusrat Jahan & Tahsin',
+    role: 'Family Vacationers',
+    location: 'Panchlaish, Chattogram',
+    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=250&auto=format&fit=crop',
+    quote: 'Visiting Saint Martin with my toddler and elderly parents felt completely effortless. Traverse BD pre-booked the VIP ship tickets from Teknaf and an eco-resort right beside the west beach. Truly memorable experience!',
+    rating: 5,
+    package_title: 'Saint Martin Coral Island Cruise',
+    package_slug: 'saint-martin-coral-cruise',
+    date: 'October 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't3',
+    name: 'Farhan Chowdhury',
+    role: 'Travel Blogger & Photographer',
+    location: 'Zindabazar, Sylhet',
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=250&auto=format&fit=crop',
+    quote: 'The premium wooden houseboat expedition across Tanguar Haor and Shimul Bagan was breathtaking. Silent solar cruise, fresh local duck curry, and stargazing at Tekerghat. Best weekend journey of my life.',
+    rating: 5,
+    package_title: 'Tanguar Haor Luxury Houseboat Cruise',
+    package_slug: 'tanguar-haor-luxury-houseboat',
+    date: 'September 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't4',
+    name: 'Dr. Sabrina Karim',
+    role: 'Cardiologist & Wildlife Enthusiast',
+    location: 'Dhanmondi, Dhaka',
+    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=250&auto=format&fit=crop',
+    quote: 'Silent early dawn country boat rowing into Kotka canals with armed forest guards and veteran naturalist escorts. We spotted spotted deer, kingfishers, and fresh Bengal tiger pugmarks. World-class safety and service.',
+    rating: 5,
+    package_title: 'Sundarbans Deep Mangrove Safari',
+    package_slug: 'sundarbans-deep-mangrove-safari',
+    date: 'November 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't5',
+    name: 'Mahir Faisal',
+    role: 'Banker & Trekking Enthusiast',
+    location: 'Mirpur DOHS, Dhaka',
+    avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=250&auto=format&fit=crop',
+    quote: 'Climbing through the misty clouds of Nilgiri and exploring Chimbuk Hill was made seamless with our experienced local guide. Pricing was completely transparent with zero hidden costs. Highly recommended!',
+    rating: 5,
+    package_title: 'Bandarban & Nilgiri Summit Expedition',
+    package_slug: 'bandarban-nilgiri-summit',
+    date: 'December 2025',
+    verified: true,
+    status: 'published',
+  },
+  {
+    id: 't6',
+    name: 'Anika Tabassum',
+    role: 'Product Designer',
+    location: 'Sonadanga, Khulna',
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=250&auto=format&fit=crop',
+    quote: 'Peaceful escape among the lush tea estates of Sreemangal and morning trail inside Lawachara rain forest. The 7-color tea tasting and boutique resort stay were memorable highlights.',
+    rating: 5,
+    package_title: 'Sreemangal Tea Gardens & Lawachara Forest',
+    package_slug: 'sreemangal-tea-gardens-lawachara',
+    date: 'January 2026',
+    verified: true,
+    status: 'published',
+  },
+];
+
 // In-Memory state store for local CRUD persistence
 class AdminMemoryStore {
   public packages: Package[] = JSON.parse(JSON.stringify(MOCK_PACKAGES));
@@ -351,6 +500,7 @@ class AdminMemoryStore {
   public categories: Category[] = JSON.parse(JSON.stringify(MOCK_CATEGORIES));
   public gallery: GalleryItem[] = JSON.parse(JSON.stringify(INITIAL_GALLERY_ITEMS)).map((g: GalleryItem) => ({ ...g, status: 'published' }));
   public blogs: BlogItem[] = JSON.parse(JSON.stringify(INITIAL_BLOGS));
+  public testimonials: Testimonial[] = JSON.parse(JSON.stringify(INITIAL_TESTIMONIALS));
   public siteSettings: SiteSettings = JSON.parse(JSON.stringify(INITIAL_SITE_SETTINGS));
   public users: AdminUser[] = JSON.parse(JSON.stringify(INITIAL_ADMIN_USERS));
   public auditLogs: AdminAuditLog[] = JSON.parse(JSON.stringify(INITIAL_AUDIT_LOGS));

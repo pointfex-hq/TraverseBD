@@ -28,16 +28,16 @@ export default function AdminDashboardView() {
   }, []);
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 max-w-7xl mx-auto">
       {/* 1. METRICS OVERVIEW CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {/* Card 1: Packages */}
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+        <div className="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Tour Packages</span>
             <span className="material-symbols-outlined text-primary-fixed">tour</span>
           </div>
-          <div className="text-3xl font-extrabold text-white">
+          <div className="text-2xl sm:text-3xl font-extrabold text-white">
             {metrics ? metrics.totalPackages : '...'}
           </div>
           <div className="text-[11px] text-slate-400 flex items-center gap-2">
@@ -52,12 +52,12 @@ export default function AdminDashboardView() {
         </div>
 
         {/* Card 2: Destinations */}
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+        <div className="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Destinations</span>
             <span className="material-symbols-outlined text-sky-400">location_on</span>
           </div>
-          <div className="text-3xl font-extrabold text-white">
+          <div className="text-2xl sm:text-3xl font-extrabold text-white">
             {metrics ? metrics.totalDestinations : '...'}
           </div>
           <div className="text-[11px] text-slate-400">
@@ -66,12 +66,12 @@ export default function AdminDashboardView() {
         </div>
 
         {/* Card 3: Departures & Seats */}
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+        <div className="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Seats & Batches</span>
             <span className="material-symbols-outlined text-amber-400">event_seat</span>
           </div>
-          <div className="text-3xl font-extrabold text-white">
+          <div className="text-2xl sm:text-3xl font-extrabold text-white">
             {metrics ? metrics.totalAvailableSeats : '...'}
           </div>
           <div className="text-[11px] text-slate-400">
@@ -80,12 +80,12 @@ export default function AdminDashboardView() {
         </div>
 
         {/* Card 4: Administrative Team */}
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+        <div className="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">System Staff</span>
             <span className="material-symbols-outlined text-purple-400">shield_person</span>
           </div>
-          <div className="text-3xl font-extrabold text-white">
+          <div className="text-2xl sm:text-3xl font-extrabold text-white">
             {metrics ? metrics.totalAdmins : '...'}
           </div>
           <div className="text-[11px] text-purple-300 font-medium">
@@ -95,7 +95,7 @@ export default function AdminDashboardView() {
       </div>
 
       {/* 2. QUICK ACTIONS */}
-      <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+      <div className="p-4 sm:p-6 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-sm font-bold text-white">Operational Shortcuts</h2>
           <p className="text-xs text-slate-400">
@@ -103,18 +103,26 @@ export default function AdminDashboardView() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
           <Link
             href="/admin/packages"
-            className="px-3.5 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition"
+            className="px-3 py-1.5 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition"
           >
             <span className="material-symbols-outlined text-[16px]">tour</span>
             <span>Packages</span>
           </Link>
 
           <Link
+            href="/admin/destinations"
+            className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-700 transition"
+          >
+            <span className="material-symbols-outlined text-[16px]">location_on</span>
+            <span>Destinations</span>
+          </Link>
+
+          <Link
             href="/admin/gallery"
-            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-700 transition"
+            className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-700 transition"
           >
             <span className="material-symbols-outlined text-[16px]">photo_library</span>
             <span>Gallery</span>
@@ -122,7 +130,7 @@ export default function AdminDashboardView() {
 
           <Link
             href="/admin/blogs"
-            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-700 transition"
+            className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-700 transition"
           >
             <span className="material-symbols-outlined text-[16px]">article</span>
             <span>Blogs</span>
@@ -130,7 +138,7 @@ export default function AdminDashboardView() {
 
           <Link
             href="/admin/settings"
-            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-700 transition"
+            className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-700 transition"
           >
             <span className="material-symbols-outlined text-[16px]">tune</span>
             <span>Settings</span>
@@ -138,7 +146,7 @@ export default function AdminDashboardView() {
 
           <Link
             href="/admin/users"
-            className="px-3.5 py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 text-xs font-bold flex items-center gap-1.5 border border-purple-500/30 transition"
+            className="px-3 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 text-xs font-bold flex items-center gap-1.5 border border-purple-500/30 transition"
           >
             <span className="material-symbols-outlined text-[16px]">manage_accounts</span>
             <span>Staff</span>
@@ -146,8 +154,8 @@ export default function AdminDashboardView() {
         </div>
       </div>
 
-      {/* 3. RECENT SECURITY AUDIT TRAIL (Matching Stitch) */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-sm space-y-4 p-6">
+      {/* 3. RECENT SECURITY AUDIT TRAIL */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-sm space-y-4 p-4 sm:p-6">
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div>
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
@@ -161,7 +169,7 @@ export default function AdminDashboardView() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
+          <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
             <thead className="text-[10px] uppercase font-bold text-slate-500 border-b border-slate-800">
               <tr>
                 <th className="py-2.5 px-3">Timestamp</th>

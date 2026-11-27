@@ -198,50 +198,55 @@ interface BlogViewProps {
 
 export default function BlogView({ initialBlogs = [] }: BlogViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [activeArticleModal, setActiveArticleModal] = useState<BlogPostItem | null>(null);
 
   // Map dynamic blogs from admin store/database if provided
   const articlesList: BlogPostItem[] =
     initialBlogs.length > 0
       ? initialBlogs.map((b) => {
-          let category: BlogPostItem['category'] = 'Travel Tips & Checklists';
-          const titleLower = (b.title_en || '').toLowerCase();
-          const destLower = (b.destination_slug || '').toLowerCase();
+        let category: BlogPostItem['category'] = 'Travel Tips & Checklists';
+        const titleLower = (b.title_en || '').toLowerCase();
+        const destLower = (b.destination_slug || '').toLowerCase();
 
-          if (titleLower.includes('mountain') || destLower.includes('sajek') || destLower.includes('bandarban')) {
-            category = 'Mountain Expeditions';
-          } else if (titleLower.includes('wildlife') || destLower.includes('sundarban') || destLower.includes('sreemangal')) {
-            category = 'Wildlife & Eco';
-          } else if (titleLower.includes('coast') || titleLower.includes('coral') || destLower.includes('cox') || destLower.includes('saint-martin')) {
-            category = 'Coastal Expeditions';
-          }
+        if (titleLower.includes('mountain') || destLower.includes('sajek') || destLower.includes('bandarban')) {
+          category = 'Mountain Expeditions';
+        } else if (titleLower.includes('wildlife') || destLower.includes('sundarban') || destLower.includes('sreemangal')) {
+          category = 'Wildlife & Eco';
+        } else if (titleLower.includes('coast') || titleLower.includes('coral') || destLower.includes('cox') || destLower.includes('saint-martin')) {
+          category = 'Coastal Expeditions';
+        }
 
-          return {
-            id: b.slug || b.id,
-            title: b.title_en,
-            excerpt: b.excerpt_en,
-            category,
-            readTime: b.read_time || '5 min read',
-            date: b.published_at ? new Date(b.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Nov 2026',
-            author: 'Traverse BD Guild',
-            authorRole: 'Expedition Guide',
-            imageUrl: b.cover_image_url || 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop',
-            keyPoints: [
-              'Authentic field report curated by Traverse BD expeditions',
-              'Verified local logistics, seasonal weather, and travel tips',
-            ],
-            contentSections: [
-              {
-                heading: 'Field Overview & Route Logistics',
-                body: b.content_en || b.excerpt_en,
-              },
-            ],
-          };
-        })
+        return {
+          id: b.slug || b.id,
+          title: b.title_en,
+          excerpt: b.excerpt_en,
+          category,
+          readTime: b.read_time || '5 min read',
+          date: b.published_at ? new Date(b.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Nov 2026',
+          author: b.author_name || 'Traverse BD Guild',
+          authorRole: b.author_role || 'Expedition Guide',
+          imageUrl: b.cover_image_url || 'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=1200&auto=format&fit=crop',
+          keyPoints: [
+            'Authentic field report curated by Traverse BD expeditions',
+            'Verified local logistics, seasonal weather, and travel tips',
+          ],
+          contentSections: [
+            {
+              heading: 'Field Overview & Route Logistics',
+              body: b.content_en || b.excerpt_en,
+            },
+          ],
+        };
+      })
       : BLOG_ARTICLES;
 
-  const featuredPost = articlesList[0] || FEATURED_POST;
-  const standardArticles = articlesList.length > 1 ? articlesList.slice(1) : articlesList;
+  // Check if an article is explicitly flagged as is_featured in initialBlogs
+  const explicitFeatured = initialBlogs.find((b) => b.is_featured);
+  let featuredPost = articlesList[0] || FEATURED_POST;
+  if (explicitFeatured) {
+    const found = articlesList.find((a) => a.id === (explicitFeatured.slug || explicitFeatured.id));
+    if (found) featuredPost = found;
+  }
+  const standardArticles = articlesList.filter((a) => a.id !== featuredPost.id);
 
   const categories = [
     { key: 'all', label: 'All Articles' },
@@ -311,15 +316,14 @@ export default function BlogView({ initialBlogs = [] }: BlogViewProps) {
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-surface-container">
-                <button
-                  type="button"
-                  onClick={() => setActiveArticleModal(featuredPost)}
-                  className="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary/90 transition flex items-center gap-1.5"
+              <div className="flex items-center justify-between gap-3 pt-4 border-t border-surface-container flex-wrap">
+                <Link
+                  href={`/blog/${featuredPost.id}`}
+                  className="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary/90 transition flex items-center gap-1.5 shrink-0"
                 >
                   <span>Read Full Guide</span>
                   <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                </button>
+                </Link>
                 <span className="text-xs text-on-surface-variant font-medium">
                   By {featuredPost.author}
                 </span>
@@ -353,9 +357,9 @@ export default function BlogView({ initialBlogs = [] }: BlogViewProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {filteredArticles.map((article) => (
-            <div
+            <Link
               key={article.id}
-              onClick={() => setActiveArticleModal(article)}
+              href={`/blog/${article.id}`}
               className="group rounded-3xl bg-surface-container-lowest border border-surface-container overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer css-tilt-card"
             >
               <div className="relative h-56 overflow-hidden">
@@ -388,122 +392,20 @@ export default function BlogView({ initialBlogs = [] }: BlogViewProps) {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-surface-container flex items-center justify-between text-xs">
-                  <span className="text-primary font-bold flex items-center gap-1 group-hover:underline">
-                    <span>Read Guide</span>
+                <div className="pt-3 border-t border-surface-container flex items-center justify-between text-xs gap-2 flex-wrap">
+                  <span className="text-primary font-bold flex items-center gap-1 group-hover:underline shrink-0">
+                    <span>Read Full Guide</span>
                     <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                   </span>
-                  <span className="text-[11px] text-on-surface-variant">{article.author}</span>
+                  <span className="text-[11px] text-on-surface-variant truncate">{article.author}</span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* 3. EXPANSIVE ARTICLE READING MODAL */}
-      {activeArticleModal && (
-        <div
-          onClick={() => setActiveArticleModal(null)}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="max-w-3xl w-full my-8 bg-surface-container-lowest rounded-3xl border border-surface-container shadow-2xl overflow-hidden space-y-6"
-          >
-            {/* Modal Header Image */}
-            <div className="relative h-64 sm:h-80 w-full overflow-hidden">
-              <img
-                src={activeArticleModal.imageUrl}
-                alt={activeArticleModal.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              <button
-                onClick={() => setActiveArticleModal(null)}
-                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition border border-white/20"
-                aria-label="Close"
-              >
-                <span className="material-symbols-outlined text-[20px]">close</span>
-              </button>
-
-              <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
-                <span className="px-3 py-1 rounded-full bg-primary text-white text-xs font-bold">
-                  {activeArticleModal.category}
-                </span>
-                <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight">
-                  {activeArticleModal.title}
-                </h2>
-                <div className="flex items-center gap-3 text-xs text-white/80">
-                  <span>By {activeArticleModal.author}</span>
-                  <span>•</span>
-                  <span>{activeArticleModal.date}</span>
-                  <span>•</span>
-                  <span>{activeArticleModal.readTime}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Content */}
-            <div className="p-6 sm:p-8 space-y-6 max-h-[60vh] overflow-y-auto">
-              {/* Key takeaways callout */}
-              {activeArticleModal.keyPoints && (
-                <div className="rounded-2xl bg-surface-container-low border border-surface-container p-5 space-y-2.5">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[16px]">priority_high</span>
-                    <span>Key Takeaways for Travelers</span>
-                  </h4>
-                  <ul className="space-y-1.5 text-xs text-on-surface">
-                    {activeArticleModal.keyPoints.map((point, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="material-symbols-outlined text-primary text-[15px] shrink-0 mt-0.5">
-                          check
-                        </span>
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Body Sections */}
-              <div className="space-y-6">
-                {activeArticleModal.contentSections.map((sec, idx) => (
-                  <div key={idx} className="space-y-2">
-                    <h3 className="text-base font-bold text-on-surface">{sec.heading}</h3>
-                    <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
-                      {sec.body}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Consultation CTA */}
-              <div className="p-6 rounded-2xl bg-primary/10 border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-primary">Need Personalized Route Advice?</h4>
-                  <p className="text-xs text-on-surface-variant">
-                    Our on-ground trail architects are ready to assist you on WhatsApp.
-                  </p>
-                </div>
-                <a
-                  href={`https://wa.me/8801627444330?text=${encodeURIComponent(
-                    `Hello Traverse BD! I read your field guide on "${activeArticleModal.title}" and would like to ask questions about trail conditions.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-5 py-2.5 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary-container transition shrink-0 flex items-center gap-1.5"
-                >
-                  <span className="material-symbols-outlined text-[16px]">chat</span>
-                  <span>Ask a Specialist</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 4. NEWSLETTER SECTION */}
+      {/* 3. NEWSLETTER SECTION */}
       <section className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="rounded-3xl bg-surface-container-lowest border border-surface-container p-8 sm:p-12 shadow-sm text-center space-y-4 max-w-3xl mx-auto">
           <span className="material-symbols-outlined text-4xl text-primary">mail</span>
