@@ -81,7 +81,7 @@ export default function PackagesView({
   };
 
   return (
-    <main className="space-y-12 pb-24 pt-24 bg-surface">
+    <main className="space-y-12 pb-24 bg-surface">
       {/* 1. HERO & CATEGORY TABS */}
       <section className="relative overflow-hidden bg-surface-container-low/60 pt-10 pb-12 px-6 lg:px-12 border-b border-surface-container">
         <div className="absolute -top-32 right-1/4 w-96 h-96 bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none" />
