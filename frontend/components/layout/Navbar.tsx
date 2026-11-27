@@ -8,6 +8,11 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // Do not render public Navbar on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const phoneDisplay = '01627444330';
   const phoneTel = 'tel:01627444330';
   const whatsappUrl = 'https://wa.me/8801627444330';
@@ -15,7 +20,6 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Tour Packages', href: '/packages' },
-    { name: 'Destinations', href: '/destinations' },
     { name: 'Services', href: '/services' },
     { name: 'Why Us', href: '/why-us' },
     { name: 'Gallery', href: '/gallery' },
