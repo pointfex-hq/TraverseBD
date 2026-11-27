@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Destination } from '@backend/types/database.types';
 import ImageUploadField from '@frontend/components/admin/ImageUploadField';
+import ConfirmDeleteModal from '@frontend/components/admin/ConfirmDeleteModal';
 
 export default function AdminDestinationsView() {
   const [destinations, setDestinations] = useState<Destination[]>([]);
@@ -17,6 +18,10 @@ export default function AdminDestinationsView() {
   const [shortDescEn, setShortDescEn] = useState('');
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // In-App Confirm Delete Modal State
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadDestinations = async () => {
     setIsLoading(true);
@@ -103,15 +108,21 @@ export default function AdminDestinationsView() {
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Delete destination "${name}"?`)) return;
+  const confirmDeleteDestination = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/destinations/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/destinations/${deleteTarget.id}`, { method: 'DELETE' });
       if (res.ok) {
-        setDestinations((prev) => prev.filter((d) => d.id !== id));
+        setDestinations((prev) => prev.filter((d) => d.id !== deleteTarget.id));
+        setDeleteTarget(null);
+      } else {
+        alert('Failed to delete destination.');
       }
     } catch {
       alert('Failed to delete destination.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -175,8 +186,9 @@ export default function AdminDestinationsView() {
                   <span className="material-symbols-outlined text-[17px]">edit</span>
                 </button>
                 <button
-                  onClick={() => handleDelete(dest.id, dest.name_en)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition"
+                  onClick={() => setDeleteTarget({ id: dest.id, name: dest.name_en })}
+                  title="Delete Destination"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[17px]">delete</span>
                 </button>
@@ -260,14 +272,14 @@ export default function AdminDestinationsView() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold"
+                  className="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90"
+                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 cursor-pointer"
                 >
                   {isSubmitting ? 'Saving...' : 'Save Destination'}
                 </button>
@@ -276,6 +288,17 @@ export default function AdminDestinationsView() {
           </div>
         </div>
       )}
+
+      {/* In-App Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        title="Delete Destination"
+        message={`Are you sure you want to permanently delete destination "${deleteTarget?.name}"? Associated packages may need reassignment.`}
+        confirmLabel="Delete Destination"
+        isDeleting={isDeleting}
+        onConfirm={confirmDeleteDestination}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
