@@ -693,6 +693,16 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
                   <span className="material-symbols-outlined text-[18px]">chat</span>
                   <span>WhatsApp Us</span>
                 </a>
+                <a
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0084FF] hover:bg-[#0073e6] text-white font-bold text-sm transition-all shadow-md"
+                  href="https://www.facebook.com/messages/t/431751336697364"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  title="Direct Message on Facebook"
+                >
+                  <span className="material-symbols-outlined text-[18px]">forum</span>
+                  <span>Messenger</span>
+                </a>
               </div>
             </div>
 
@@ -774,7 +784,7 @@ export default function HomeView({ packages = [], siteSettings }: HomeViewProps)
         <a
           aria-label="Facebook Messenger"
           className="relative group w-12 h-12 rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_8px_24px_rgba(0,88,134,0.22)] flex items-center justify-center text-tertiary hover:bg-tertiary hover:text-white transition-all duration-300 hover:scale-105 border border-tertiary/20"
-          href="https://m.me/traversebd"
+          href="https://www.facebook.com/messages/t/431751336697364"
           rel="noopener noreferrer"
           target="_blank"
         >
