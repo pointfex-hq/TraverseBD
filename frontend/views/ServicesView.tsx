@@ -92,7 +92,7 @@ export default function ServicesView() {
             From complete corporate offsite management and bespoke private family tours to individual ship, bus, flight, and hill cottage reservations—Traverse BD delivers end-to-end reliability.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-4">
             <a
               href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello Traverse BD! I would like to inquire about your travel services.')}`}
               target="_blank"
@@ -100,7 +100,16 @@ export default function ServicesView() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary-container text-white text-xs font-bold transition shadow-md shadow-primary/25"
             >
               <span className="material-symbols-outlined text-[18px]">chat</span>
-              <span>Chat with a Specialist</span>
+              <span>Chat on WhatsApp</span>
+            </a>
+            <a
+              href="https://www.facebook.com/messages/t/431751336697364"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0084FF] hover:bg-[#0073e6] text-white text-xs font-bold transition shadow-md shadow-blue-500/25"
+            >
+              <span className="material-symbols-outlined text-[18px]">forum</span>
+              <span>Message on Facebook</span>
             </a>
             <Link
               href="/packages"
