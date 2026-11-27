@@ -257,6 +257,17 @@ export default function PackageDetailView({ packageData }: PackageDetailViewProp
                 <span>Book / Inquire on WhatsApp</span>
               </a>
 
+              {/* Direct Facebook Messenger Action Button */}
+              <a
+                href="https://www.facebook.com/messages/t/431751336697364"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-2xl bg-[#0084FF] hover:bg-[#0073e6] text-white font-bold text-sm shadow-md shadow-[#0084FF]/20 transition-all hover:scale-[1.02]"
+              >
+                <span className="material-symbols-outlined text-[20px]">forum</span>
+                <span>Inquire on Facebook Messenger</span>
+              </a>
+
               <div className="space-y-2 pt-2 text-[11px] text-on-surface-variant text-center">
                 <div className="flex items-center justify-center gap-1.5 text-primary font-semibold">
                   <span className="material-symbols-outlined text-[15px]">verified_user</span>
