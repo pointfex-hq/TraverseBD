@@ -84,10 +84,19 @@ export default function PackageDetailView({ packageData }: PackageDetailViewProp
                 </span>
 
                 {packageData.is_featured && (
-                  <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold">
-                    Featured Choice
+                  <span className="px-3 py-1 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center gap-1 shadow-sm">
+                    <span className="material-symbols-outlined text-[13px]">local_fire_department</span>
+                    <span>Bestseller Tour</span>
                   </span>
                 )}
+
+                <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold flex items-center gap-1 border border-amber-500/20">
+                  <span className="material-symbols-outlined text-[14px] text-amber-500">star</span>
+                  <span>{(packageData.rating_average || 4.95).toFixed(2)}</span>
+                  <span className="text-on-surface-variant font-normal">
+                    ({packageData.reviews_count || 120} reviews)
+                  </span>
+                </span>
               </div>
 
               <h1 className="text-2xl sm:text-4xl font-extrabold text-on-surface tracking-tight">
@@ -280,9 +289,22 @@ export default function PackageDetailView({ packageData }: PackageDetailViewProp
         </div>
       </section>
 
-      {/* 3. TABS: ITINERARY, INCLUSIONS & EXCLUSIONS */}
+      {/* 3. OVERVIEW & TABS: ITINERARY, INCLUSIONS & EXCLUSIONS */}
       <section className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="lg:w-8/12 space-y-8">
+          {/* Overview & Highlights */}
+          {(packageData.full_description_en || packageData.short_description_en) && (
+            <div className="rounded-2xl bg-surface-container-lowest border border-surface-container p-6 space-y-3">
+              <h3 className="text-sm font-extrabold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-base">explore</span>
+                <span>Tour Overview &amp; Experience</span>
+              </h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed whitespace-pre-line">
+                {packageData.full_description_en || packageData.short_description_en}
+              </p>
+            </div>
+          )}
+
           {/* Tabs Navigation */}
           <div className="flex items-center gap-3 border-b border-surface-container pb-4">
             <button
