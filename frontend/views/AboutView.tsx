@@ -248,7 +248,16 @@ export default function AboutView() {
             Meet the Team Driving Traverse BD
           </h2>
           <p className="text-xs sm:text-sm text-on-surface-variant">
-            Built by engineers and travel architects under Traverse BD (Pointfex), combining technical excellence with grassroots field expertise.
+            Built by engineers and travel architects under Traverse BD (
+            <a
+              href="https://www.pointfex.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary font-bold hover:underline"
+            >
+              Pointfex
+            </a>
+            ), combining technical excellence with grassroots field expertise.
           </p>
         </div>
 

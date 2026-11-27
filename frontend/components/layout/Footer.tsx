@@ -221,9 +221,14 @@ export default function Footer() {
           </p>
           <p className="text-xs text-on-surface font-medium flex items-center gap-1.5">
             <span>Developed by</span>
-            <span className="text-primary font-bold hover:underline tracking-wide cursor-pointer">
+            <a
+              href="https://www.pointfex.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary font-bold hover:underline tracking-wide cursor-pointer inline-flex items-center gap-1"
+            >
               Pointfex
-            </span>
+            </a>
           </p>
         </div>
       </div>

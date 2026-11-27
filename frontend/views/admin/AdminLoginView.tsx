@@ -168,17 +168,30 @@ export default function AdminLoginView() {
         </div>
 
         {/* Footer */}
-        <div className="text-center space-y-1">
+        <div className="text-center space-y-1.5">
           <p className="text-[11px] text-slate-500">
             Traverse BD Operations & Security Systems • Authorized Personnel Only
           </p>
-          <Link
-            href="/"
-            className="text-[11px] text-primary-fixed hover:text-white transition inline-flex items-center gap-1"
-          >
-            <span className="material-symbols-outlined text-[14px]">arrow_back</span>
-            <span>Return to Public Portal</span>
-          </Link>
+          <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1">
+            <span>Developed by</span>
+            <a
+              href="https://www.pointfex.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:text-emerald-400 font-bold hover:underline"
+            >
+              Pointfex
+            </a>
+          </p>
+          <div>
+            <Link
+              href="/"
+              className="text-[11px] text-primary-fixed hover:text-white transition inline-flex items-center gap-1"
+            >
+              <span className="material-symbols-outlined text-[14px]">arrow_back</span>
+              <span>Return to Public Portal</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
