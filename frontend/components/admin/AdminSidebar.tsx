@@ -100,7 +100,7 @@ export default function AdminSidebar({ isOpen = false, onClose }: AdminSidebarPr
       <div className="p-4 border-t border-slate-800 space-y-1.5">
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-bold text-slate-400 tracking-wide">
-            TraverseBD v1.2
+            TraverseBD v2.0.0
           </span>
           <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             Online
